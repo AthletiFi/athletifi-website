@@ -123,6 +123,8 @@ const Header = () => {
                     News
                   </Link>
                 </li>
+                {/* 
+                DASHBOARD LINK - CAN BE RE-ADDED WHEN READY
                 <li>
                   <Link
                     onClick={() => setOpen(false)}
@@ -133,7 +135,7 @@ const Header = () => {
                   >
                     Dashboard
                   </Link>
-                </li>
+                </li> */}
                 <li className="social_icons_show sm:mt-7 sm:pb-7 hidden sm:block">
                   <button
                     onClick={SocialIcon}

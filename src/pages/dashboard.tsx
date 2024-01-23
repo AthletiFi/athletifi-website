@@ -16,7 +16,8 @@ const Dashboard = () => {
     subtitle: 'Your Subtitle Here',
     title: 'Your Title Here',
   };
-  return (
+
+  let DashboardPage = (
     <>
       <Seo pageSEO={SEO_CONFIG.dashboard} />
       <div className="overflow_hidden">
@@ -39,6 +40,28 @@ const Dashboard = () => {
       </div>
     </>
   );
+
+  // The below function is a creative way to hide the dashboard from view for the time being until it is ready to be displayed
+  const hideDashboardForNow = () => {
+    hero.heading = 'Coming Soon!';
+    DashboardPage = (
+      <>
+        <Seo pageSEO={SEO_CONFIG.dashboard} />
+        <div className="overflow_hidden">
+          <div className=" bg-about-hero bg-no-repeat bg-cover">
+            <Header />
+            <CommonHero hero={hero} />
+          </div>
+          <Footer />
+        </div>
+      </>
+    );
+  };
+
+  //REMOVE THE BELOW LINE TO REVEAL THE DASHBOARD
+  hideDashboardForNow();
+
+  return DashboardPage;
 };
 
 export default Dashboard;
