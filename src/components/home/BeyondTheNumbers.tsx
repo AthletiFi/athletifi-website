@@ -22,7 +22,7 @@ const UniqueAthletifi = () => {
               {/* AthletiFi Unique */}
               True Player Insights
             </h2>
-            <span
+            <h3
               className="text-primary text-lgxl font-HelveticaNeueRegular leading-normal"
               data-aos="fade-up"
               data-aos-duration="600"
@@ -32,7 +32,7 @@ const UniqueAthletifi = () => {
             >
               {/* Empowering Tomorrow's Soccer Stars */}
               Decoding the game for passive followers
-            </span>
+            </h3>
             <div
               data-aos="fade-up"
               data-aos-duration="600"
@@ -77,7 +77,7 @@ const UniqueAthletifi = () => {
                 src="/assets/img/webp/gen-soccer-player.webp"
                 width={652}
                 height={512}
-                alt={'football palyer'}
+                alt="Player jumping through the air chasing after the ball"
               />
             </div>
           </div>
@@ -88,7 +88,7 @@ const UniqueAthletifi = () => {
           src="/assets/img/png/unique-football.png"
           width={220}
           height={286}
-          alt={'football'}
+          alt=""
         />
       </section>
     </>

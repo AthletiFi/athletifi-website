@@ -24,14 +24,16 @@ const AboutUs = () => {
   return (
     <>
       <Seo pageSEO={SEO_CONFIG.aboutUs} />
-      <div className="overflow_hidden">
-        <div className=" bg-about-hero bg-no-repeat bg-cover">
+      <div className="overflow-hidden">
+        <div className=" about-page__hero-bg bg-no-repeat bg-cover">
           <Header />
           <CommonHero hero={hero} />
         </div>
-        <OurMission />
-        <WhoWeAre />
-        <LookingForward />
+        <main>
+          <OurMission />
+          <WhoWeAre />
+          <LookingForward />
+        </main>
         <Footer />
         <BackToTop />
       </div>

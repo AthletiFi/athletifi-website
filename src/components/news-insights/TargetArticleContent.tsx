@@ -37,7 +37,7 @@ const TargetArticleContent: React.FC<NewsProps> = props => {
                   src="/assets/img/svg/news-grid-line.svg"
                   width={400}
                   height={448}
-                  alt="grid-line"
+                  alt=""
                 />
                 <div className="container md:max-w-full xl:max-w-[1140px] 2xl:max-w-[1320px] mx-auto px-3 relative z-10">
                   <div className="xl:mt-[190px] lg:mt-[108px] md:mt-[60px] mt-[48px] relative z-20 before:content-[''] before:absolute before:w-[457px] before:h-[457px] before:-top-24 before:-left-40 before:bg-shadow_blue before:blur-[111px] before:opacity-25 before:-z-10 before:rounded-full">

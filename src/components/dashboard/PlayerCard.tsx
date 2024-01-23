@@ -9,7 +9,7 @@ const PlayerCard = () => {
       <Image
         className=""
         src={cardImage}
-        alt="Player Card"
+        alt="Player card"
         width={500}
         height={300}
       />

@@ -18,7 +18,7 @@ const WhoWeAre = () => {
           src="/assets/img/png/our-mission-grid-img.png"
           width={692}
           height={200}
-          alt="grid-image"
+          alt=""
           className="w-full h-full"
         />
       </div>
@@ -28,7 +28,7 @@ const WhoWeAre = () => {
         src="/assets/img/png/what-we-do-shadow.png"
         width={608}
         height={448}
-        alt="shadow"
+        alt=""
       />
       <span className="absolute -top-48 start-[45%] -translate-x-1/2 z-0">
         <CenterBlueShadow />
@@ -49,7 +49,7 @@ const WhoWeAre = () => {
                 className="xl:h-[603px] xl:w-[505px] min-[1530px]:w-full"
                 width={505}
                 height={603}
-                alt="our misssion sec image"
+                alt="Player card of Stebi Vidal from Villanova Soccer Academy"
               />
             </div>
           </div>

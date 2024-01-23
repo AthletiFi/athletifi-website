@@ -20,7 +20,7 @@ const Teammates = () => {
   };
   return (
     <div className="w-full xl:w-1/3 2xl:w-1/3 min-h-full">
-      <div className="blue_linear_gradient bg-blue_linear_gradient after:absolute relative lg:py-16 py-5 md:py-10 z-0  after:contents-[''] after:inset-0 after:p-[1px] after:rounded-[30px] rounded-[30px] h-full flex items-center justify-center">
+      <div className="container__border--blue-gradient bg-blue_linear_gradient after:absolute relative lg:py-16 py-5 md:py-10 z-0  after:contents-[''] after:inset-0 after:p-[1px] after:rounded-[30px] rounded-[30px] h-full flex items-center justify-center">
         <div
           className="flex flex-col justify-center items-center z-20 gap-4"
           data-aos="fade-up"

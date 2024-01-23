@@ -1,13 +1,9 @@
 /* ================================================ NAV BAR ================================================== */
-.overflow_hidden {
-  overflow: hidden;
-}
-
-.nav_open {
+.header__nav--open {
   transition: all 0.3s linear;
 }
 
-.slideUp {
+.header--slide-up {
   -webkit-transform: translateY(-100px);
   transform: translateY(-100px);
   transition: transform 0.4s ease-out;
@@ -15,7 +11,7 @@
   backdrop-filter: blur(13px);
 }
 
-.slideDown {
+.header--slide-down {
   -webkit-transform: translateY(0);
   transform: translateY(0);
   transition: transform 0.4s ease-out;
@@ -24,77 +20,63 @@
 }
 
 /* ================================================ HERO =========================================================== */
-.hero_grid_position {
+.hero__grid-position {
   top: 35%;
 }
 
 /* ================================================ MEET OUR STRATEGIC ADVISOR ================================================ */
-.join_now_btn:hover span {
+.btn__cta:hover span {
   color: #00c5f4;
 }
 
-.join_now_btn:hover svg path {
+.btn__cta:hover svg path {
   fill: #00c5f4;
 }
 
 /* PRELOADER */
-.overflow_hidden {
-  overflow: hidden;
+.preloader__bg {
+  background-color: #000b13;
 }
 
-.preloader {
-  background-color: #000b13;
+.preloader__icon {
   animation: preloader_img 1.2s ease-in-out infinite alternate;
 }
 
 /* ==============================  Social Icon================================ */
 
-.bg_social_icon {
+.social-popup__bg {
   background: rgba(0, 0, 0, 0.656);
   /* -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(20px) !important; */
 }
 
-/* SLIDER CUSTOM DOTES */
-.social_btn_contact_us svg path {
+/* SLIDER CUSTOM NOTES */
+.social-popup__btn svg path {
   fill: white;
 }
 
-.news_nsights_slider .slick-dots {
-  bottom: -35px;
-}
-
-.news_nsights_slider .slick-dots li.slick-active button:before {
-  color: #00c5f4 !important;
-}
-
-.news_nsights_slider .slick-dots li button:before {
-  color: #00c5f4 !important;
-  font-size: 10px;
-}
-
-.social_icons_show:hover .social_btns {
+.social-popup--show:hover .social_btns {
   display: block;
 }
 
-.scroll_bar_hidden::-webkit-scrollbar {
+.social-popup__scroll--hidden::-webkit-scrollbar {
   width: 0;
 }
 
 /* ============================ legal pages ================================= */
 
-.legal-heading {
+.legal__heading {
   font-weight: bold;
   margin-top: 2rem; 
   margin-bottom: 1rem; 
 }
 
-.legal-paragraph {
+.legal__body {
   text-align: justify;
   margin-bottom: 1rem; 
 }
 
-.legal-list {
+.legal__list {
   margin-bottom: 1rem;
   list-style-type: lower-alpha;
   list-style-position: outside;
@@ -104,7 +86,7 @@
 
 /* ============================ sign up ================================= */
 
-.sign_up_checkbox input[type="checkbox"] {
+.sign-up__checkbox input[type="checkbox"] {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -119,7 +101,7 @@
   padding: 7px;
 }
 
-.sign_up_checkbox input[type="checkbox"]::before {
+.sign-up__checkbox input[type="checkbox"]::before {
   content: "\2713";
   position: absolute;
   top: 50%;
@@ -131,15 +113,15 @@
   padding: 7px;
 }
 
-.sign_up_checkbox input[type="checkbox"]:checked::before {
+.sign-up__checkbox input[type="checkbox"]:checked::before {
   opacity: 1;
 }
 
-.sign-up__legal-link {
+.sign-up__link {
   color: #00c5f4;
 }
 
-.sign-up__legal-link:hover {
+.sign-up__link:hover {
   text-decoration: underline;
 }
 /* ============================ Custom 404 - Not Found Page ================================= */
@@ -169,11 +151,7 @@
 }
 
 @media (min-width: 640px) {
-  .nav_open {
+  .header__nav--open {
     all: unset;
-  }
-
-  .news_nsights_slider .slick-dots {
-    bottom: -40px;
   }
 }

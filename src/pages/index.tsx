@@ -46,9 +46,9 @@ const Home: React.FC<NewsProps> = props => {
 
     // Adding CSS classes to body for overflow control
     if (preloader) {
-      document.body.classList.add('overflow_hidden');
+      document.body.classList.add('overflow-hidden');
     } else {
-      document.body.classList.remove('overflow_hidden');
+      document.body.classList.remove('overflow-hidden');
     }
   });
 
@@ -59,33 +59,35 @@ const Home: React.FC<NewsProps> = props => {
       {/* PRELOADER is conditionally rendered based on the value of the preloader state variable. */}
       {preloader && (
         <div
-          className={`preloader fixed min-h-screen top-0 left-0 w-full z-50 flex justify-center items-center`}
+          className={`preloader__icon preloader__bg fixed min-h-screen top-0 left-0 w-full z-50 flex justify-center items-center`}
         >
           <span>
             <PageLogo />
           </span>
         </div>
       )}
-      <div className="overflow_hidden">
-        <div className="hero_homepage_bg min-h-screen bg-no-repeat bg-cover flex flex-col justify-center bg-center">
+      <div className="overflow-hidden">
+        <div className="home-page__hero-bg min-h-screen bg-no-repeat bg-cover flex flex-col justify-center bg-center">
           <Header />
           <div className="flex lg:items-center lg:flex-row flex-col flex-grow relative">
             <HeroHomepage />
             <Image
-              className="absolute right-0 hero_grid_position -z-10 hidden lg:block w-[450px] xl:w-[700px]"
+              className="absolute right-0 hero__grid-position -z-10 hidden lg:block w-[450px] xl:w-[700px]"
               src="/assets/img/svg/hero_grid.svg"
-              alt="grid-lines"
+              alt=""
               width={700}
               height={700}
             />
           </div>
         </div>
-        <StatsReimagined />
-        <SoccerExpensive />
-        <UniqueAthletifi />
-        {/* <OurStrategicAdvisor /> */}
-        <TrustedPartners />
-        {/* <LatestNews allNewsList={allNewsList} /> */}
+        <main>
+          <StatsReimagined />
+          <SoccerExpensive />
+          <UniqueAthletifi />
+          {/* <OurStrategicAdvisor /> */}
+          <TrustedPartners />
+          {/* <LatestNews allNewsList={allNewsList} /> */}
+        </main>
         <Footer />
         <BackToTop />
       </div>

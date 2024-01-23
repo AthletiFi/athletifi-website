@@ -25,13 +25,13 @@ const TrustedPartners: React.FC = () => {
             data-aos-delay="400"
             data-aos-offset="200"
           >
-            <h3 className=" max-w-[396px] text-primary sm:text-2xl text-md font-HelveticaNeueMedium md:text-start text-center">
+            <h3 className="max-w-[396px] text-primary sm:text-2xl text-md font-HelveticaNeueMedium md:text-start text-center">
               Stats for the next generation of soccer superstars
             </h3>
-            <h4 className="font-Segoe text-primary opacity-80 max-w-md md:text-start text-center">
+            <p className="font-Segoe text-primary opacity-80 max-w-md md:text-start text-center">
               We have partnered with some of the top soccer clubs in the
               Mid-Atlantic region to bring sports technology to new heights.
-            </h4>
+            </p>
           </div>
           <div className="flex justify-evenly xl:mt-16 mt-10 xl:mb-28 sm:mb-14 mb-4 sm:flex-row flex-col">
             {/* EYEBALL LOGO */}

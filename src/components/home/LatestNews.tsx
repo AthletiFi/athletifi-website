@@ -94,7 +94,7 @@ const LatestNews: React.FC<NewsProps> = props => {
             );
           })}
 
-          {/* <div className="flex justify-between lg:max-w-[210px] py-3  max-w-[230px] mx-auto bg-darkgray rounded-full lg:px-8 px-6 items-center scrollmodify">
+          {/* <div className="flex justify-between lg:max-w-[210px] py-3  max-w-[230px] mx-auto bg-darkgray rounded-full lg:px-8 px-6 items-center scroll--hidden">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
@@ -134,7 +134,7 @@ const LatestNews: React.FC<NewsProps> = props => {
           src="/assets/img/svg/grid-lines.svg"
           width={716}
           height={692}
-          alt={'grid image'}
+          alt=""
         />
         {/* BACKGROUND LEFT GRID */}
         <Image
@@ -142,7 +142,7 @@ const LatestNews: React.FC<NewsProps> = props => {
           src="/assets/img/svg/grid-lines.svg"
           width={716}
           height={692}
-          alt={'grid image'}
+          alt=""
         />
       </div>
     </>

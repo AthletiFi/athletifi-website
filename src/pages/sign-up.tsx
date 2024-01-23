@@ -17,11 +17,13 @@ const SignUp = () => {
     <>
       {/* SEO */}
       <Seo pageSEO={SEO_CONFIG.signUp} />
-      <div className="bg-signup-hero-img bg-no-repeat bg-cover overflow-hidden">
+      <div className="signup-page__hero-bg bg-no-repeat bg-cover overflow-hidden">
         <Header />
         <CommonHero hero={hero} />
       </div>
-      <SignUpForm />
+      <main>
+        <SignUpForm />
+      </main>
       <Footer />
     </>
   );

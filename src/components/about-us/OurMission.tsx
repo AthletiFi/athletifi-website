@@ -17,7 +17,7 @@ const OurMission = () => {
           src="/assets/img/png/what-we-do-shadow.png"
           width={500}
           height={500}
-          alt="what we do shadow"
+          alt=""
         />
         <span className="absolute top-50 -start-10">
           <BlueShadow />
@@ -73,7 +73,7 @@ const OurMission = () => {
                   src="/assets/img/webp/what-we-do-card-img.webp"
                   width={496}
                   height={603}
-                  alt="what we do sec img"
+                  alt="Player card of Oscar Gasga from Villanova Soccer Academy"
                 />
               </div>
             </div>

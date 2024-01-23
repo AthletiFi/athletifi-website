@@ -14,11 +14,11 @@ const PrivacyPolicyPage = () => {
     <>
       {/* SEO */}
       <Seo pageSEO={SEO_CONFIG.signUp} />
-      <div>
-        <Header />
-        <CommonHero hero={hero} />
+      <Header />
+      <CommonHero hero={hero} />
+      <main>
         <PrivacyPolicy />
-      </div>
+      </main>
       <Footer />
     </>
   );

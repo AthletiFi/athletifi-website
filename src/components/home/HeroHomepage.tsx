@@ -29,9 +29,9 @@ const HeroHomepage = () => {
               up-to-date stats and highlight clips of the latest and greatest
               plays.
             </p>
-            <h4 className="font-HelveticaNeueMedium text-white text-center lg:text-start text-md font-medium leading-[25px]">
+            <h2 className="font-HelveticaNeueMedium text-white text-center lg:text-start text-md font-medium leading-[25px]">
               Looking for a Summer Select program in Eastern Pennsylvania?
-            </h4>
+            </h2>
             <p className="font-Segoe text-white text-[16px] sm:text-md font-normal mt-4 opacity-80 text-center lg:text-start">
               AthletiFi has teamed up with Eastern Pennsylvania&apos;s top
               coaches to create a first-of-its-kind Summer Select program!
@@ -55,7 +55,7 @@ const HeroHomepage = () => {
           <Image
             className="w-full"
             src="/assets/img/webp/hero_female_player.webp"
-            alt="female-player"
+            alt="Female player leaping to kick the ball with her left foot"
             width={600}
             height={600}
           />
@@ -66,7 +66,7 @@ const HeroHomepage = () => {
         <Image
           className="mx-auto"
           src="/assets/img/webp/hero_female_player_2.webp"
-          alt="female-player"
+          alt="Female player leaping to kick the ball with her left foot"
           width={350}
           height={350}
         />

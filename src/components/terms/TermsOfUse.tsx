@@ -8,16 +8,16 @@ const TermsOfUse = () => {
           <em>Last Updated: January 16, 2024</em>
         </p>
 
-        <h2 className="legal-heading">1. Acceptance of Terms</h2>
-        <p className="legal-paragraph">
+        <h2 className="legal__heading">1. Acceptance of Terms</h2>
+        <p className="legal__body">
           By accessing or using AthletiFi&apos;s digital sports platform,
           website, or mobile application (collectively, &quot;Services&quot;),
           you agree to be bound by these Terms of Use (&quot;Terms&quot;). If
           you do not agree to all of these Terms, do not use our Services.
         </p>
 
-        <h2 className="legal-heading">2. Use of Services</h2>
-        <ul className="legal-list">
+        <h2 className="legal__heading">2. Use of Services</h2>
+        <ul className="legal__list">
           <li>
             <strong>Eligibility:</strong> You must be at least 13 years old to
             use our Services. Additional age restrictions may apply for certain
@@ -34,8 +34,8 @@ const TermsOfUse = () => {
           </li>
         </ul>
 
-        <h2 className="legal-heading">3. Intellectual Property</h2>
-        <ul className="legal-list">
+        <h2 className="legal__heading">3. Intellectual Property</h2>
+        <ul className="legal__list">
           <li>
             <strong>Ownership:</strong> All rights, title, and interest in and
             to the Services and its content, features, and functionality
@@ -51,29 +51,29 @@ const TermsOfUse = () => {
           </li>
         </ul>
 
-        <h2 className="legal-heading">4. Privacy</h2>
-        <p className="legal-paragraph">
+        <h2 className="legal__heading">4. Privacy</h2>
+        <p className="legal__body">
           Your use of our Services is also governed by our Privacy Policy.
           Please review our Privacy Policy, which also governs the Services and
           informs users of our data collection practices.
         </p>
 
-        <h2 className="legal-heading">5. Disclaimers</h2>
-        <p className="legal-paragraph">
+        <h2 className="legal__heading">5. Disclaimers</h2>
+        <p className="legal__body">
           AthletiFi does not guarantee that the Services will be error-free or
           uninterrupted. The Services and its content are delivered on an
           &quot;as-is&quot; and &quot;as-available&quot; basis.
         </p>
 
-        <h2 className="legal-heading">6. Limitation of Liability</h2>
-        <p className="legal-paragraph">
+        <h2 className="legal__heading">6. Limitation of Liability</h2>
+        <p className="legal__body">
           To the fullest extent provided by law, AthletiFi shall not be liable
           for any damages resulting from the use or inability to use the
           Services.
         </p>
 
-        <h2 className="legal-heading">7. Indemnification</h2>
-        <p className="legal-paragraph">
+        <h2 className="legal__heading">7. Indemnification</h2>
+        <p className="legal__body">
           You agree to indemnify, defend, and hold harmless AthletiFi, its
           officers, directors, employees, agents, licensors, and suppliers from
           and against all losses, expenses, damages, and costs, including
@@ -81,20 +81,20 @@ const TermsOfUse = () => {
           Terms or your use of the Services.
         </p>
 
-        <h2 className="legal-heading">8. Changes to Terms</h2>
-        <p className="legal-paragraph">
+        <h2 className="legal__heading">8. Changes to Terms</h2>
+        <p className="legal__body">
           AthletiFi reserves the right, at its sole discretion, to change,
           modify, add, or remove portions of these Terms at any time.
         </p>
 
-        <h2 className="legal-heading">9. Governing Law</h2>
-        <p className="legal-paragraph">
+        <h2 className="legal__heading">9. Governing Law</h2>
+        <p className="legal__body">
           These Terms shall be governed by and construed in accordance with the
           laws of Pennsylvania.
         </p>
 
-        <h2 className="legal-heading">10. Contact Information</h2>
-        <p className="legal-paragraph">
+        <h2 className="legal__heading">10. Contact Information</h2>
+        <p className="legal__body">
           If you have any questions or comments about these Terms, please
           contact us at{' '}
           <a href="mailto:support@athleti.fi">support@athleti.fi</a>.

@@ -14,11 +14,11 @@ const TermsOfUsePage = () => {
     <>
       {/* SEO */}
       <Seo pageSEO={SEO_CONFIG.signUp} />
-      <div>
-        <Header />
-        <CommonHero hero={hero} />
+      <Header />
+      <CommonHero hero={hero} />
+      <main>
         <TermsOfUse />
-      </div>
+      </main>
       <Footer />
     </>
   );

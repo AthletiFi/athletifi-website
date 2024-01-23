@@ -75,32 +75,32 @@ body {
 }
 
 /* BLUE-BORDER GRADIENT */
-.blue_linear_gradient::after {
+.container__border--blue-gradient::after {
   background: linear-gradient(148.79deg, #11568c 17.97%, #00c5f4 91.1%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
 }
 
-.blue_linear_gradient {
+.container__border--blue-gradient {
   -webkit-backdrop-filter: blur(17.5px);
   backdrop-filter: blur(17.5px);
 }
 
-/* BACKGROUDN-IMG */
-.hero_homepage_bg {
+/* BACKGROUND-IMG */
+.home-page__hero-bg {
   background-image: url("/assets/img/webp/header_bg.webp");
 }
 
-.bg-about-hero {
+.about-page__hero-bg {
   background-image: url("/assets/img/webp/about-hero-img.webp");
 }
 
-.bg-new-hero-img {
+.news-page__hero-bg {
   background-image: url("/assets/img/webp/news-hero-img.webp");
 }
 
-.bg-signup-hero-img {
+.signup-page__hero-bg {
   background-image: url("/assets/img/webp/sing-up-hero-img.webp");
 }
 
@@ -122,18 +122,18 @@ html {
   scrollbar-color: #000b13 #00c5f4;
   scrollbar-width: thin;
 }
-.scrollmodify ::-webkit-scrollbar {
+.scroll--hidden ::-webkit-scrollbar {
   width: 0px !important;
   height: 0 !important;
 }
 
 /* ==== ==== */
-.loading-animation {
+.news-loader__animation {
   overflow: hidden;
   background: #d0d0d0;
 }
 
-.loading-animation::before {
+.news-loader__animation::before {
   content: "";
   display: block;
   height: 100%;

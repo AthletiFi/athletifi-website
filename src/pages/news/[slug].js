@@ -36,8 +36,8 @@ const NewsArticleSlugPage = ({ newsDetailData, allNewsData }) => {
     <>
       {/* SEO */}
       {/* <Seo pageSEO={pageSEO} /> */}
-      <div className="overflow_hidden">
-        <div className="bg-new-hero-img bg-center bg-no-repeat bg-cover">
+      <div className="overflow-hidden">
+        <div className="news-page__hero-bg bg-center bg-no-repeat bg-cover">
           <Header />
           <CommonHero hero={hero} />
         </div>

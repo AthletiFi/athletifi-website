@@ -17,7 +17,7 @@ const OurStrategicAdvisor = () => {
           src="/assets/img/png/football_net.png"
           width={996}
           height={768}
-          alt="football net"
+          alt=""
         />
         <div className="container xl:pb-14">
           <div
@@ -32,7 +32,7 @@ const OurStrategicAdvisor = () => {
             <Image
               className="max-w-[270px] sm:max-w-[350px] lg:max-w-[400px] xl:max-w-[475px] xl:max-h-[430px] mt-8 lg:mt-0 shadow-coach-shadow"
               src="/assets/img/webp/meet_our_strategic_profile.webp"
-              alt="profile"
+              alt="Meet Darren John an accomplished pro-player turned coach"
               width={475}
               height={430}
             />

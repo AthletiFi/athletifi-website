@@ -12,7 +12,7 @@ const SoccerExpensive = () => {
           src="/assets/img/png/football_net.png"
           width={996}
           height={768}
-          alt="football net"
+          alt="Football net"
         />
         <div className="container md:max-w-full xl:max-w-[1140px] 2xl:max-w-[1320px] mx-auto">
           <div className="max-w-[623px] mx-auto lg:mx-0 relative after:content after:absolute lg:after:w-[690px] lg:after:h-[420px] lg:after:bg-[#040F16] after:blur-[55px] after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:z-0">
@@ -63,7 +63,7 @@ const SoccerExpensive = () => {
             <Image
               className="w-full"
               src="/assets/img/webp/expensive_football.webp"
-              alt="football"
+              alt="Football at the back of the net"
               width={700}
               height={700}
             />
@@ -81,7 +81,7 @@ const SoccerExpensive = () => {
             <Image
               className="mx-auto"
               src="/assets/img/png/football_img_2.png"
-              alt="football"
+              alt="Football at the back of the net"
               width={700}
               height={400}
             />
