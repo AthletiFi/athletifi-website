@@ -67,7 +67,7 @@ export const getServerSideProps = (async context => {
   try {
     const response = await getRequestHandler(newsDetailApiHandler(slug));
     const newsResponse = await getRequestHandler(newsListApiHandler());
-
+    console.log(JSON.stringify(newsResponse, null, 2) + 'newsResponse');
     return {
       props: {
         allNewsData: newsResponse,
@@ -75,7 +75,6 @@ export const getServerSideProps = (async context => {
       },
     };
   } catch (error) {
-    console.error('Error fetching data:', error);
     return {
       props: {
         allNewsData: null,

@@ -138,8 +138,8 @@ const Header: React.FC = () => {
                     News
                   </Link>
                 </li>
-                {/* 
-                UNCOMMENT WHEN YOU ARE READY TO RE-ADD THE DASHBOARD TO THE MENUBAR
+{/*                 
+                UNCOMMENT WHEN YOU ARE READY TO RE-ADD THE DASHBOARD TO THE MENUBAR */}
                 <li>
                   <Link
                     onClick={() => setOpen(false)}
@@ -150,7 +150,7 @@ const Header: React.FC = () => {
                   >
                     Dashboard
                   </Link>
-                </li> */}
+                </li>
                 <li className="social-popup--show sm:mt-7 sm:pb-7 hidden md:block">
                   <button
                     onClick={socialIcon}
