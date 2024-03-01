@@ -150,19 +150,19 @@ const Header: React.FC = () => {
                     News
                   </Link>
                 </li>
-                {/* 
-                UNCOMMENT WHEN YOU ARE READY TO RE-ADD THE DASHBOARD TO THE MENUBAR
+                
+                {/* UNCOMMENT WHEN YOU ARE READY TO RE-ADD THE DASHBOARD TO THE MENUBAR */}
                 <li>
                   <Link
                     onClick={() => setOpen(false)}
-                    href="/dashboard"
+                    href="/dashboard/vsa-23/1"
                     className={`text-md text-white font-normal font-Segoe opacity-70 hover:opacity-100 duration-300 relative after:content-[''] after:absolute after:w-0 hover:after:w-full after:h-2pixel after:-bottom-1 after:right-0 after:bg-shadow_blue after:rounded-md after:transition-all after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto ${
                       path == '/dashboard' ? '!opacity-100' : ''
                     }`}
                   >
                     Dashboard
                   </Link>
-                </li> */}
+                </li>
                 <li className="social-popup--show sm:mt-7 sm:pb-7 hidden md:block">
                   <button
                     onClick={socialIcon}

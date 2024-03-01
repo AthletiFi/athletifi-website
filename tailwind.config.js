@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
@@ -44,7 +45,7 @@ module.exports = {
         darkgray: '#0D171F',
         extraDarkBlue: '#00c3f47b',
         matchtitles: 'rgba(0, 197, 244, 0.05)',
-        offwhite: '#B1B5B8', 
+        offwhite: '#B1B5B8',
         partnersBorders: '#49545C',
         primary: '#FDFEFF',
         skyblue: '#00C5F4',
@@ -54,7 +55,8 @@ module.exports = {
         chartYellow: '#B09E03',
         chartOrange: '#FC6713',
         chartPurple: '#5A54A2',
-        cardsBackground: '#113448'
+        cardsBackground: '#113448',
+        lineAtBase: '#11729C',
       },
       container: {
         center: true,
@@ -69,10 +71,12 @@ module.exports = {
       },
       fontSize: {
         base: '16px',
+        basesm: '18px',
         basemd: '24px',
         lg: '28px',
         lg2xl: '40px',
         lgm: '30px',
+        lgl: '32px',
         lgxl: '36px',
         md: '18px',
         sxl: '43px',
@@ -214,6 +218,8 @@ module.exports = {
         1530: '1530px',
         375: '375px',
         500: '500px',
+        '3xl': '1920px',
+        '4xl': '2160px',
       },
       spacing: {
         1: '1px',
@@ -249,6 +255,8 @@ module.exports = {
         '80pixel': '80px',
         90: '90px',
         95: '95px',
+        400: '400px',
+        500: '500px',
       },
       translate: {
         '-20': '-20px',
