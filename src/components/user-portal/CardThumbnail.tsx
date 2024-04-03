@@ -1,4 +1,5 @@
 'use client';
+//card thumbnail component
 import React, {
   useState,
   ChangeEvent,
@@ -126,6 +127,7 @@ const CardThumbnail: React.FC<IProfileProps> = ({
   );
 };
 
+// this has to be modified when the real data is available
 const RenderCardThumbnail = () => <CardThumbnail {...profileProps} />;
 
 export default RenderCardThumbnail;

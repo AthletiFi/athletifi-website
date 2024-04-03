@@ -62,7 +62,7 @@ export default async function Home() {
           </div>
         </div>
         <main>
-          <RenderCardThumbnail />
+          <RenderCardThumbnail /> {/*This is the card thumbnail component */}
           <FollowTomorrow />
           <PassiveEngagement />
           <BeyondNumbers />
