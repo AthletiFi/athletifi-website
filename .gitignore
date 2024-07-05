@@ -22,6 +22,7 @@ amplify/backend/amplify-meta.json
 amplify/backend/backend-config.json
 amplify/backend/awscloudformation/nested-cloudformation-stack.yml
 amplify/team-provider-info.json
+amplify/backend/auth/athletifiAuth/cli-inputs.json
 
 # production
 /build

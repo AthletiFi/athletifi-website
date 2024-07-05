@@ -38,7 +38,6 @@ import UserNotificationsModal from '../user-portal/UserNotificationsModal';
 //         initial={false}
 //         animate={open ? 'open' : 'closed'}
 //         onClick={() => {
-//           console.log('clicked');
 //           setOpen(!open);
 //         }}
 //         className="relative h-16 w-16 hover:partnersBorders"
@@ -237,9 +236,7 @@ const Navbar: React.FC = () => {
                     className="flex items-center cursor-pointer"
                     onClick={() => setShowDropdown(!showDropdown)}
                   >
-                    <p className="text-base px-2 md:px-4">
-                      {userData.data?.name}
-                    </p>
+                    <p className="text-base px-2">{userData.data?.name}</p>
                     <FontAwesomeIcon icon={faChevronDown} />
                   </div>
                   {showDropdown && (

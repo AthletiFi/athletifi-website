@@ -4,19 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faGear, faXmark } from '@fortawesome/free-solid-svg-icons';
 import PortalNav from './PortalNav';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const dummyDataUser = {
-  name: 'Daniel Carrillo',
-};
+import { useUserData } from '@/states/userStore';
 
 interface HeaderProps {
   pageTitle: string;
 }
 
 const Header: FC<HeaderProps> = ({ pageTitle }) => {
-  const [user] = useState(dummyDataUser);
   const [isOpenSideNav, setIsOpenSideNav] = useState(false);
-
+  const { userData } = useUserData();
   useEffect(() => {
     if (isOpenSideNav) {
       document.body.classList.add('overflow-y-hidden');
@@ -60,7 +56,9 @@ const Header: FC<HeaderProps> = ({ pageTitle }) => {
       </AnimatePresence>
       <div className="max-w-[1030px] mx-auto mb-[72px]">
         <div className="flex justify-between text-primary md:hidden pb-3">
-          <p className="text-base font-extralight px-2 md:px-4">{user.name}</p>
+          <p className="text-base font-extralight px-2 md:px-4">
+            {userData.data?.name}
+          </p>
           <div className="flex items-center w-12 justify-between cursor-pointer mx-3">
             <Link href="/login">
               <FontAwesomeIcon icon={faUser} className="text-skyblue mr-3 " />

@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Skeleton from 'react-loading-skeleton';
+import '@/styles/globals.css';
 import { useParams } from 'next/navigation';
 import { useDashboardData } from '@/states/dashboardStore';
 
@@ -13,7 +14,7 @@ const Teammates: React.FC = () => {
     <>
       {teammates && teammates[0]?.name ? (
         <div className=" w-full my-8 lg:my-12 lg:mt-0">
-          <div className="flex lg:flex-col gap-3 overflow-auto">
+          <div className="flex lg:flex-col gap-3 overflow-auto pr-4 pb-4">
             {teammates.map((teammate) => (
               <div
                 key={`${teammate.name}-${teammate.number}`}
@@ -28,15 +29,17 @@ const Teammates: React.FC = () => {
                     className="rounded-full bg-slate-500 mb-3 lg:mb-0"
                   />
                 ) : (
-                  <></>
+                  <div className="w-[76px] h-[76px] rounded-full  bg-slate-700 opacity-75 mb-3 lg:mb-0"></div>
                 )}
                 <div className="md:ml-0 lg:ml-4 mt-2 md:mt-0 flex flex-col items-center lg:items-start">
                   <p className="text-base text-center text-primary">
                     {teammate.name}
                   </p>
-                  <p className="text-center inline-block max-w-full text-sm text-offwhite">
-                    #{teammate.number}
-                  </p>
+                  {teammate.number && (
+                    <p className="text-center inline-block max-w-full text-sm text-offwhite">
+                      #{teammate.number}
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
@@ -49,8 +52,8 @@ const Teammates: React.FC = () => {
           </h2>
           <div className="h-1 bg-partnersBorders my-2" />
           <div className="text-gray-500 min-w-[343px] md:min-w-[778px] lg:min-w-[330px] min-h-[150px]">
-            We are working on getting more teammate data for your player. Please
-            come back soon!
+            We are gathering details about the team. Please check back soon for
+            updates!
           </div>
         </div>
       ) : (

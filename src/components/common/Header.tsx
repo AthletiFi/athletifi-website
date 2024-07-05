@@ -1,24 +1,79 @@
-// This component renders the header of the website.
-// It includes navigation links and other header elements.
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, startTransition } from 'react';
 import Link from 'next/link';
 import {
-  ArrowButton,
-  FacebookIcon,
-  LinkedInIcon,
+  WhiteFacebookIcon,
+  WhiteInstaIcon,
+  WhiteLinkedInIcon,
   TikTokIcon,
-  TwitterIcon,
+  WhiteTwitterIcon,
   PageLogo,
-} from './Icon';
-import SocialPopUp from './SocialPopUp';
-import Image from 'next/image';
+} from '@/components/common/Icon';
+//import SocialPopUp from './SocialPopUp';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+//import Image from 'next/image';
+import { signOut } from 'aws-amplify/auth';
+import { useRouter } from 'next/navigation';
+import { Hub } from 'aws-amplify/utils';
+
+import { useUserData } from '@/states/userStore';
+import UserNotificationsModal from '@/components/user-portal/UserNotificationsModal';
 
 const SCROLL_THRESHOLD: number = 200;
 
 const Header: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [path, setPath] = useState<string>('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [closedModal, setClosedModal] = useState(false);
+
+  const dropdown = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
+  const { userData, resetUserDataState, setIsLoggedIn } = useUserData();
+
+  useEffect(() => {
+    const hubListenerCancel = Hub.listen('auth', (data) => {
+      switch (data.payload.event) {
+        case 'signedIn':
+          // Redirect user to initialize notification preferences upon first login
+          setIsLoggedIn(true);
+          startTransition(() => router.refresh());
+          break;
+        case 'signedOut':
+          setIsLoggedIn(false);
+          startTransition(() => router.push('/logout'));
+          startTransition(() => router.refresh());
+          break;
+      }
+    });
+
+    return () => hubListenerCancel();
+  }, [router, setIsLoggedIn]);
+
+  useEffect(() => {
+    // only add the event listener when the dropdown is opened
+    if (!showDropdown) return;
+    function handleOutSideClick(event: MouseEvent) {
+      if (!dropdown.current?.contains(event.target as Node)) {
+        setShowDropdown(false);
+        event.stopPropagation();
+      }
+    }
+    window.addEventListener('mouseup', handleOutSideClick);
+    // clean up
+    return () => window.removeEventListener('mouseup', handleOutSideClick);
+  }, [showDropdown]);
+
+  const handleSignOutSignIn = async () => {
+    if (userData.data === null) {
+      router.push('/login');
+    } else {
+      resetUserDataState();
+      await signOut();
+    }
+  };
 
   useEffect(() => {
     // Set the path state to the current pathname on the client side
@@ -63,28 +118,30 @@ const Header: React.FC = () => {
     };
   }, []);
   // ====================================================== nav-social-icon
-  const [navSocialIcon, setNavSocialIcon] = useState<boolean>(true);
-  const socialIcon = (): void => {
-    setOpen(false);
-    setNavSocialIcon(!navSocialIcon);
-  };
-  const socialIconDropDown = () => {
-    setNavSocialIcon(!navSocialIcon);
-  };
+  // const [navSocialIcon, setNavSocialIcon] = useState<boolean>(true);
+  // const socialIcon = (): void => {
+  //   setOpen(false);
+  //   setNavSocialIcon(!navSocialIcon);
+  // };
+  // const socialIconDropDown = () => {
+  //   setNavSocialIcon(!navSocialIcon);
+  // };
+
+  const linksStyle = `opacity-80 hover:opacity-100 duration-300 relative after:content-[''] after:absolute after:w-0 hover:after:w-full after:h-2pixel after:-bottom-1 after:right-0 after:bg-shadow_blue after:rounded-md after:transition-all after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto`;
 
   return (
     <header>
       <div
         ref={navbarRef}
         id="nav_bar"
-        className={`navbar fixed top-0 black w-full bg-bgnav py-2 z-10 ${
+        className={`navbar fixed top-0 black w-full bg-bgnav py-4 z-50 ${
           scrollPosition > SCROLL_THRESHOLD
             ? 'header--slide-up'
             : 'header--slide-down'
         } ${isVisible ? 'header--slide-down' : 'header--slide-up'}`}
       >
-        <div className="container md:max-w-full xl:max-w-1140 2xl:max-w-1320 mx-auto">
-          <div className="flex items-center justify-between">
+        <div className="container max-w-full">
+          <div className="flex items-center justify-between mx-4">
             <Link href="/">
               <PageLogo />
               {/* <Image
@@ -121,7 +178,7 @@ const Header: React.FC = () => {
                   <Link
                     onClick={() => setOpen(false)}
                     href="/"
-                    className={`text-md text-white font-normal font-Segoe opacity-70 hover:opacity-100 duration-300 relative after:content-[''] after:absolute after:w-0 hover:after:w-full after:h-2pixel after:-bottom-1 after:right-0 after:bg-shadow_blue after:rounded-md after:transition-all after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto ${
+                    className={`text-md md:text-base text-white font-normal font-Segoe opacity-70 hover:opacity-100 duration-300 relative after:content-[''] after:absolute after:w-0 hover:after:w-full after:h-2pixel after:-bottom-1 after:right-0 after:bg-shadow_blue after:rounded-md after:transition-all after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto ${
                       path == '/' ? '!opacity-100' : ''
                     }`}
                   >
@@ -132,7 +189,7 @@ const Header: React.FC = () => {
                   <Link
                     onClick={() => setOpen(false)}
                     href="/about-us"
-                    className={`text-md text-white font-normal font-Segoe opacity-70 hover:opacity-100 duration-300 relative after:content-[''] after:absolute after:w-0 hover:after:w-full after:h-2pixel after:-bottom-1 after:right-0 after:bg-shadow_blue after:rounded-md after:transition-all after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto ${
+                    className={`text-md md:text-base text-white font-normal font-Segoe opacity-70 hover:opacity-100 duration-300 relative after:content-[''] after:absolute after:w-0 hover:after:w-full after:h-2pixel after:-bottom-1 after:right-0 after:bg-shadow_blue after:rounded-md after:transition-all after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto ${
                       path == '/about-us' ? '!opacity-100 ' : ''
                     }`}
                   >
@@ -143,155 +200,196 @@ const Header: React.FC = () => {
                   <Link
                     onClick={() => setOpen(false)}
                     href="/news?page=1"
-                    className={`text-md text-white font-normal font-Segoe opacity-70 hover:opacity-100 duration-300 relative after:content-[''] after:absolute after:w-0 hover:after:w-full after:h-2pixel after:-bottom-1 after:right-0 after:bg-shadow_blue after:rounded-md after:transition-all after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto ${
+                    className={`text-md md:text-base text-white font-normal font-Segoe opacity-70 hover:opacity-100 duration-300 relative after:content-[''] after:absolute after:w-0 hover:after:w-full after:h-2pixel after:-bottom-1 after:right-0 after:bg-shadow_blue after:rounded-md after:transition-all after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto ${
                       path == '/news' ? '!opacity-100' : ''
                     }`}
                   >
                     News
                   </Link>
                 </li>
-                {/* UNCOMMENT WHEN YOU ARE READY TO RE-ADD THE DASHBOARD TO THE MENUBAR */}
-                {/* <li>
+                <li>
                   <Link
+                    href="/contact-us"
                     onClick={() => setOpen(false)}
-                    href="/dashboard/vsa-23/1"
-                    className={`text-md text-white font-normal font-Segoe opacity-70 hover:opacity-100 duration-300 relative after:content-[''] after:absolute after:w-0 hover:after:w-full after:h-2pixel after:-bottom-1 after:right-0 after:bg-shadow_blue after:rounded-md after:transition-all after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto ${
-                      path == '/dashboard' ? '!opacity-100' : ''
+                    className={`text-md md:text-base text-white font-normal font-Segoe opacity-70 hover:opacity-100 duration-300 relative after:content-[''] after:absolute after:w-0 hover:after:w-full after:h-2pixel after:-bottom-1 after:right-0 after:bg-shadow_blue after:rounded-md after:transition-all after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto ${
+                      path == '/contact-us' ? '!opacity-100' : ''
                     }`}
                   >
-                    Dashboard
+                    Contact Us
                   </Link>
-                </li> */}
-                <li className="social-popup--show sm:mt-7 sm:pb-7 hidden md:block">
-                  <button
-                    onClick={socialIcon}
-                    className={`text-md text-white font-normal font-Segoe opacity-70 hover:opacity-100 duration-300 relative after:content-[''] after:absolute after:w-0 hover:after:w-full after:h-[2px] after:-bottom-1 after:right-0 after:bg-shadow_blue after:rounded-md after:transition-all after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto ${
-                      path == '/SocialIcons' ? '!opacity-100' : ''
-                    }`}
-                  >
-                    Socials
-                  </button>
-                  <div className="hidden social_btns">
-                    <div className="relative h-full z-50">
-                      <SocialPopUp />
+                </li>
+                <div className="border-t border-t-partnersBorders opacity-75 w-1/3 md:hidden"></div>
+                {userData.data === null ? (
+                  <div className="flex flex-col items-center gap-2 md:hidden mt-6 md:mt-0">
+                    <Link href="/login">
+                      <button className="text-primary w-[100px] h-8 text-sm border border-offwhite rounded-full font-extralight hover:bg-skyblue hover:border-skyblue transform hover:scale-95 ease-in-out">
+                        Log in
+                      </button>
+                    </Link>
+                    <Link href="/register">
+                      <button className="text-darkgray w-[100px] h-8 bg-skyblue text-sm rounded-full font-normal hover:opacity-90 transform hover:scale-95 ease-in-out">
+                        Sign up
+                      </button>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-25 items-center text-primary md:hidden mt-2 md:mt-0 w-full">
+                    <Link
+                      href="/profile"
+                      className={`${linksStyle}`}
+                      onClick={() => setOpen(false)}
+                    >
+                      My cards
+                    </Link>
+                    <Link
+                      href="/settings"
+                      className={`${linksStyle}`}
+                      onClick={() => setOpen(false)}
+                    >
+                      Settings
+                    </Link>
+                    <Link
+                      href="/help-support"
+                      className={`${linksStyle}`}
+                      onClick={() => setOpen(false)}
+                    >
+                      Help & Support
+                    </Link>
+                    <div className="border-t border-t-partnersBorders opacity-80 w-1/3"></div>
+                    <div
+                      className={`${linksStyle}  cursor-pointer`}
+                      onClick={handleSignOutSignIn}
+                    >
+                      Logout
                     </div>
                   </div>
-                </li>
-                <li
-                  className="md:hidden text-center"
-                  onClick={socialIconDropDown}
-                >
-                  <button
-                    className={`text-md text-white font-normal font-Segoe opacity-70 hover:opacity-100 duration-300 relative after:content-[''] after:absolute after:w-0 hover:after:w-full after:h-2pixel after:-bottom-1 after:right-0 after:bg-shadow_blue after:rounded-md after:transition-all after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto ${
-                      path == '/SocialIcons' ? '!opacity-100' : ''
-                    }`}
-                  >
-                    Socials
-                  </button>
-                  <div
-                    className={` mt-3 h-180 overflow-scroll social-popup__scroll--hidden ${
-                      navSocialIcon ? '!hidden' : 'block'
-                    }`}
-                  >
+                )}
+                {userData.data === null ? (
+                  <div className="items-center gap-2 md:ml-4 mt-6 md:mt-0 hidden md:flex">
+                    <Link href="/login" onClick={() => setOpen(false)}>
+                      <button
+                        className="text-primary w-[100px] h-8 text-sm border border-offwhite rounded-full font-extralight hover:bg-skyblue hover:border-skyblue transform hover:scale-95 ease-in-out"
+                        onClick={() => setOpen(false)}
+                      >
+                        Log in
+                      </button>
+                    </Link>
+                    <Link href="/register">
+                      <button
+                        className="text-darkgray w-[100px] h-8 bg-skyblue text-sm rounded-full font-normal hover:opacity-90 transform hover:scale-95 ease-in-out"
+                        onClick={() => setOpen(false)}
+                      >
+                        Sign up
+                      </button>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="hidden relative md:flex items-center text-primary">
                     <div
-                      className="flex gap-4 flex-col"
-                      role="navigation"
-                      aria-label="Socials"
+                      className="flex items-center cursor-pointer"
+                      onClick={() => setShowDropdown(!showDropdown)}
                     >
-                      {/* SOCIAL ICONS LINKS */}
+                      <p className="text-base px-2 ">{userData.data?.name}</p>
+                      <FontAwesomeIcon icon={faChevronDown} />
+                    </div>
+                    {showDropdown && (
+                      <div
+                        ref={dropdown}
+                        className="absolute flex flex-col justify-between w-48 h-60 top-8 right-px  bg-cardsDark rounded px-4 py-8"
+                      >
+                        <Link
+                          href="/profile"
+                          className={`${linksStyle} mr-auto`}
+                        >
+                          My cards
+                        </Link>
+                        <Link
+                          href="/settings"
+                          onClick={() => setShowDropdown(!showDropdown)}
+                          className={`${linksStyle} mr-auto`}
+                        >
+                          Settings
+                        </Link>
+                        <Link
+                          href="/help-support"
+                          className={`${linksStyle} mr-auto`}
+                        >
+                          Help & Support
+                        </Link>
+                        <div className="border-t border-t-offwhite opacity-75"></div>
+                        <div
+                          className={`${linksStyle} mr-auto cursor-pointer`}
+                          onClick={handleSignOutSignIn}
+                        >
+                          Logout
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <div className={`absolute bottom-4 left w-4/5 md:hidden `}>
+                  <div className="h-1 bg-partnersBorders  mb-6" />
+                  <div className="">
+                    <div className="flex gap-4 justify-center">
                       <Link
-                        className="hover:-translate-y-1 transition duration-300 ease-out flex items-center"
+                        aria-label="Tik-Tok"
+                        className="hover:-translate-y-1 transition duration-300 ease-out"
                         href="https://www.tiktok.com/@athletifi"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         <TikTokIcon />
-                        <span className="text-white opacity-70 ms-4 text-md font-Segoe font-normal">
-                          TikTok
-                        </span>
                       </Link>
                       <Link
-                        className="hover:-translate-y-1 transition duration-300  flex items-center"
+                        aria-label="facebook"
+                        className="hover:-translate-y-1 transition duration-300 ease-out"
                         href="https://www.facebook.com/profile.php?id=61553263775533"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <FacebookIcon />
-                        <span className="text-white opacity-70 ms-4 text-md font-Segoe font-normal">
-                          Facebook
-                        </span>
+                        <WhiteFacebookIcon />
                       </Link>
                       <Link
-                        className="hover:-translate-y-1 transition duration-300  flex items-center"
+                        aria-label="twitter"
+                        className="hover:-translate-y-1 transition duration-300 ease-out"
                         href="https://twitter.com/Athletifi"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <TwitterIcon />
-                        <span className="text-white opacity-70 ms-4 text-md font-Segoe font-normal">
-                          Twitter
-                        </span>
+                        <WhiteTwitterIcon />
                       </Link>
                       <Link
-                        className="hover:-translate-y-1 transition duration-300  flex items-center"
+                        aria-label="instagram"
+                        className="hover:-translate-y-1 transition duration-300 ease-out"
                         href="https://www.instagram.com/athletifi/"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <Image
-                          src="/assets/img/svg/Instagram.svg"
-                          alt="Instagram icon"
-                          width={32}
-                          height={32}
-                        />
-                        <span className="text-white opacity-70 ms-4 text-md font-Segoe font-normal">
-                          Instagram
-                        </span>
+                        <WhiteInstaIcon />
                       </Link>
                       <Link
-                        className="hover:-translate-y-1 transition duration-300  flex items-center"
-                        href="https://in.linkedin.com/"
+                        aria-label="linkedin"
+                        className="hover:-translate-y-1 transition duration-300 ease-out"
+                        href="https://www.linkedin.com/company/athletifi/"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <LinkedInIcon />
-                        <span className="text-white opacity-70 ms-4 text-md font-Segoe font-normal">
-                          Linkedin
-                        </span>
-                      </Link>
-                      <Link
-                        href="/contact-us"
-                        className="sm:px-24pixel px-4 sm:py-14.5 py-2 flex bg-skyblue text-base font-semibold text-white font-Segoe leading-6 gap-6pixel group border border-skyblue hover:bg-black hover:text-skyblue btn__cta transition duration-300 ease-in-out social-popup__btn"
-                      >
-                        Contact Us
-                        <span className="group-hover:translate-x-3 transition duration-300 ease-out">
-                          <ArrowButton />
-                        </span>
+                        <WhiteLinkedInIcon />
                       </Link>
                     </div>
                   </div>
-                </li>
-                <li>
-                  <Link
-                    href="/contact-us"
-                    onClick={() => setOpen(false)}
-                    className="pt-10pixel pb-14pixel px-24pixel text-skyblue border border-skyblue font-semibold text-base font-Segoe duration-300 hover:bg-skyblue hover:text-white md:hidden"
-                  >
-                    Contact Us
-                  </Link>
-                </li>
+                </div>
               </ul>
             </div>
-            <Link
-              href="/contact-us"
-              onClick={() => setOpen(false)}
-              className="pt-10pixel pb-14pixel px-24pixel text-skyblue border border-skyblue font-semibold text-base font-Segoe duration-300 hover:bg-skyblue hover:text-white hidden md:inline-block"
-            >
-              Contact Us
-            </Link>
           </div>
         </div>
       </div>
+      {userData.data &&
+        userData.data.init_notifications === false &&
+        !closedModal && (
+          <UserNotificationsModal setClosedModal={setClosedModal} />
+        )}
     </header>
   );
 };

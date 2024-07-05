@@ -70,10 +70,10 @@ export default function Notifications() {
         <div className={`flex justify-between items-center py-6 mx-4`}>
           <div className="font-bold">Unsubscribe from all notifications</div>
           <button
-            className="p-3 bg-red-600 hover:bg-red-800 rounded-10"
+            className="h-8 py-3 px-6 text-sm leading-6 flex items-center justify-center bg-chartRed rounded text-white"
             onClick={handleUnsubscribe}
           >
-            Remove me
+            Unsubscribe
           </button>
         </div>
       </div>

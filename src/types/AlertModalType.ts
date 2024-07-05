@@ -1,4 +1,4 @@
 export interface AlertModalType {
-  title: string;
+  title: string | null;
   textBody: string | null;
 }

@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTimes,
+  faChevronLeft,
+  faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
 import { IMatchDataExtended } from '@/types/Dashboard.type';
+import HorizontalTimeline from './HorizontalTimeline';
+import SummaryHighlightCard from './SummaryHighlightCard';
 import MuxPlayer from '@mux/mux-player-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -10,6 +16,8 @@ function convertToSeconds(timestamp: string): number {
   const [hours, minutes, seconds] = timestamp.split(':').map(Number);
   return hours * 3600 + minutes * 60 + seconds;
 }
+
+const accentColors = ['#FC6713', '#27B6BD', '#DA393B', '#B09E03', '#5A54A2'];
 
 interface MatchSummaryProps {
   matchData: IMatchDataExtended;
@@ -19,9 +27,9 @@ interface MatchSummaryProps {
 
 const MatchSummary: React.FC<MatchSummaryProps> = ({
   matchData,
-  isFuture = false,
-  isThisWeek = false,
-}: MatchSummaryProps) => {
+  isFuture,
+  isThisWeek,
+}) => {
   const [showRecap, setShowRecap] = useState(false);
   const {
     home_club_logo,
@@ -35,19 +43,110 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
     weather,
     playback_id,
     highlights,
+    match_summary,
   } = matchData;
 
-  const weatherIcon = weather?.weatherIcon;
-  const iconNameWithoutExtension = weatherIcon?.split('.')[0];
-  const localWeatherIcon = `/assets/weather-icons-webp/${iconNameWithoutExtension}.webp`;
+  const [currentItem, setCurrentItem] = useState<number>(-1);
+  const [isHighlightPlaying, setIsHighlightPlaying] = useState(false);
+  const muxPlayerRef = useRef<typeof MuxPlayer>(null);
+  const [highlightProgress, setHighlightProgress] = useState<number>(0); // State for highlight progress
+  const intervalRef = useRef<NodeJS.Timeout | null>(null); // Ref to store interval ID
+
+  function convertToMilliseconds(timestamp: string): number {
+    const [hours, minutes, seconds] = timestamp.split(':').map(Number);
+    return (hours * 3600 + minutes * 60 + seconds) * 1000;
+  }
+
+  const handlePlayClick = (index: number) => {
+    if (!highlights) {
+      console.warn('Highlights are null or undefined.');
+      return;
+    }
+
+    if (muxPlayerRef.current) {
+      const cuePoints = highlights
+        .map((highlight) => convertToMilliseconds(highlight.start_timestamp))
+        .filter((time) => !isNaN(time) && isFinite(time))
+        .sort((a, b) => a - b);
+
+      if (cuePoints.length > 0) {
+        const track = muxPlayerRef.current.addTextTrack('captions', '', 'en');
+
+        cuePoints.forEach((cueTime) => {
+          const duration = convertToSeconds(highlights[index].duration);
+          const cue = new VTTCue(
+            cueTime / 1000,
+            (cueTime + duration) / 1000,
+            `Highlight ${index + 1}`,
+          );
+          track.addCue(cue);
+        });
+
+        if (isHighlightPlaying && currentItem === index) {
+          muxPlayerRef.current.pause();
+        } else {
+          muxPlayerRef.current.currentTime = cuePoints[index] / 1000 || 0;
+          muxPlayerRef.current.play(0);
+        }
+
+        setIsHighlightPlaying(!isHighlightPlaying);
+        setCurrentItem(index);
+      }
+
+      const duration = convertToMilliseconds(highlights[index].duration);
+      if (intervalRef.current !== null) {
+        clearInterval(intervalRef.current);
+      }
+      setHighlightProgress(0);
+
+      intervalRef.current = setInterval(() => {
+        setHighlightProgress((prevProgress) => {
+          const increment = 100;
+          if (prevProgress >= duration) {
+            if (intervalRef.current !== null) {
+              clearInterval(intervalRef.current);
+            }
+            setIsHighlightPlaying(false);
+            return 0;
+          }
+          return prevProgress + increment;
+        });
+      }, 100);
+
+      if (!muxPlayerRef.current.pauseListenerAdded) {
+        muxPlayerRef.current.addEventListener('pause', handlePause);
+        muxPlayerRef.current.pauseListenerAdded = true;
+      }
+    } else {
+      console.warn("MuxPlayer element not found. Cue points can't be added.");
+    }
+  };
+
+  // Function to handle pause
+  const handlePause = () => {
+    if (intervalRef.current !== null) {
+      clearInterval(intervalRef.current);
+    }
+    //setHighlightProgress(0);
+  };
+
+  useEffect(() => {
+    const currentRef = muxPlayerRef.current;
+
+    return () => {
+      if (currentRef) {
+        currentRef.removeEventListener('pause', handlePause);
+      }
+    };
+  }, []);
 
   const handleSummaryClick = () => {
     setShowRecap(true);
   };
   const dateTime = new Date(datetime as string);
-  const formattedDate = dateTime.toLocaleDateString('en-US', {
+  const formattedDate = dateTime.toLocaleDateString('en-GB', {
     weekday: 'long',
-    day: 'numeric',
+    day: '2-digit',
     month: 'short',
     year: 'numeric',
   });
@@ -55,6 +154,27 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
     hour: '2-digit',
     minute: '2-digit',
   });
+
+  const handlePrevClick = () => {
+    if (currentItem > 0) {
+      const newIndex = currentItem - 1;
+      setCurrentItem(newIndex);
+      handlePlayClick(newIndex);
+    }
+  };
+
+  const handleNextClick = () => {
+    if (highlights && currentItem < highlights.length - 1) {
+      const newIndex = currentItem + 1;
+      setCurrentItem(newIndex);
+      handlePlayClick(newIndex);
+    } else {
+      console.warn('no highlights available');
+    }
+  };
+  const iconNameWithoutExtension = weather?.weatherIcon?.split('.')[0];
+
+  const localWeatherIcon = `/assets/weather-icons-webp/${iconNameWithoutExtension}.webp`;
 
   return (
     <div className="w-full flex-col justify-between items-center text-primary px-2">
@@ -152,18 +272,22 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
               duration: 0.2,
               ease: 'easeOut',
             }}
-            className="bg-[#0b2230] shadow-lg fixed inset-0 w-full py-6 md:py-20 px-2 md:px-4 z-50 flex flex-col items-center overflow-y-auto "
+            className="bg-[#0b2230] shadow-lg fixed inset-0 w-full py-6 md:py-10 px-2 md:px-4 z-50 flex flex-col items-center overflow-y-auto "
           >
-            <button
-              onClick={() => setShowRecap(false)}
-              className="flex justify-end w-full  md:max-w-[700px] lg:max-w-[1030px] mb-6 px-4"
-            >
-              <FontAwesomeIcon icon={faTimes} size="xl" />
-            </button>
-            <div className="w-full flex justify-start items-center text-primary mt-2 my-6 px-2 md:px-10 lg:max-w-[1030px] ">
-              <div className="flex justify-between items-center w-full max-w-[200px] min-w-[140px] mr-2 ">
+            <div className="w-full shadow-md mb-4 bg-cardsBackground rounded-[5px] py-2 px-4 flex items-center justify-between lg:max-w-[1030px]">
+              {' '}
+              <h2 className="text-[20px] w-full lg:max-w-[1030px]">
+                Match Summary
+              </h2>
+              <button onClick={() => setShowRecap(false)} className="">
+                <FontAwesomeIcon icon={faTimes} size="xl" />
+              </button>
+            </div>
+
+            <div className="w-full flex flex-col md:flex-row justify-start items-center gap-4  text-primary mt-2 px-2 lg:max-w-[1030px] ">
+              <div className="flex justify-center items-center min-w-[280px] w-[280px] md:mr-2">
                 {home_club_logo !== null && (
-                  <div className="relative w-[55px] md:w-[65px] h-[55px] md:h-[65px]">
+                  <div className="relative min-w-[75px] h-[75px]">
                     <Image src={home_club_logo} alt="Crest" layout="fill" />
                   </div>
                 )}
@@ -171,49 +295,26 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
                   <span>{home_score}</span> - <span>{away_score}</span>
                 </div>
                 {away_club_logo !== null && (
-                  <div className="relative w-[55px] md:w-[65px] h-[55px] md:h-[65px]">
+                  <div className="relative min-w-[75px] h-[75px]">
                     <Image src={away_club_logo} alt="Crest" layout="fill" />
                   </div>
                 )}
               </div>
 
-              <div className=" flex flex-row flex-wrap items-center justify-between md:w-[600px] gap-2">
-                <div className="block ml-[6px] md:m-auto">
-                  <span className="text-sm md:text-base ">{home_club} </span>vs
-                  <span className="text-sm md:text-base "> {away_club}</span>
-                  <div className="text-xs md:text-sm text-offwhite pt-[4px]">
-                    {formattedDate}
-                  </div>
-                </div>
+              <div className="text-[20px] flex flex-col md:flex-row  items-center justify-center md:gap-4 mt-4 md:mt-0 ">
+                <span className="">{home_club} </span>
+                <span className="text-skyblue">VS</span>
+                <span className=""> {away_club}</span>
               </div>
             </div>
-
-            <div className="relative flex flex-col py-4 px-4 md:px-10 lg:max-w-[1030px] items-center justify-center w-full">
-              <div className="flex flex-col-reverse sm:flex-col-reverse md:flex-row pb-8 w-full">
-                <div className="w-full mt-6 md:mt-0">
-                  <h2 className="text-[20px] font-semibold mb-2">Full Recap</h2>
-                  <div className="h-1 mb-4 bg-partnersBorders" />
-                  <div className="w-full h-full  min-w-[320px] max-h-[320px]">
-                    {playback_id ? (
-                      <MuxPlayer
-                        playbackId={playback_id}
-                        className="w-full h-full rounded-md"
-                      />
-                    ) : (
-                      <div className="w-full h-fullflex justify-center items-center">
-                        <p>No video currently available for this match</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="px-0 md:px-4 my-4 md:my-0  md:w-4/6 ">
-                  <h3 className="text-[20px] font-semibold">Summary</h3>
-                  {/* <div className="h-1 my-2 bg-partnersBorders" /> */}
-                  <div className="text-sm text-offwhite my-4">
-                    <p className="pb-[2px]">{datetime}</p>
-                    <p className="pb-[2px]">{location}</p>
-                    <div className="flex items-center justify-start">
+            <div className=" w-full max-w-[1030px] my-4 md:my-8 border-t border-opacity-50 border-partnersBorders"></div>
+            <div className="relative flex flex-col pb-4  lg:max-w-[1030px] items-center justify-center w-full">
+              <div className="mb-4 mx-2  flex flex-col md:flex-row gap-4 w-full">
+                <div className="text-base text-primary min-w-[280px] w-[280px]">
+                  <p className="pb-[2px]">{datetime}hs</p>
+                  <p className="pb-[2px]">{location}</p>
+                  {weather && (
+                    <div className="flex  items-center justify-start">
                       <div className="w-6 text-center mr-1">
                         <Image
                           src={localWeatherIcon}
@@ -224,78 +325,133 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
                       </div>
                       <p>{weather?.tempFahr}</p>
                     </div>
-                  </div>
+                  )}
+                </div>
 
-                  <div>
-                    <div className="h-1 my-2 bg-partnersBorders text-primary" />
-                    <h3 className="font-semibold py-2 text-[18px]">Title</h3>
-                    {/* define generated text */}
-                    <p className="text-sm font-thin">
-                      In a gripping showdown, the Villanova Soccer Academy 2009s
-                      faced off against Stellar FC 2009s, concluding in a 2-0
-                      victory for Stellar. he match saw Stellar dominate early,
-                      securing a lead with two quick goals in the first half, a
-                      margin they maintained throughout the game. While
-                      Villanova struggled to find the back of the net, Vidals
-                      efforts on the field were a silver lining, as he
-                      orchestrated several promising attacks and demonstrated
-                      strong defensive prowess.
-                    </p>
-                  </div>
+                <div className="w-full md:mt-0">
+                  {match_summary && (
+                    <div className="w-full mt-12 md:mt-0">
+                      <p className="text-base tracking-wide font-light">
+                        {match_summary}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="w-full mt-6 md:mt-0">
+                <h2 className="text-[20px] mb-4 bg-cardsBackground rounded-[5px] py-2 px-4 shadow-md">
+                  Full Recap
+                </h2>
+                {/* <div className="h-1 mb-4 bg-partnersBorders" /> */}
+                <div className="w-full relative rounded-10">
+                  {playback_id ? (
+                    <div className="w-full h-full">
+                      <MuxPlayer
+                        playbackId={playback_id}
+                        ref={muxPlayerRef}
+                        accent-color="#00C7FF"
+                        className=" w-full h-full"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-full h-full flex justify-center items-center">
+                      <p>No video currently available for this match</p>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex flex-col mt-4 w-full">
-                <h3 className="text-[20px] font-semibold mt-12 md:mt-4 mb-2">
-                  Highlights
-                </h3>
-                <div className="h-1 mb-4 bg-partnersBorders w-full"></div>
-                <div className="flex flex-col md:flex-row justify-between w-full max-w-none sm:max-w-[600px] md:max-w-none">
-                  {highlights?.map(
-                    (
-                      highlight: {
-                        clip_description: string;
-                        duration: string;
-                        start_timestamp: string;
-                      },
-                      index: number,
-                    ) => (
-                      <div
-                        key={index}
-                        className="w-full sm my-2 md:m-2 md:max-w-[400px] flex flex-row sm:flex-row md:flex-col"
+                <div className="flex justify-between items-center bg-cardsBackground rounded-[5px] py-2 px-4 shadow-md">
+                  <h3 className="text-base">Jump to highlights</h3>
+
+                  {highlights && highlights.length > 1 && (
+                    <div className="flex gap-8 mr-2">
+                      <button
+                        onClick={() => {
+                          handlePrevClick();
+                        }}
+                        disabled={currentItem === 0}
+                        className="text-skyblue"
                       >
-                        {playback_id && highlight.start_timestamp ? (
-                          <>
-                            <MuxPlayer
-                              playbackId={playback_id}
-                              className="bg-partnersBorders rounded-[4px] w-1/2 sm:w-1/2 md:w-full min-h-[128px] max-w-[320px]"
-                              startTime={convertToSeconds(
-                                highlight.start_timestamp,
-                              )}
-                            />
-                            <div className="video-info text-primary ml-2 w-1/2 sm:w-1/2 md:w-full flex flex-col justify-end max-w-[320px]">
-                              <h3 className="text-base pt-2">{`Highlight - ${index + 1}`}</h3>
-                              <p className="text-sm text-offwhite m-px">
-                                {highlight.clip_description}
-                              </p>
-                              <p className="text-sm text-gray-500 m-px">
-                                Duration: {highlight.duration}git
-                              </p>
-                              <p className="text-sm text-gray-500 m-px">
-                                Timestamp: {highlight.start_timestamp}
-                              </p>
-                            </div>
-                          </>
-                        ) : (
-                          <div className="bg-partnersBorders rounded-[4px] w-1/2 sm:w-1/2 md:w-full min-h-[128px] max-w-[320px] flex justify-center items-center text-center">
-                            <p className="text-gray-500">
-                              No highlight videos available for this match
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    ),
+                        <FontAwesomeIcon icon={faChevronLeft} />
+                      </button>
+                      <button
+                        onClick={() => {
+                          handleNextClick();
+                        }}
+                        disabled={currentItem === highlights.length - 1}
+                        className="text-skyblue"
+                      >
+                        <FontAwesomeIcon icon={faChevronRight} />
+                      </button>
+                    </div>
                   )}
                 </div>
+                {highlights && highlights.length > 1 ? (
+                  <>
+                    <HorizontalTimeline
+                      currentItem={currentItem}
+                      handlePlayClick={handlePlayClick}
+                      setCurrentItem={setCurrentItem}
+                      convertToSeconds={convertToSeconds}
+                      timestamps={highlights.map(
+                        ({ start_timestamp }) => start_timestamp,
+                      )}
+                    />
+                    <div>
+                      {highlights?.map(
+                        (
+                          highlight: {
+                            clip_description: string;
+                            duration: string;
+                            start_timestamp: string;
+                          },
+                          index: number,
+                        ) => (
+                          <div
+                            key={`${highlight.clip_description}-${index}`}
+                            className="flex flex-row sm:flex-row md:flex-col"
+                          >
+                            {playback_id && highlight.start_timestamp ? (
+                              <>
+                                <SummaryHighlightCard
+                                  key={`${highlight.clip_description}-${index}`}
+                                  highlight={highlight}
+                                  index={index}
+                                  currentItem={currentItem}
+                                  isHighlightPlaying={isHighlightPlaying}
+                                  handlePlayClick={handlePlayClick}
+                                  setCurrentItem={setCurrentItem}
+                                  playback_id={playback_id}
+                                  accentColors={accentColors}
+                                  convertToMilliseconds={convertToMilliseconds}
+                                  highlightProgress={highlightProgress}
+                                />
+                              </>
+                            ) : (
+                              <div className="bg-partnersBorders rounded-[4px] w-full min-h-[128px] md:max-w-[450px] flex justify-center items-center text-center">
+                                <p className="text-offwhite">
+                                  No highlights for this match yet, but stay
+                                  tuned! We&apos;ll bring you all the exciting
+                                  moments soon. Check back later for updates!
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        ),
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <div className="mt-8 shadow-md mx-auto bg-cardsBackground bg-opacity-20 rounded-[4px] w-full min-h-[128px] md:max-w-[450px] flex justify-center items-center text-center">
+                    <p className="text-offwhite text-sm">
+                      No highlights for this match yet, but stay tuned!
+                      We&apos;ll bring you all the exciting moments soon. Check
+                      back later for updates!
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>

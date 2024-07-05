@@ -8,9 +8,7 @@ import {
   emptyNotifications,
   LatestChange,
   emptyLatestChange,
-  PostHelperResponse,
 } from '@/types/User.type';
-
 import { getCurrentUser } from 'aws-amplify/auth';
 import { Hub } from '@aws-amplify/core';
 import handleFetchUserAttributes from '@/app/utils/auth/handleFetchUserAttributes';
@@ -67,10 +65,16 @@ const createStorageWithExpiration = (storage: Storage, expiration: number) => ({
     storage.removeItem(key);
   },
 });
-
-export const postHelperResponseAtom = atom<PostHelperResponse | null>(null);
-
+// export const postHelperResponseAtom = atom<any, any, void>(
+//   (get) => get(postHelperResponseAtom),
+//   (get, set, update) => set(postHelperResponseAtom, update),
+// );
+export const postHelperResponseAtom = atom<
+  ((value: SetStateAction<UserState>) => void) | null
+>(null);
+//TODO: replace the any type with the actual type of the response from the postHelper function
 // Define `inviteIdAtom` differently based on environment
+
 export let inviteIdAtom:
   | WritableAtom<string | null, [string | null], void>
   | PrimitiveAtom<string | null>;
@@ -108,9 +112,7 @@ async function fetchUserData(
   currState: UserState,
   set: (value: UserState) => void,
   inviteId: string | null,
-  setPostHelperResponse: (
-    value: SetStateAction<PostHelperResponse | null>,
-  ) => void,
+  setPostHelperResponse: (value: SetStateAction<UserState>) => void, // Specify the type of value as SetStateAction<UserState>
 ) {
   let amplify_id, userAttributes, auth_method;
   if (currState.data) {
@@ -141,10 +143,6 @@ async function fetchUserData(
       userAttributes = await handleFetchUserAttributes();
 
       const postData = await handlePostSignIn(userAttributes, inviteId);
-      console.log('postData', postData);
-      console.log('json stringify postData');
-
-      console.log(JSON.stringify(postData));
       setPostHelperResponse(postData);
     } catch (err) {
       console.warn('User is currently not logged in. Skipping userData fetch');
@@ -163,6 +161,7 @@ async function fetchUserData(
     if (!response.ok) {
       throw new Error('Data load error. Please try again.');
     }
+
     const data = await response.json();
 
     const dataObject: UserData = {
@@ -179,8 +178,8 @@ async function fetchUserData(
       user_delete_status: data.result.delete_status,
       owned_cards: data.result.owned_cards,
       guest_cards: data.result.guest_cards,
+      invites: data.result.invites,
     };
-
     set({
       data: dataObject,
       fetchStatus: 'success',
@@ -214,6 +213,7 @@ enum AuthEvents {
 export function useUserData() {
   // Use jotai's useAtom to manage the state
   const [userData, setUserData] = useAtom(userDataAtom);
+
   const [latestChange, setLatestChange] =
     useState<LatestChange>(emptyLatestChange);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -225,7 +225,7 @@ export function useUserData() {
     const unsubscribe = Hub.listen('auth', ({ payload: { event } }) => {
       if (event === AuthEvents.SignedOut) {
         setInviteId(null); // This will remove invite_id from localStorage
-        console.log('user is signed out! Remove the inviteId!');
+        setPostHelperResponse(null);
       }
     });
 
@@ -234,7 +234,12 @@ export function useUserData() {
 
   // Fetch the user data whenever the amplify_id changes
   useEffect(() => {
-    fetchUserData(userData, setUserData, inviteId, setPostHelperResponse);
+    fetchUserData(
+      userData,
+      setUserData,
+      inviteId,
+      setPostHelperResponse as (value: SetStateAction<UserState>) => void,
+    );
   }, [isLoggedIn, inviteId]);
 
   useEffect(() => {

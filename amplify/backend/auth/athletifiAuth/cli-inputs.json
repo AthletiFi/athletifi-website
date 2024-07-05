@@ -56,10 +56,8 @@
     "triggers": {},
     "hostedUI": true,
     "hostedUIDomainName": "athletifi",
-    "authProvidersUserPool": [
-      "Google"
-    ],
-    "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"name\":\"name\",\"username\":\"sub\"}}]",
+    "authProvidersUserPool": [],
+    "hostedUIProviderMeta": "[]",
     "userPoolGroupList": [
       "athletifiTeamAdminUsers",
       "athletifiGeneralUsers",

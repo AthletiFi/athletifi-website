@@ -5,7 +5,7 @@ export default async function handleFetchMFAPreference() {
     const output = await fetchMFAPreference();
     return output;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return {
       enabled: undefined,
       preferred: undefined,

@@ -4,6 +4,6 @@ export default async function handleUpdateMFAPreference() {
   try {
     await updateMFAPreference({ totp: 'PREFERRED' });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }

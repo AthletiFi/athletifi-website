@@ -45,32 +45,35 @@ const LatestMatch: React.FC = () => {
             <div className="bg-cardsBackground h-[310px] sm:h-[310px] md:h-56 flex flex-col relative w-full rounded-10 text-primary ">
               <h1 className="text-[24px] font-semibold">Latest Match</h1>
               <div className="flex h-full text-gray-500 justify-center items-center">
-                We are working on getting more match data. Please come back soon
-                to view the full experience.
+                We&apos;re gathering the latest performance and match details of
+                your player. Please check back soon to see all the exciting
+                updates!
               </div>
             </div>
           ) : (
             <>
               <div className=" flex flex-col md:flex-row justify-between">
                 <h1 className="text-[24px] font-semibold">Latest Match</h1>
-                <div className="flex flex-col justify-between h-[68px] items-center md:items-end mt-4 md:mt-0 text-sm font-light">
+                <div className="flex flex-col justify-start gap-[3px] items-center md:items-end mt-4 md:mt-0 text-sm font-light">
                   <p className="text-center md:text-right">
                     {latestMatch?.datetime}
                   </p>
                   <p className="text-center md:text-right">
                     {latestMatch?.location}
                   </p>
-                  <div className="flex items-center justify-center sm:justify-center md:justify-end">
-                    <div className=" w-6 text-center mr-1">
-                      <Image
-                        src={localWeatherIcon}
-                        alt="Weather Icon"
-                        width={100}
-                        height={100}
-                      />
+                  {weatherIcon && (
+                    <div className="flex items-center justify-center sm:justify-center md:justify-end">
+                      <div className=" w-6 text-center mr-1">
+                        <Image
+                          src={localWeatherIcon}
+                          alt="Weather Icon"
+                          width={100}
+                          height={100}
+                        />
+                      </div>
+                      <p className="">{latestMatch?.weather?.tempFahr}&deg;F</p>
                     </div>
-                    <p className="">{latestMatch?.weather?.tempFahr}&deg;F</p>
-                  </div>
+                  )}
                 </div>
               </div>
 
@@ -92,14 +95,19 @@ const LatestMatch: React.FC = () => {
                       />
                     )}
                   </div>
-
-                  <p className="text-lg h-full md:items-center pt-2 lg:pt-0 px-2 md:px-4">{`${latestMatch?.home_score}`}</p>
                 </div>
-                <p className="px-2 h-full mt-4 md:mt-0 flex items-start md:items-center">
-                  -
-                </p>
+                <div className="flex items-center">
+                  {' '}
+                  <p className="text-lg h-full md:items-center pt-2 lg:pt-0 px-2 md:px-4">
+                    {`${latestMatch?.home_score}`}
+                  </p>
+                  <p className="px-2 h-full flex items-center justify-center">
+                    -
+                  </p>
+                  <p className="text-lg  h-full flex md:items-center pt-2 lg:pt-0 px-2 md:px-4">{`${latestMatch?.away_score}`}</p>
+                </div>
+
                 <div className="flex  md:items-center h-full w-1/2">
-                  <p className="text-lg  h-full flex md:items-center pt-2 lg:pt-0 px-2 md:px-4 ">{`${latestMatch?.away_score}`}</p>
                   <div className="flex flex-col w-full md:flex-row items-center">
                     {!!latestMatch?.away_club_logo && (
                       <Image
@@ -120,14 +128,9 @@ const LatestMatch: React.FC = () => {
               </div>
             </>
           )}
-          {latestPlayerRatings === null ? (
-            <div className="flex text-gray-500 justify-center items-center">
-              We are currently working on getting more data. Please come back
-              soon
-            </div>
-          ) : (
+          {latestPlayerRatings && latestPlayerRatings.length > 0 && (
             <div className="flex justify-around items-center mt-10 md:mt-6">
-              {latestPlayerRatings?.map((rating, idx) => (
+              {latestPlayerRatings.map((rating, idx) => (
                 <RatingBox
                   key={idx}
                   isLast={idx === latestPlayerRatings.length - 1}

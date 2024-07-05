@@ -19,12 +19,10 @@ function VerifyMFA({
     if (formState.authCode !== '') {
       try {
         await handleTOTPVerification(formState.authCode);
-        console.log('Successfully verified TOTP');
         await handleUpdateMFAPreference();
-        console.log('Successfully updated MFA preferences for future login');
         setQRState('enabled');
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     }
   }

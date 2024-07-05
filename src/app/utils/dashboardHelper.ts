@@ -12,19 +12,19 @@ export const attributeConfigs: IAttributeConfig = {
   },
   goalkeeping: {
     color: '#DA393B',
-    description: `The physical rating assesses the player's physical attributes and how they use them in the game. It takes into account their success in long and medium-range passing, which requires both strength and accuracy. Additionally, it considers their effectiveness in aerial duels, such as heading the ball, and their ability to score from long-range shots. A high physical rating indicates that the player can use their physical strength and power to influence the game.`,
+    description: `The goalkeeping rating is an exclusive measurement for players in the goalkeeper position. It evaluates the player's performance in key goalkeeping duties, such as handling the ball, kicking accuracy, positioning, and reflexes. This rating takes into account the player's success rate in catching and punching the ball, the accuracy of their goal kicks, their positioning during aerial challenges, and their ability to make saves. A strong goalkeeping rating suggests that the player is reliable in protecting the goal and is confident in commanding their penalty area.`,
   },
   physical: {
     color: '#B09E03',
-    description: `The mentality rating evaluates the player's psychological strengths on the field. It looks at their assertiveness in making forward passes, their composure under pressure, and their ability to draw fouls from opponents. This rating is based on the player's success rate in attempting forward passes, the frequency of fouls they receive, and how well they maintain their composure throughout the game. A strong mentality rating suggests that the player is confident, makes bold decisions, and can handle the mental challenges of the game.`,
+    description: `The physical rating assesses the player's physical attributes and how they use them in the game. It takes into account their success in long and medium-range passing, which requires both strength and accuracy. Additionally, it considers their effectiveness in aerial duels, such as heading the ball, and their ability to score from long-range shots. A high physical rating indicates that the player can use their physical strength and power to influence the game.`,
   },
   mentality: {
     color: '#FC6713',
-    description: `The defending rating assesses the player's contribution to the team's defense. It considers their ability to make successful clearances, interventions, tackles, and win ground duels against opponents. This rating is calculated based on the frequency and success rate of the player's defensive actions. A high defending rating indicates that the player is proactive in disrupting the opposition's attacks and is effective in regaining possession of the ball for their team.`,
+    description: `The mentality rating evaluates the player's psychological strengths on the field. It looks at their assertiveness in making forward passes, their composure under pressure, and their ability to draw fouls from opponents. This rating is based on the player's success rate in attempting forward passes, the frequency of fouls they receive, and how well they maintain their composure throughout the game. A strong mentality rating suggests that the player is confident, makes bold decisions, and can handle the mental challenges of the game.`,
   },
   defending: {
     color: '#5A54A2',
-    description: `The goalkeeping rating is an exclusive measurement for players in the goalkeeper position. It evaluates the player's performance in key goalkeeping duties, such as handling the ball, kicking accuracy, positioning, and reflexes. This rating takes into account the player's success rate in catching and punching the ball, the accuracy of their goal kicks, their positioning during aerial challenges, and their ability to make saves. A strong goalkeeping rating suggests that the player is reliable in protecting the goal and is confident in commanding their penalty area.`,
+    description: `The defending rating assesses the player's contribution to the team's defense. It considers their ability to make successful clearances, interventions, tackles, and win ground duels against opponents. This rating is calculated based on the frequency and success rate of the player's defensive actions. A high defending rating indicates that the player is proactive in disrupting the opposition's attacks and is effective in regaining possession of the ball for their team.`,
   },
 };
 

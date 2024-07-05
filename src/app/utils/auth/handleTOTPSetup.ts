@@ -15,7 +15,7 @@ export default async function handleTOTPSetup(): Promise<{
       key: totpSetupDetails.sharedSecret,
     };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return { src: '', key: '' };
   }
 }

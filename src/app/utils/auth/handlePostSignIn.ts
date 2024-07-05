@@ -11,8 +11,6 @@ export default async function handlePostSignIn(
     name: string | undefined,
     amplify_id: string | undefined,
   ) => {
-    console.log('inviteId inside postHelper in handlePostSignIn:');
-    console.log(inviteId);
     const response = await fetch(`${baseURL}/addUser`, {
       method: 'POST',
       headers: {
@@ -27,7 +25,6 @@ export default async function handlePostSignIn(
     });
 
     const data = await response.json();
-    console.log('data from lambda', data);
     return data;
   };
 
@@ -52,7 +49,6 @@ export default async function handlePostSignIn(
       userAttributes.name,
       amplify_id,
     );
-    console.log('data from lambda', data);
     return data;
   } catch (error) {
     console.error(error);

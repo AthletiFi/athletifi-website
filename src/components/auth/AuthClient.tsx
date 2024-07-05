@@ -7,7 +7,6 @@ import {
   useAuthenticator,
 } from '@aws-amplify/ui-react';
 import { ComponentOverrides, FormFieldsOverrides } from './AuthOverrides';
-// import { signUp, type SignUpInput } from 'aws-amplify/auth';
 import { loginTheme, sourceSans3 } from './AuthTheme';
 import { useSearchParams } from 'next/navigation';
 import { inviteIdAtom, redirectAtom } from '@/states/userStore';
@@ -17,12 +16,10 @@ import { useRouter } from 'next/navigation';
 import { SignUpInput, signUp } from 'aws-amplify/auth';
 import handleFetchUserAttributes from '@/app/utils/auth/handleFetchUserAttributes';
 import handlePostSignIn from '@/app/utils/auth/handlePostSignIn';
-import config from '@/custom-aws-exports';
 
 const AuthClient = ({ defaultScreen }: { defaultScreen: string }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const oauthCode = searchParams.get('code');
 
   const [inviteId, setInviteId] = useAtom(inviteIdAtom);
   const [redirectUrl, setRedirectUrl] = useAtom(redirectAtom);
@@ -34,14 +31,6 @@ const AuthClient = ({ defaultScreen }: { defaultScreen: string }) => {
       setInviteId(storedInviteId);
     }
   }, [searchParams, setInviteId]);
-
-  console.log('(AuthClient.tsx) inviteId: ', inviteId);
-  console.log('oauthCode: ', oauthCode);
-  console.log(
-    '(AuthClient.tsx) custom redirectSignIn URL:',
-    config.oauth.redirectSignIn,
-  );
-  console.log('ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ•̫͡•ʕ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ•̫͡•ʕ•̫͡•ʔ•̫͡•ʔ');
   const { user, route } = useAuthenticator((context) => [
     context.user,
     context.route,
@@ -93,12 +82,12 @@ const AuthClient = ({ defaultScreen }: { defaultScreen: string }) => {
 
   return (
     <div
-      className={`bg-cardsDark ${sourceSans3.className} md:p-8 shadow-sm flex justify-center`}
+      className={`bg-cardsDark ${sourceSans3.className} p-4 md:p-8 shadow-sm flex justify-center rounded-10 mt-16`}
     >
       <ThemeProvider theme={loginTheme}>
         <div className="mb-12">
-          <p className="text-primary font-extralight leading-8 mt-28">
-            Welcome to
+          <p className="text-primary font-extralight leading-8 mt-12">
+            Signup for
           </p>
           <h1
             className={`text-xl text-primary leading-8 ${sourceSans3.className}`}
@@ -111,7 +100,6 @@ const AuthClient = ({ defaultScreen }: { defaultScreen: string }) => {
           services={services}
           components={ComponentOverrides}
           formFields={FormFieldsOverrides}
-          socialProviders={['google']}
           initialState={
             defaultScreen as 'signIn' | 'signUp' | 'forgotPassword' | undefined
           }

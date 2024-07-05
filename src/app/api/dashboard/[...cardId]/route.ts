@@ -15,7 +15,6 @@ export async function GET(
     });
 
     const data = response.data;
-    console.log(NextResponse.json(data.result.past_matches[0]));
     return NextResponse.json(data);
   } catch (error) {
     console.error(error);

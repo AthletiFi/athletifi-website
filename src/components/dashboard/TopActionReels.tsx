@@ -1,9 +1,9 @@
-import { useParams } from 'next/navigation';
+//import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import MuxPlayer from '@mux/mux-player-react';
 
-import { useDashboardData } from '@/states/dashboardStore';
+//import { useDashboardData } from '@/states/dashboardStore';
 import { IActionReel } from '@/types/Dashboard.type';
 import TopActionReelThumbnail from '@/components/dashboard/TopActionReelThumbnail';
 
@@ -57,32 +57,25 @@ const ActionReel: React.FC<IActionReel> = ({
 };
 
 const ActionReelList: React.FC = () => {
-  const { cardId } = useParams();
-  const cardIdValue = Array.isArray(cardId) ? cardId.join('/') : cardId;
-  const { dashboardData } = useDashboardData(cardIdValue);
-  const actionReels = dashboardData.data?.topActionReels;
+  ////////// This code is temporary and will be replaced with the logic for handling real data
+  // const { cardId } = useParams();
+  // const cardIdValue = Array.isArray(cardId) ? cardId.join('/') : cardId;
+  // const { dashboardData } = useDashboardData(cardIdValue);
+  // const actionReels = dashboardData.data?.topActionReels;
+  const actionReels = [];
 
   return (
     <>
-      {actionReels && actionReels[0]?.title ? (
-        <div className="md:h-[480px] flex flex-col items-start md:items-center w-full md:w-1/2 max-w-[560px] my-8 md:my-0">
-          <div className=" flex flex-col md:overflow-auto items-center">
-            <h3 className="w-full text-primary text-md font-semibold font-sourceSansPro mb-2">
-              Top Action Reels
-            </h3>
-            {actionReels.map((actionReel: IActionReel, index: number) => (
-              <ActionReel key={index} {...actionReel} />
-            ))}
-          </div>
-        </div>
-      ) : actionReels?.length === 0 ? (
+      {actionReels?.length === 0 ? (
         <div className="border-l-0 md:border-l mt-6 md:mt-0 md:pl-4 border-gray-600 w-full">
           <h3 className="w-full text-primary text-md font-semibold font-sourceSansPro mb-2">
             Top Action Reels
           </h3>
-          <div className="flex h-full text-gray-500 mt-4 max-w-96">
-            We are working on getting more data. Come back soon to view
-            highlight reels!
+          <div className="mt-8 shadow-md mx-auto bg-cardsDark bg-opacity-20 rounded-[4px] w-full min-h-[128px] md:max-w-[420px] flex justify-center items-center text-primary opacity-80 text-sm p-6">
+            Exciting things are coming! We&apos;re putting together the best
+            action reels from this season just for you. Check back soon to watch
+            the highlights! We&apos;ll also send you a notification as soon as
+            the clips are ready. Stay tuned!
           </div>
         </div>
       ) : (

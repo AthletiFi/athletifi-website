@@ -1,10 +1,11 @@
 import { atom, useAtom } from 'jotai';
 import { useEffect } from 'react';
-import { DashboardData, IActionReel } from '@/types/Dashboard.type';
+import { DashboardData } from '@/types/Dashboard.type';
 import {
   filterRatingData,
   transformRatingData,
 } from '@/app/utils/dashboardHelper';
+import { transformMatchesToActionReels } from '@/app/utils/transformMatchesToActionReels';
 
 export interface DashboardState {
   data: DashboardData | null;
@@ -18,39 +19,6 @@ export const dashboardDataAtom = atom<DashboardState>({
   fetchStatus: 'idle',
   errorMessage: null,
 });
-
-const dummyActionReels: IActionReel[] = [
-  {
-    playback_id: 'gztxhJtnd7o5lL02zkX3VF01UqoH7EcWwnU5wNqVuFHKg',
-    title: "Oscar Gasga's Long-Range Screamer",
-    description:
-      'Oscar Gasga unleashes a powerful shot from 30 yards out, finding the top corner and leaving the goalkeeper rooted to the spot.',
-    home_club_logo:
-      'https://athletifi-s3.s3.us-east-2.amazonaws.com/logos/vsa-logo.svg',
-    away_club_logo:
-      'https://athletifi-s3.s3.us-east-2.amazonaws.com/logos/stellar-fc-logo.svg',
-  },
-  {
-    playback_id: 'bKxhJtnd7o5lL02zkX3VF01UqoH7EcWwnU5wNqVuFHLm',
-    title: "Oscar Gasga's Brilliant Free-Kick",
-    description:
-      'Oscar Gasga curls a perfect free-kick over the wall and into the net, showcasing his exceptional technical ability.',
-    home_club_logo:
-      'https://athletifi-s3.s3.us-east-2.amazonaws.com/logos/vsa-logo.svg',
-    away_club_logo:
-      'https://athletifi-s3.s3.us-east-2.amazonaws.com/logos/stellar-fc-logo.svg',
-  },
-  {
-    playback_id: 'fRtxhJtnd7o5lL02zkX3VF01UqoH7EcWwnU5wNqVuFHPq',
-    title: "Oscar Gasga's Skillful Assist",
-    description:
-      'Oscar Gasga dribbles past two defenders with a clever nutmeg, then delivers a pinpoint cross for his teammate to head home.',
-    home_club_logo:
-      'https://athletifi-s3.s3.us-east-2.amazonaws.com/logos/vsa-logo.svg',
-    away_club_logo:
-      'https://athletifi-s3.s3.us-east-2.amazonaws.com/logos/stellar-fc-logo.svg',
-  },
-];
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -93,7 +61,7 @@ async function fetchDashboardData(
       teammates: data.result.teammates,
       isGoalkeeper: data.result.is_goalkeeper,
       seasonHighlights: data.result.season_highlights,
-      topActionReels: dummyActionReels,
+      topActionReels: transformMatchesToActionReels(data.result.past_matches),
     };
     // Update the state with the fetched data
     set({

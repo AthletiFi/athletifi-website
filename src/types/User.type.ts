@@ -72,6 +72,16 @@ export type GuestCards = {
   card_id: string | null;
   card_image_url: string | null;
   dashboard_slug: string | null;
+  inviter_email: string | null;
+};
+export type Invites = {
+  invite_id: string | null;
+  guest_email: string | null;
+  inviter_email: string | null;
+  guest_id: string | null;
+  invite_status: string | null;
+  card_image_id: string | null;
+  card_image_url: string | null;
 };
 
 export type UserData = {
@@ -85,8 +95,16 @@ export type UserData = {
   user_delete_status: DeleteStatus | null;
   owned_cards: OwnedCards | null;
   guest_cards: GuestCards | null;
+  invites: Invites | null;
 };
 
+<<<<<<< HEAD
+export enum UpdatePwErrors {
+  INVALIDPW = 'InvalidPasswordException',
+  NOTAUTHORIZED = 'NotAuthorizedException',
+  LIMITEXCEEDED = 'LimitExceededException',
+  EMPTYPW = 'EmptyUpdatePassword',
+=======
 export interface PostHelperResponse {
   message: string;
   user: {
@@ -99,4 +117,5 @@ export interface PostHelperResponse {
     invite_id: string | null;
     invite_status: string | null;
   };
+>>>>>>> prod
 }

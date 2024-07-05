@@ -28,7 +28,6 @@ async function handleSubmit(formDetails: SignUpFormDetails) {
   }
 
   const responseData = await response.json();
-  console.log('Signup success:', responseData);
   return responseData;
 }
 

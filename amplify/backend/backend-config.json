@@ -16,9 +16,7 @@
           "EMAIL",
           "NAME"
         ],
-        "socialProviders": [
-          "GOOGLE"
-        ],
+        "socialProviders": [],
         "usernameAttributes": [
           "EMAIL"
         ],

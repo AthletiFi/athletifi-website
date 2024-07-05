@@ -1,6 +1,7 @@
 // 'use client';
 
 import AuthClient from '@/components/auth/AuthClient';
+import Header from '@/components/common/Header';
 import { Suspense } from 'react';
 // import { useEffect } from 'react';
 // import { useRouter } from 'next/navigation';
@@ -31,13 +32,16 @@ const LoginPage = () => {
   // }, [route, redirectUrl, router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="mt-10">
-        <Suspense>
-          <AuthClient defaultScreen={''} />;
-        </Suspense>
+    <>
+      <Header />
+      <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="mt-10">
+          <Suspense>
+            <AuthClient defaultScreen={''} />;
+          </Suspense>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

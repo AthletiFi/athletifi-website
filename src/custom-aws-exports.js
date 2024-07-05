@@ -20,8 +20,27 @@
 
 import awsExports from './aws-exports';
 
-// awsExports.oauth.redirectSignIn = 'https://www.athleti.fi/resolve-auth/';/
-// awsExports.oauth.redirectSignOut = 'https://www.athleti.fi/logout/';
-awsExports.oauth.domain = 'auth.athleti.fi';
+awsExports.oauth.redirectSignIn = 'https://www.athleti.fi/resolve-auth/';
+awsExports.oauth.redirectSignOut = 'https://www.athleti.fi/logout/';
 
 export default awsExports;
+
+// import awsExports from './aws-exports';
+
+// const addWWW = (url) => {
+//   try {
+//     const urlObj = new URL(url);
+//     if (!urlObj.hostname.startsWith('www.')) {
+//       urlObj.hostname = `www.${urlObj.hostname}`;
+//     }
+//     return urlObj.toString();
+//   } catch (e) {
+//     console.error('Invalid URL:', url);
+//     return url;
+//   }
+// };
+
+// awsExports.oauth.redirectSignIn = addWWW(awsExports.oauth.redirectSignIn);
+// awsExports.oauth.redirectSignOut = addWWW(awsExports.oauth.redirectSignOut);
+
+// export default awsExports;
