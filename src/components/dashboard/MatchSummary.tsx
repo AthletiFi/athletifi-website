@@ -9,7 +9,7 @@ import {
 import { IMatchDataExtended } from '@/types/Dashboard.type';
 import HorizontalTimeline from './HorizontalTimeline';
 import SummaryHighlightCard from './SummaryHighlightCard';
-import MuxPlayer from '@mux/mux-player-react';
+import MuxPlayer, { MuxPlayerRefAttributes } from '@mux/mux-player-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function convertToSeconds(timestamp: string): number {
@@ -48,9 +48,9 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
 
   const [currentItem, setCurrentItem] = useState<number>(-1);
   const [isHighlightPlaying, setIsHighlightPlaying] = useState(false);
-  const muxPlayerRef = useRef<typeof MuxPlayer>(null);
-  const [highlightProgress, setHighlightProgress] = useState<number>(0); // State for highlight progress
-  const intervalRef = useRef<NodeJS.Timeout | null>(null); // Ref to store interval ID
+  const muxPlayerRef = useRef<MuxPlayerRefAttributes>(null);
+  const [highlightProgress, setHighlightProgress] = useState<number>(0);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   function convertToMilliseconds(timestamp: string): number {
     const [hours, minutes, seconds] = timestamp.split(':').map(Number);
@@ -64,13 +64,14 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
     }
 
     if (muxPlayerRef.current) {
+      const videoElement = muxPlayerRef.current as unknown as HTMLVideoElement;
       const cuePoints = highlights
         .map((highlight) => convertToMilliseconds(highlight.start_timestamp))
         .filter((time) => !isNaN(time) && isFinite(time))
         .sort((a, b) => a - b);
 
       if (cuePoints.length > 0) {
-        const track = muxPlayerRef.current.addTextTrack('captions', '', 'en');
+        const track = videoElement.addTextTrack('captions', '', 'en');
 
         cuePoints.forEach((cueTime) => {
           const duration = convertToSeconds(highlights[index].duration);
@@ -83,10 +84,10 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
         });
 
         if (isHighlightPlaying && currentItem === index) {
-          muxPlayerRef.current.pause();
+          videoElement.pause();
         } else {
-          muxPlayerRef.current.currentTime = cuePoints[index] / 1000 || 0;
-          muxPlayerRef.current.play(0);
+          videoElement.currentTime = cuePoints[index] / 1000 || 0;
+          videoElement.play();
         }
 
         setIsHighlightPlaying(!isHighlightPlaying);
@@ -113,9 +114,9 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
         });
       }, 100);
 
-      if (!muxPlayerRef.current.pauseListenerAdded) {
-        muxPlayerRef.current.addEventListener('pause', handlePause);
-        muxPlayerRef.current.pauseListenerAdded = true;
+      if (!videoElement.pauseListenerAdded) {
+        videoElement.addEventListener('pause', handlePause);
+        videoElement.pauseListenerAdded = true;
       }
     } else {
       console.warn("MuxPlayer element not found. Cue points can't be added.");
@@ -131,7 +132,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
   };
 
   useEffect(() => {
-    const currentRef = muxPlayerRef.current;
+    const currentRef = muxPlayerRef.current as unknown as HTMLVideoElement;
 
     return () => {
       if (currentRef) {

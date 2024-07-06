@@ -98,13 +98,12 @@ export type UserData = {
   invites: Invites | null;
 };
 
-<<<<<<< HEAD
 export enum UpdatePwErrors {
   INVALIDPW = 'InvalidPasswordException',
   NOTAUTHORIZED = 'NotAuthorizedException',
   LIMITEXCEEDED = 'LimitExceededException',
   EMPTYPW = 'EmptyUpdatePassword',
-=======
+}
 export interface PostHelperResponse {
   message: string;
   user: {
@@ -117,5 +116,4 @@ export interface PostHelperResponse {
     invite_id: string | null;
     invite_status: string | null;
   };
->>>>>>> prod
 }

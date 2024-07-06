@@ -18,6 +18,7 @@ import AlertModal from '@/components/common/AlertModal';
 import { AlertModalType } from '@/types/AlertModalType';
 import { GuestCards, OwnedCards } from '@/types/User.type';
 import { IProfileProps } from '@/types/Dashboard.type';
+import { PostHelperResponse } from '@/types/User.type';
 
 // import { userDataAtom } from '@/states/userStore';
 import { useAtomValue } from 'jotai';
@@ -45,7 +46,10 @@ interface ICardData {
 const Profile = () => {
   const ownedCardsData = useAtomValue(ownedCardsDataAtom) as ICardData[];
   const guestCardsData = useAtomValue(guestCardsDataAtom) as ICardData[];
-  const [inviteData] = useAtom(postHelperResponseAtom);
+  const [inviteData] = useAtom(postHelperResponseAtom) as [
+    PostHelperResponse | null,
+    (value: PostHelperResponse | null) => void,
+  ];
   const [inviteStatus, setInviteStatus] = useState<AlertModalType | null>();
   const [hasSetState, setHasSetState] = useState(false);
 
