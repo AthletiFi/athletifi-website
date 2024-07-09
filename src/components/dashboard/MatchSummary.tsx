@@ -145,7 +145,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
     setShowRecap(true);
   };
   const dateTime = new Date(datetime as string);
-  const formattedDate = dateTime.toLocaleDateString('en-GB', {
+  const formattedDate = dateTime.toLocaleDateString('en-US', {
     weekday: 'long',
     day: '2-digit',
     month: 'short',
@@ -246,9 +246,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
                 <div className="text-sm text-offwhite pt-[4px]">
                   {formattedDate}
                 </div>
-                <div className="text-sm text-offwhite pt-[4px]">
-                  {formattedTime}
-                </div>
+                <p className="text-sm text-offwhite pt-[2px]">{location}</p>
               </div>
             )}
             <button
@@ -310,9 +308,9 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
             </div>
             <div className=" w-full max-w-[1030px] my-4 md:my-8 border-t border-opacity-50 border-partnersBorders"></div>
             <div className="relative flex flex-col pb-4  lg:max-w-[1030px] items-center justify-center w-full">
-              <div className="mb-4 mx-2  flex flex-col md:flex-row gap-4 w-full">
+              <div className="mb-8 mx-2  flex flex-col md:flex-row gap-4 w-full">
                 <div className="text-base text-primary min-w-[280px] w-[280px]">
-                  <p className="pb-[2px]">{datetime}hs</p>
+                  <p className="pb-[2px]">{formattedDate}</p>
                   <p className="pb-[2px]">{location}</p>
                   {weather && (
                     <div className="flex  items-center justify-start">

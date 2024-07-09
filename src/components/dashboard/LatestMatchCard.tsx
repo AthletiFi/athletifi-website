@@ -37,14 +37,24 @@ const LatestMatch: React.FC = () => {
   const iconNameWithoutExtension = weatherIcon?.split('.')[0];
   const localWeatherIcon = `/assets/weather-icons-webp/${iconNameWithoutExtension}.webp`;
 
+  function formatDate(datetime: string) {
+    return new Date(datetime).toLocaleDateString('en-US', {
+      weekday: 'long',
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+  }
+
   return (
     <>
-      {latestMatch?.datetime !== null && latestMatch?.datetime !== undefined ? (
+      {dashboardData.data ? (
         <div className="bg-cardsBackground h-full flex flex-col justify-between p-4 relative w-full rounded-10 text-primary ">
-          {latestMatch?.datetime === undefined ? (
-            <div className="bg-cardsBackground h-[310px] sm:h-[310px] md:h-56 flex flex-col relative w-full rounded-10 text-primary ">
+          {latestMatch?.datetime === undefined ||
+          latestMatch?.datetime === null ? (
+            <div className="bg-cardsBackground h-[310px] sm:h-[310px] md:h-48 flex flex-col relative w-full rounded-10 text-primary ">
               <h1 className="text-[24px] font-semibold">Latest Match</h1>
-              <div className="flex h-full text-gray-500 justify-center items-center">
+              <div className="mt-8 shadow-md mx-auto bg-cardsDark bg-opacity-20 rounded-[4px] w-full min-h-[48px] md:max-w-[420px] flex justify-center items-center text-center text-primary text-sm p-6">
                 We&apos;re gathering the latest performance and match details of
                 your player. Please check back soon to see all the exciting
                 updates!
@@ -56,7 +66,7 @@ const LatestMatch: React.FC = () => {
                 <h1 className="text-[24px] font-semibold">Latest Match</h1>
                 <div className="flex flex-col justify-start gap-[3px] items-center md:items-end mt-4 md:mt-0 text-sm font-light">
                   <p className="text-center md:text-right">
-                    {latestMatch?.datetime}
+                    {formatDate(latestMatch?.datetime)}
                   </p>
                   <p className="text-center md:text-right">
                     {latestMatch?.location}

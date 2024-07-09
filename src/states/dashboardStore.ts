@@ -1,6 +1,10 @@
 import { atom, useAtom } from 'jotai';
 import { useEffect } from 'react';
-import { DashboardData } from '@/types/Dashboard.type';
+import {
+  DashboardData,
+  emptyActionReel,
+  emptyLatestMatchData,
+} from '@/types/Dashboard.type';
 import {
   filterRatingData,
   transformRatingData,
@@ -43,7 +47,7 @@ async function fetchDashboardData(
     const dataObject: DashboardData = {
       latestMatch: data.result.past_matches
         ? data.result.past_matches[0]
-        : null,
+        : emptyLatestMatchData,
       latestPlayerRating: data.result.player_ratings
         ? transformRatingData(
             data.result.player_ratings[0],
@@ -61,7 +65,9 @@ async function fetchDashboardData(
       teammates: data.result.teammates,
       isGoalkeeper: data.result.is_goalkeeper,
       seasonHighlights: data.result.season_highlights,
-      topActionReels: transformMatchesToActionReels(data.result.past_matches),
+      topActionReels: data.result.past_matches
+        ? transformMatchesToActionReels(data.result.past_matches)
+        : [emptyActionReel],
     };
     // Update the state with the fetched data
     set({
