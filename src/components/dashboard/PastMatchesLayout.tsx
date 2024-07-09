@@ -7,7 +7,7 @@ const PastMatchesLayout: React.FC = () => {
   const pastMatchesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const updateHeight = (entries) => {
+    const updateHeight = (entries: ResizeObserverEntry[]) => {
       if (entries[0].contentRect) {
         setHeight(entries[0].contentRect.height);
       }
