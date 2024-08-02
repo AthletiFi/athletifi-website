@@ -8,12 +8,19 @@ import TargetArticleContent from '@/components/news-insights/TargetArticleConten
 import { filterTargetArticle } from '@/utils/helpers';
 import { getNewsList } from '@/app/utils/ApiHelper';
 import { NewsPageContext } from '@/types/News.type';
+import { getUserData } from '@/app/utils/fetchHelper';
+import { UserData } from '@/types/User.type';
 
 async function getNewsArticle(slug: string) {
+  console.log(
+    `getNewsArticle URL: ${process.env.NEXT_PUBLIC_API_URL}/news/${slug}`,
+  );
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/news/${slug}`,
   );
+  console.log('response: %s', JSON.stringify(response));
   const data = await response.json();
+  console.log('data: %s', JSON.stringify(data));
   return data;
 }
 
@@ -45,11 +52,13 @@ export default async function NewsArticleSlugPage({ params }: NewsPageContext) {
     title: 'News and Updates for AthletiFi Sports Cards',
   };
 
+  const userData = await getUserData();
+
   return (
     <>
       <div className="overflow-hidden">
         <div className="news-page__hero-bg bg-center bg-no-repeat bg-cover">
-          <Header />
+          <Header userData={userData as UserData} />
           <CommonHero hero={hero} />
         </div>
         <TargetArticleContent newsArticle={newsArticle} />

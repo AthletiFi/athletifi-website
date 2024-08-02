@@ -5,34 +5,24 @@ import React, {
   FormEvent,
   useRef,
   useEffect,
-  useCallback,
 } from 'react';
 import Image from 'next/image';
-import { Source_Sans_3 } from 'next/font/google';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { useAtomValue, useAtom } from 'jotai';
-import { invitesDataAtom } from '@/states/invitesDataStore';
-import { inviteRevokeActionAtom } from '@/states/InviteRevokeStore';
 import { useRouter } from 'next/navigation';
-import { IProfileProps } from '@/types/Dashboard.type';
-import { GuestCards, OwnedCards } from '@/types/User.type';
+import { ICards } from '@/types/User.type';
 import { Invites } from '@/types/User.type';
-
-const sourceSans3 = Source_Sans_3({
-  subsets: ['latin'],
-  display: 'swap',
-});
-
-interface ICardData {
-  result: IProfileProps;
-  ownedCardInfo: OwnedCards;
-  guestCardInfo: GuestCards;
-}
+import { sourceSans3 } from '@/app/utils/helpers';
+import {
+  invitationAction,
+  inviteRevokeAction,
+  inviteDeclineAction,
+} from '@/app/actions/invitationAction';
 
 interface ICardThumbnailProps {
-  cardData: ICardData;
+  cardData: ICards;
+  allInvites: Invites[] | null;
   isOwned: boolean;
   inSettings: boolean;
 }
@@ -84,12 +74,12 @@ const filterAndKeepBestInvite = (
 
 const getFilteredInvites = (
   invites: Invites[],
-  cardData: ICardData,
+  cardData: ICards,
 ): Invites[] => {
   const typeOwnerInvitationFilter = invites.filter(
     (invitation) => invitation.inviter_email !== invitation.guest_email,
   );
-  const cardId = cardData.ownedCardInfo?.card_id;
+  const cardId = cardData.card_id;
   if (cardId) {
     return filterAndKeepBestInvite(typeOwnerInvitationFilter, cardId);
   }
@@ -98,13 +88,14 @@ const getFilteredInvites = (
 
 const CardThumbnail: React.FC<ICardThumbnailProps> = ({
   cardData,
+  allInvites,
   isOwned,
   inSettings,
 }) => {
-  const [, inviteRevokeAction] = useAtom(inviteRevokeActionAtom);
   const router = useRouter();
-  const [refreshKey, setRefreshKey] = useState(0); // State to trigger re-render
-  const [filteredInvites, setFilteredInvites] = useState<Invites[]>([]);
+  const filteredInvites = allInvites
+    ? getFilteredInvites(allInvites, cardData)
+    : [];
 
   const [isToggle, setIsToggle] = useState<boolean>(false);
   const [invitation, setInvitation] = useState<{ name: string; email: string }>( //stored data from form
@@ -125,19 +116,11 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
   const [revokeSubmittedId, setRevokeSubmittedId] = useState<string | null>(
     null,
   );
-  const { name, team, club, card_url, number, club_logo } = cardData.result;
+  const { name, team, club, card_image_url, number, club_logo } = cardData;
   const handleGoToDashboard = (slug: string | null) => {
     //go to dashboard click
     router.push(`/dashboard/${slug}`);
   };
-
-  //atom to render the invites
-  const allInvites = useAtomValue(invitesDataAtom); // Fetch all invites
-  // Filter invites whenever refreshKey changes
-  useEffect(() => {
-    const filtered = getFilteredInvites(allInvites, cardData);
-    setFilteredInvites([...filtered]);
-  }, [allInvites, cardData, refreshKey]);
 
   ////////////////////////////////////////email invite
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -147,15 +130,13 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
       [name]: value,
     }));
   };
-  //when submit, action to "invite", render success message, clear from and close toggle
-  const emailSubmit = (e: FormEvent) => {
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (invitation.email) {
-      inviteRevokeAction({
-        action: 'invite',
-        guest_email: invitation.email,
-        card_image_id: cardData.ownedCardInfo.card_id,
-      })
+    const formData = new FormData(e.currentTarget);
+    const cardID = cardData.card_id;
+    if (formData.get('email') && cardID) {
+      invitationAction(cardID, formData)
         .then((response) => {
           if (
             response.message ===
@@ -186,7 +167,6 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
               setTimeout(() => {
                 setIsToggle(false);
                 setEmailSubmitted(false);
-                setRefreshKey((prevKey) => prevKey + 1);
                 resolve();
               }, 3000);
             });
@@ -197,45 +177,33 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
       console.warn('invalid email');
     }
   };
-  /////////////////////// action to "revoke"
-  const triggerRevokeOrInvite = (
+
+  const triggerRevoke = (
     inviteId: string | null,
     card_name?: string | null,
   ) => {
-    inviteRevokeAction({
-      action: 'revoke',
-      inviteId: inviteId,
-      card_name: card_name,
-    })
+    inviteRevokeAction(inviteId, card_name)
       .then(() => {
         setRevokeSubmittedId(inviteId);
         setTimeout(() => {
           setRevokeSubmittedId(null);
-          setRefreshKey((prevKey) => prevKey + 1);
         }, 3000);
       })
       .catch((error) => console.error('Failed to revoke invitation', error));
   };
 
-  ///////////////////////////////////////////////////////////////////////////////////
-  //IN CASE THE LOGIC IS THE SAME, ADD ACTION DECLINE ?
   const triggerDecline = (
     inviteId: string | null,
     owner_email?: string | null,
     card_name?: string | null,
   ) => {
-    inviteRevokeAction({
-      action: 'revoke',
-      inviteId: inviteId,
-      owner_email: owner_email,
-      card_name: card_name,
-    })
+    inviteDeclineAction(inviteId, owner_email, card_name)
       .then(() => {
         setDeclinedInviteId(inviteId);
         setTimeout(() => {
           setRevokeSubmittedId(null);
         }, 3000);
-        triggerReRender();
+        // triggerReRender();
       })
       .catch((error) => console.error('Failed to decline invitation', error));
   };
@@ -251,9 +219,7 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
 
   const cardRef = useRef<HTMLDivElement>(null); //track element to click outside the form
   useOutsideClick(cardRef, () => setIsToggle(false));
-  const triggerReRender = useCallback(() => {
-    setRefreshKey((prevKey) => prevKey + 1);
-  }, []);
+
   return (
     <div ref={cardRef} className={`${isOwned || inSettings ? 'w-full' : ''}`}>
       {isOwned ? (
@@ -262,12 +228,10 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
             <div className="flex justify-start items-start min-w-[260px]">
               <div
                 className="relative w-24 h-28 justify-end cursor-pointer"
-                onClick={() =>
-                  handleGoToDashboard(cardData?.ownedCardInfo.dashboard_slug)
-                }
+                onClick={() => handleGoToDashboard(cardData.dashboard_slug)}
               >
                 <Image
-                  src={card_url as string}
+                  src={card_image_url as string}
                   alt="Card Thumbnail"
                   layout="fill"
                   objectFit="contain"
@@ -330,10 +294,7 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                           <div
                             className="flex items-center cursor-pointer justify-end"
                             onClick={() => {
-                              triggerRevokeOrInvite(
-                                invite.invite_id,
-                                cardData?.result.name,
-                              );
+                              triggerRevoke(invite.invite_id, cardData.name);
                             }}
                           >
                             <div className={`mx-[6px] md:mx-4`}>revoke</div>
@@ -413,7 +374,7 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                         {!emailSubmitted && (
                           <form
                             className="w-full flex flex-col gap-3 items-end"
-                            onSubmit={emailSubmit}
+                            onSubmit={handleSubmit}
                           >
                             <input
                               type="text"
@@ -463,20 +424,20 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
             </div>
           </div>
         ) : (
-          // render owend cards in profila page
+          // render owned cards in profile page
           <>
             <div className="flex justify-between flex-col md:flex-row items-center w-full">
               <div className="relative w-[300px] h-[350px] md:w-[160px] md:h-[210px]">
-                {card_url ? (
+                {card_image_url ? (
                   <Image
-                    src={card_url}
+                    src={card_image_url}
                     alt="Card Thumbnail"
                     layout="fill"
                     objectFit="contain"
                   />
                 ) : (
                   <Image
-                    src={card_url as string}
+                    src={card_image_url as string}
                     alt="Default Card Thumbnail"
                     layout="fill"
                     objectFit="contain"
@@ -513,9 +474,7 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
               <div className="flex md:flex-col my-6 md:mx-4 gap-2 items-center justify-center">
                 <button
                   className="text-darkgray w-[140px] md:w-[160px] h-8 bg-skyblue text-xs md:text-sm rounded-full font-normal hover:opacity-90 transform hover:scale-95 ease-in-out"
-                  onClick={() =>
-                    handleGoToDashboard(cardData?.ownedCardInfo.dashboard_slug)
-                  }
+                  onClick={() => handleGoToDashboard(cardData.dashboard_slug)}
                 >
                   go to dashboard
                 </button>
@@ -565,7 +524,7 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                     {!emailSubmitted && (
                       <form
                         className="w-full flex flex-col md:flex-row gap-3 justify-end"
-                        onSubmit={emailSubmit}
+                        onSubmit={handleSubmit}
                       >
                         <input
                           type="text"
@@ -618,12 +577,10 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
           <div className="flex justify-start items-start min-w-[250px]">
             <div
               className="relative w-24 h-28 justify-end cursor-pointer"
-              onClick={() =>
-                handleGoToDashboard(cardData?.guestCardInfo.dashboard_slug)
-              }
+              onClick={() => handleGoToDashboard(cardData.dashboard_slug)}
             >
               <Image
-                src={card_url as string} // Cast card_url to string
+                src={card_image_url as string}
                 alt="Card Thumbnail"
                 layout="fill"
                 objectFit="contain"
@@ -655,18 +612,18 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
               <div className="flex justify-between items-center">
                 <div className="text-sm flex flex-col">
                   <p className="md:text-center font-extralight">
-                    {cardData?.guestCardInfo?.inviter_email}
+                    {cardData.inviter_email}
                   </p>
                 </div>
                 <div
                   className="flex items-center justify-end cursor-pointer"
                   onClick={() => {
                     triggerDecline(
-                      cardData?.guestCardInfo.invite_id,
-                      cardData?.guestCardInfo.inviter_email,
-                      cardData?.result.name,
+                      cardData.invite_id as string,
+                      cardData.inviter_email,
+                      cardData.name,
                     );
-                    setDeclinedInviteId(cardData?.guestCardInfo.invite_id);
+                    setDeclinedInviteId(cardData.invite_id as string);
                   }}
                 >
                   <div className="text-sm py-4 mx-2 md:mx-4 text-end">
@@ -678,7 +635,7 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                   />
                 </div>
               </div>
-              {declinedInviteId === cardData?.guestCardInfo.invite_id && (
+              {declinedInviteId === cardData.invite_id && (
                 <p className="text-xs text-primary mt-1">
                   We will notify the owner you decline this invitation
                 </p>
@@ -715,16 +672,16 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
               )}
             </div>
             <div className="-mt-0 md:-mt-6 w-full md:w-1/2 h-56 md:h-36 relative">
-              {card_url ? (
+              {card_image_url ? (
                 <Image
-                  src={card_url}
+                  src={card_image_url}
                   alt="Card Thumbnail"
                   layout="fill"
                   objectFit="contain"
                 />
               ) : (
                 <Image
-                  src={card_url as string}
+                  src={card_image_url as string}
                   alt="Default Card Thumbnail"
                   layout="fill"
                   objectFit="contain"
@@ -734,10 +691,7 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
           </div>
           <div className="w-full flex justify-end pb-4 pr-4">
             <button
-              // onClick={triggerRevokeOrInvite}
-              onClick={() =>
-                handleGoToDashboard(cardData?.guestCardInfo.dashboard_slug)
-              }
+              onClick={() => handleGoToDashboard(cardData.dashboard_slug)}
               className="text-darkgray w-[130px] md:w-[160px] h-8 bg-skyblue text-sm rounded-full font-normal hover:opacity-90 transform hover:scale-95 ease-in-out"
             >
               go to dashboard
@@ -750,10 +704,11 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
 };
 
 const RenderCardThumbnail: React.FC<{
-  cardData: ICardData | null | undefined;
+  cardData: ICards | null | undefined;
+  allInvites: Invites[] | null;
   isOwned: boolean;
   inSettings: boolean;
-}> = ({ cardData, isOwned, inSettings }) => {
+}> = ({ cardData, allInvites, isOwned, inSettings }) => {
   if (!cardData) {
     return (
       <div className="card-thumbnail-error">Card data is not available.</div>
@@ -763,6 +718,7 @@ const RenderCardThumbnail: React.FC<{
   return (
     <CardThumbnail
       cardData={cardData}
+      allInvites={allInvites}
       isOwned={isOwned}
       inSettings={inSettings}
     />

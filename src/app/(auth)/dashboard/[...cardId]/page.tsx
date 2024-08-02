@@ -13,15 +13,9 @@ import Profile from '@/components/dashboard/ProfileCard';
 import SeasonSection from '@/components/dashboard/SeasonSectionLayout';
 import BackToTop from '@/components/common/BackToTop';
 import DashboardFetchError from '@/components/dashboard/DashboardFetchError';
-import { Source_Sans_3 } from 'next/font/google';
 import { useDashboardData } from '@/states/dashboardStore';
 import { useParams } from 'next/navigation';
-
-//next font variable
-const sourceSans3 = Source_Sans_3({
-  subsets: ['latin'],
-  display: 'swap',
-});
+import { sourceSans3 } from '@/app/utils/helpers';
 
 interface PageProps {
   params: { cardId: string | number };

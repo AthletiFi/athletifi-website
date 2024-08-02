@@ -7,49 +7,38 @@ import {
   useAuthenticator,
 } from '@aws-amplify/ui-react';
 import { ComponentOverrides, FormFieldsOverrides } from './AuthOverrides';
-import { loginTheme, sourceSans3 } from './AuthTheme';
-import { useSearchParams } from 'next/navigation';
-import { inviteIdAtom, redirectAtom } from '@/states/userStore';
-import { useAtom } from 'jotai';
+import { loginTheme } from './AuthTheme';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { SignUpInput, signUp } from 'aws-amplify/auth';
-import handleFetchUserAttributes from '@/app/utils/auth/handleFetchUserAttributes';
-import handlePostSignIn from '@/app/utils/auth/handlePostSignIn';
+import { sourceSans3 } from '@/app/utils/helpers';
 
-const AuthClient = ({ defaultScreen }: { defaultScreen: string }) => {
+const AuthClient = ({
+  defaultScreen,
+  redirect,
+  inviteId,
+}: {
+  defaultScreen: string;
+  redirect: string | undefined;
+  inviteId: string | undefined;
+}) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const [inviteId, setInviteId] = useAtom(inviteIdAtom);
-  const [redirectUrl, setRedirectUrl] = useAtom(redirectAtom);
-
-  useEffect(() => {
-    const storedInviteId = searchParams.get('invite_id');
-
-    if (storedInviteId) {
-      setInviteId(storedInviteId);
-    }
-  }, [searchParams, setInviteId]);
-  const { user, route } = useAuthenticator((context) => [
+  const { route } = useAuthenticator((context) => [
     context.user,
     context.route,
   ]);
 
   useEffect(() => {
-    const redirectPath = searchParams.get('redirect') || '/profile';
-    setRedirectUrl(redirectPath);
-  }, [searchParams, setRedirectUrl]);
-
-  useEffect(() => {
     if (route === 'authenticated') {
-      if (redirectUrl === null) {
-        router.push('/profile');
+      const inviteParam = inviteId ? `?invite_id=${inviteId}` : '';
+      if (redirect) {
+        router.push(redirect + inviteParam);
       } else {
-        router.push(redirectUrl);
+        router.push(`/profile${inviteParam}`);
       }
     }
-  }, [route, redirectUrl, router]);
+  }, [route, redirect, router, inviteId]);
 
   const services = {
     async handleSignUp(formData: SignUpInput) {
@@ -64,21 +53,6 @@ const AuthClient = ({ defaultScreen }: { defaultScreen: string }) => {
       }
     },
   };
-
-  // Listen for the sign-in event after user verifies their email and signs in
-  useEffect(() => {
-    if (user && route === 'authenticated') {
-      handleFetchUserAttributes()
-        .then((userAttributes) => {
-          handlePostSignIn(userAttributes, inviteId).catch((err) => {
-            console.error('Error in post sign-in:', err);
-          });
-        })
-        .catch((err) => {
-          console.error('Error fetching user attributes:', err);
-        });
-    }
-  }, [route, inviteId, user]);
 
   return (
     <div
@@ -103,7 +77,6 @@ const AuthClient = ({ defaultScreen }: { defaultScreen: string }) => {
           initialState={
             defaultScreen as 'signIn' | 'signUp' | 'forgotPassword' | undefined
           }
-          // services={services}
         />
       </ThemeProvider>
     </div>

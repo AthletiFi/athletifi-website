@@ -5,6 +5,8 @@ import Header from '@/components/common/Header';
 import ContactUsForm from '@/components/contact-us/ContactUsForm';
 import { SEO_CONFIG } from '@/utils/seoConfig';
 import { Metadata } from 'next';
+import { getUserData } from '@/app/utils/fetchHelper';
+import { UserData } from '@/types/User.type';
 
 export const metadata: Metadata = {
   title: SEO_CONFIG.contactUs.title,
@@ -14,7 +16,7 @@ export const metadata: Metadata = {
   },
 };
 
-const ContactUs = () => {
+export default async function ContactUs() {
   // SEO
   const hero: Hero = {
     heading: 'Connect with the AthletiFi team',
@@ -22,11 +24,13 @@ const ContactUs = () => {
     title: '',
   };
 
+  const userData = await getUserData();
+
   return (
     <>
       {/* SEO */}
       <div className="contact-us-page__hero-bg bg-no-repeat bg-cover overflow-hidden">
-        <Header />
+        <Header userData={userData as UserData} />
         <CommonHero hero={hero} />
       </div>
       <main>
@@ -35,6 +39,4 @@ const ContactUs = () => {
       <Footer />
     </>
   );
-};
-
-export default ContactUs;
+}

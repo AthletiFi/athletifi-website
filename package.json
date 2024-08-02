@@ -18,7 +18,7 @@
     "url": "https://github.com/AthletiFi/athletifi-website/issues"
   },
   "dependencies": {
-    "@aws-amplify/adapter-nextjs": "^1.0.28",
+    "@aws-amplify/adapter-nextjs": "^1.2.4",
     "@aws-amplify/ui-react": "^6.1.6",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
@@ -32,7 +32,7 @@
     "@types/react-slick": "^0.23.13",
     "aos": "^2.3.4",
     "autoprefixer": "10.4.17",
-    "aws-amplify": "^6.0.28",
+    "aws-amplify": "^6.3.4",
     "axios": "^1.6.7",
     "framer-motion": "^11.0.8",
     "jotai": "^2.8.0",

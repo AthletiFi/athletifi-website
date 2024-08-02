@@ -43,11 +43,25 @@ async function fetchDashboardData(
       throw new Error('Data load error. Please try again.');
     }
     const data = await response.json();
+
     // Transform the fetched data into the desired shape
     const dataObject: DashboardData = {
-      latestMatch: data.result.past_matches
-        ? data.result.past_matches[0]
-        : emptyLatestMatchData,
+      latestMatch: (() => {
+        if (
+          !data.result.past_matches ||
+          data.result.past_matches.length === 0
+        ) {
+          return emptyLatestMatchData;
+        }
+        const today = new Date();
+        for (const match of data.result.past_matches) {
+          const matchDate = new Date(match.datetime);
+          if (matchDate < today) {
+            return match;
+          }
+        }
+        return emptyLatestMatchData;
+      })(),
       latestPlayerRating: data.result.player_ratings
         ? transformRatingData(
             data.result.player_ratings[0],

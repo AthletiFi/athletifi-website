@@ -8,6 +8,8 @@ import { Hero } from '@/types/CommonHero.type';
 import { filterTargetArticle } from '@/utils/helpers';
 import { getNewsList } from '@/utils/ApiHelper';
 import { Suspense } from 'react';
+import { getUserData } from '@/app/utils/fetchHelper';
+import { UserData } from '@/types/User.type';
 
 // import { SEO_CONFIG } from '@/utils/seoConfig';
 
@@ -45,18 +47,14 @@ export default async function NewsPage() {
   const hero: Hero = {
     heading: 'Latest Updates & Announcements',
   };
-  // // Update dynamic parts of the SEO properties
-  // const newsPageSEO: PageSEO = {
-  //   ...SEO_CONFIG.news, // Spread the static properties
-  //   description: targetArticle?.previewSummary, // Dynamically update the description
-  //   image: `https://vidalco.in${targetArticle?.image.url}`, // Dynamically update the image URL
-  // };
+
+  const userData = await getUserData();
 
   return (
     <>
       <div className="overflow-hidden">
         <div className="news-page__hero-bg bg-center bg-no-repeat bg-cover">
-          <Header />
+          <Header userData={userData as UserData} />
           <CommonHero hero={hero} />
         </div>
         <FocusArticle newsListData={filteredNewsListData} />

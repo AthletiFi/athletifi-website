@@ -88,7 +88,7 @@ const HeroBanner: React.FC = () => {
               <p className="text-base leading-4 text-start text-primary opacity-80 lg:max-w-769 relative ">
                 {`team ${playerProfile?.team}`}
               </p>
-              {playerProfile.number && (
+              {playerProfile.number !== null && (
                 <p className="text-base leading-6 text-start text-primary opacity-80 lg:max-w-769 relative ">
                   {`#${playerProfile?.number}`}
                 </p>

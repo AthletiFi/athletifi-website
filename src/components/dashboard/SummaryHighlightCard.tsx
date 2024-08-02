@@ -47,7 +47,7 @@ const SummaryHighlightCard: React.FC<SummaryHighlightCardProps> = ({
               backgroundColor: `${currentItem === index && isHighlightPlaying ? '#092C3E' : ''}`,
               transform: `${currentItem === index && isHighlightPlaying ? 'scale(0.98)' : 'scale(1)'}`,
               transition: `${currentItem === index && isHighlightPlaying ? 'transform 0.5s' : ''}`,
-              borderLeft: `8px solid ${accentColors[index + 1]}`,
+              borderLeft: `8px solid ${accentColors[(index + 1) % accentColors.length]}`,
             }}
             className="flex justify-between bg-cardsBackground p-4 rounded-[5px] w-full mb-2 items-center border-b border-partnersBorders"
           >
@@ -57,7 +57,7 @@ const SummaryHighlightCard: React.FC<SummaryHighlightCardProps> = ({
                   {highlight.start_timestamp}
                 </p>
                 <div className="flex flex-col">
-                  <h3 className="text-base mb-2">{`Highlight 0${index + 1}`}</h3>
+                  <h3 className="text-base mb-2">{`Highlight ${String(index + 1).padStart(2, '0')}`}</h3>
                   <p className="text-base font-light text-offwhitem-px">
                     {highlight.clip_description}
                   </p>

@@ -228,6 +228,7 @@ export interface IMatchDataExtended extends IMatchDataWithWeather {
   away_score: number | null;
   playback_id: string | null;
   video_key?: string | null;
+  duration?: number | null;
   highlights: IHighlight[] | null;
   match_summary?: string | null;
 }
@@ -244,6 +245,7 @@ export const emptyMatchData: IMatchDataExtended = {
   location: null,
   weather: { tempFahr: null, tempCelc: null },
   playback_id: null,
+  duration: null,
   highlights: null,
 };
 

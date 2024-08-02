@@ -1,10 +1,3 @@
-import { Source_Sans_3 } from 'next/font/google';
-
-const sourceSans3 = Source_Sans_3({
-  subsets: ['latin'],
-  display: 'swap',
-});
-
 const loginTheme = {
   name: 'login-theme',
   tokens: {
@@ -34,4 +27,4 @@ const loginTheme = {
   },
 };
 
-export { sourceSans3, loginTheme };
+export { loginTheme };

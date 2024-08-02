@@ -1,33 +1,24 @@
 'use client';
-import { OwnedCards, GuestCards } from '@/types/User.type';
-import { Source_Sans_3 } from 'next/font/google';
-import RenderCardThumbnail from '@/components/user-portal/CardThumbnail';
-import { useAtomValue } from 'jotai';
+
 import {
-  ownedCardsDataAtom,
-  guestCardsDataAtom,
-} from '@/states/profileCardsDataStore';
-import { IProfileProps } from '@/types/Dashboard.type';
-
-interface ICardData {
-  result: IProfileProps;
-  ownedCardInfo: OwnedCards;
-  guestCardInfo: GuestCards;
-}
-
-const sourceSans3 = Source_Sans_3({
-  subsets: ['latin'],
-  display: 'swap',
-});
+  ICards,
+  UserData,
+  emptyOwnedCard,
+  emptyGuestCard,
+} from '@/types/User.type';
+import RenderCardThumbnail from '@/components/user-portal/CardThumbnail';
+import { sourceSans3 } from '@/app/utils/helpers';
 
 //const card_url = '/assets/img/png/anderson-card-img.png';
 
-export default function ManageReferrals() {
-  const ownedCardsData = useAtomValue(ownedCardsDataAtom) as ICardData[];
-  const guestCardsData = useAtomValue(guestCardsDataAtom) as ICardData[];
+export default function ManageReferrals({ userData }: { userData: UserData }) {
+  const ownedCardsData =
+    userData.owned_cards === null ? [emptyOwnedCard] : userData.owned_cards;
+  const guestCardsData =
+    userData.guest_cards === null ? [emptyGuestCard] : userData.guest_cards;
 
   const acceptedGuestCards = guestCardsData.filter(
-    (card) => card.guestCardInfo.status === 'accepted',
+    (card) => card.status === 'accepted',
   );
 
   return (
@@ -50,8 +41,8 @@ export default function ManageReferrals() {
         {ownedCardsData.length > 0 ? (
           <div className="flex flex-wrap w-full gap-4">
             {ownedCardsData.map(
-              (cardData: ICardData, idx: React.Key | null | undefined) => {
-                if (!cardData.ownedCardInfo.card_id) {
+              (cardData: ICards, idx: React.Key | null | undefined) => {
+                if (!cardData.card_id) {
                   return (
                     <div
                       key={idx}
@@ -67,8 +58,8 @@ export default function ManageReferrals() {
                 return (
                   <RenderCardThumbnail
                     key={idx}
-                    // userData={cardData}
                     cardData={cardData}
+                    allInvites={userData.invites}
                     isOwned={true}
                     inSettings={true}
                   />
@@ -94,7 +85,7 @@ export default function ManageReferrals() {
         {acceptedGuestCards.length > 0 ? (
           <div className="flex justify-start py-2 overflow-x-auto hide-scrollbar gap-4">
             {acceptedGuestCards.map(
-              (cardData: ICardData, idx: React.Key | null | undefined) => {
+              (cardData: ICards, idx: React.Key | null | undefined) => {
                 if (!cardData) {
                   return null;
                 }
@@ -103,6 +94,7 @@ export default function ManageReferrals() {
                   <RenderCardThumbnail
                     key={idx}
                     cardData={cardData}
+                    allInvites={userData.invites}
                     isOwned={false}
                     inSettings={true}
                   />

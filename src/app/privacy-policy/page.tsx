@@ -5,6 +5,8 @@ import Header from '@/components/common/Header';
 import { SEO_CONFIG } from '@/utils/seoConfig';
 import PrivacyPolicy from '@/components/terms/PrivacyPolicy';
 import { Metadata } from 'next';
+import { getUserData } from '@/app/utils/fetchHelper';
+import { UserData } from '@/types/User.type';
 
 export const metadata: Metadata = {
   title: SEO_CONFIG.privacyPolicy.title,
@@ -14,14 +16,16 @@ export const metadata: Metadata = {
   },
 };
 
-const PrivacyPolicyPage = () => {
+export default async function PrivacyPolicyPage() {
   const hero: Hero = {
     heading: 'Privacy Policy',
   };
 
+  const userData = await getUserData();
+
   return (
     <>
-      <Header />
+      <Header userData={userData as UserData} />
       <CommonHero hero={hero} />
       <main>
         <PrivacyPolicy />
@@ -29,6 +33,4 @@ const PrivacyPolicyPage = () => {
       <Footer />
     </>
   );
-};
-
-export default PrivacyPolicyPage;
+}

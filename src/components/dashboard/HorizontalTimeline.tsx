@@ -6,6 +6,7 @@ interface HorizontalTimelineProps {
   handlePlayClick: (index: number) => void;
   timestamps: string[];
   convertToSeconds: (timestamp: string) => number;
+  videoDuration: number | null | undefined;
 }
 
 const HorizontalTimeline: React.FC<HorizontalTimelineProps> = ({
@@ -13,6 +14,7 @@ const HorizontalTimeline: React.FC<HorizontalTimelineProps> = ({
   currentItem,
   handlePlayClick,
   convertToSeconds,
+  videoDuration,
   timestamps,
 }) => {
   const timelineRef = useRef<HTMLDivElement>(null);
@@ -32,7 +34,7 @@ const HorizontalTimeline: React.FC<HorizontalTimelineProps> = ({
   }, [timestamps]);
 
   const calculateLeftPosition = (time: string): number => {
-    const totalVideoDuration = 4600;
+    const totalVideoDuration = videoDuration ? videoDuration : 4600;
     const timelineWidth = timelineRef.current?.offsetWidth || 0;
     const timeInSec = convertToSeconds(time);
     return (timeInSec / totalVideoDuration) * timelineWidth;
@@ -45,7 +47,7 @@ const HorizontalTimeline: React.FC<HorizontalTimelineProps> = ({
   return (
     <div className="relative flex flex-row items-center my-12">
       <div
-        className="absolute top-0  h-1 bg-skyblue"
+        className="absolute top-0 h-1 bg-skyblue"
         ref={timelineRef}
         style={{ width: '100%' }}
       ></div>
@@ -56,10 +58,7 @@ const HorizontalTimeline: React.FC<HorizontalTimelineProps> = ({
         const leftPosition = calculateLeftPosition(time);
 
         return (
-          <div
-            key={index}
-            className="relative flex flex-col items-center -m-[13px]"
-          >
+          <div key={index} className="flex flex-col items-center -m-[13px]">
             <div
               onClick={() => {
                 handlePlayClick(index);
@@ -78,7 +77,7 @@ const HorizontalTimeline: React.FC<HorizontalTimelineProps> = ({
               }}
             ></div>
             <div
-              className={` mt-2 text-sm text-offwhite`}
+              className={`mt-2 text-sm text-offwhite`}
               style={{
                 left: `${leftPosition - 24}px`,
                 position: 'absolute',

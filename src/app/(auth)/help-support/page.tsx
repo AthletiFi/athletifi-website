@@ -1,12 +1,14 @@
-'use client';
-
-import { FC } from 'react';
 import Link from 'next/link';
+import Header from '@/components/common/Header';
+import ProfileHeader from '@/components/user-portal/ProfileHeader';
 import BackToTop from '@/components/common/BackToTop';
 import Footer from '@/components/common/Footer';
-import Header from '@/components/user-portal/Header';
 import Accordion from '@/components/user-portal/FAQ';
-import { motion } from 'framer-motion';
+import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
+import addUserPostSignIn from '@/app/actions/userDataActions';
+import { getUserData } from '@/app/utils/fetchHelper';
+import { invitationData, UserData } from '@/types/User.type';
+import { redirect } from 'next/navigation';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -15,24 +17,40 @@ import {
   faPaperPlane,
   faMessage,
 } from '@fortawesome/free-solid-svg-icons';
-import { Source_Sans_3 } from 'next/font/google';
-const sourceSans3 = Source_Sans_3({
-  subsets: ['latin'],
-  display: 'swap',
-});
-interface HelpPageProps {}
+import InviteModal from '@/components/common/InviteModal';
 
-const HelpPage: FC<HelpPageProps> = () => {
+export default async function HelpPage({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | undefined };
+}) {
+  const { isSignedIn } = await isAuthenticated();
+  let userData = await getUserData();
+
+  if (!isSignedIn || !userData) redirect('/login?redirect=/help-support');
+
+  let inviteData = undefined;
+  if (searchParams?.invite_id) {
+    inviteData = await addUserPostSignIn(searchParams.invite_id);
+    userData = await getUserData();
+  }
+
   return (
     <>
-      <motion.div
+      <Header userData={userData as UserData} />
+      <InviteModal inviteData={inviteData as invitationData | undefined} />
+      <main className="${sourceSans3.className} overflow-hidden bg-gradient-to-r from-cardsDark2 to-cardsBackground w-full">
+        {/* <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className={`${sourceSans3.className} overflow-hidden bg-gradient-to-r from-cardsDark2 to-cardsBackground w-full`}
-      >
-        <main className="mx-4 md:mx-10 my-32 md:my-36 lg:my-48 text-sm md:text-sm md:text-base">
-          <Header pageTitle={'Help & Support'} />
+      > */}
+        <div className="mx-4 md:mx-10 my-32 md:my-36 lg:my-48 text-sm md:text-sm md:text-base">
+          <ProfileHeader
+            pageTitle={'Help & Support'}
+            userData={userData as UserData}
+          />
           <div className="flex justify-center">
             <div className="flex flex-col w-full justify-center max-w-[880px]">
               <div className="shadow-portalNav">
@@ -119,12 +137,11 @@ const HelpPage: FC<HelpPageProps> = () => {
               </div>
             </div>
           </div>
-        </main>
+        </div>
         <BackToTop />
         <Footer />
-      </motion.div>
+        {/* </motion.div> */}
+      </main>
     </>
   );
-};
-
-export default HelpPage;
+}

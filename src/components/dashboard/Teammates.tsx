@@ -16,12 +16,9 @@ const Teammates: React.FC = () => {
         <div className=" w-full my-8 lg:my-12 lg:mt-0">
           <div className="flex lg:flex-col gap-3 overflow-auto pr-4 pb-4">
             {teammates.map((teammate) => (
-              <>
+              <div key={`${teammate.name}-${teammate.number}`}>
                 {teammate.avatar_url && teammate.name && (
-                  <div
-                    key={`${teammate.name}-${teammate.number}`}
-                    className="flex items-center flex-col lg:flex-row bg-cardsBackground rounded-10 p-3 min-w-32 shadow-md"
-                  >
+                  <div className="flex items-center flex-col lg:flex-row bg-cardsBackground rounded-10 p-3 min-w-32 shadow-md">
                     <Image
                       src={teammate.avatar_url}
                       alt={teammate.name}
@@ -41,7 +38,7 @@ const Teammates: React.FC = () => {
                     </div>
                   </div>
                 )}
-              </>
+              </div>
             ))}
           </div>
         </div>

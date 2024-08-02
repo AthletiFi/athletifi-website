@@ -1,30 +1,29 @@
+'use client';
+
 import {
   NotificationTitles,
   NotificationPreferences,
-  emptyNotifications,
+  UserData,
 } from '@/types/User.type';
-import { useUserData } from '@/states/userStore';
+
+import {
+  addNotification,
+  deleteNotification,
+} from '@/app/actions/userDataActions';
 import { ChangeEvent } from 'react';
+import UnsubscribeButton from './UnsubscribeButton';
 
-export default function Notifications() {
-  const { userData, setLatestChange } = useUserData();
-
-  function handleChange(
+export default function Notifications({ userData }: { userData: UserData }) {
+  async function handleChange(
     e: ChangeEvent<HTMLInputElement>,
-    notificationType: keyof NotificationPreferences,
+    amplifyId: string,
+    notificationType: string,
   ) {
-    e.preventDefault();
-    setLatestChange({
-      notification_types: [notificationType],
-      value: e.target.checked,
-    });
-  }
-
-  function handleUnsubscribe() {
-    setLatestChange({
-      notification_types: Object.keys(emptyNotifications),
-      value: false,
-    });
+    if (e.target.checked) {
+      await addNotification(amplifyId, notificationType);
+    } else {
+      await deleteNotification(amplifyId, notificationType);
+    }
   }
 
   return (
@@ -39,17 +38,18 @@ export default function Notifications() {
         {NotificationTitles.map((setting, idx) => (
           <div
             key={idx}
-            className={`flex justify-between items-center py-4 mx-4 border-b border-b-partnersBorders border-opacity-20`}
+            className="flex justify-between items-center py-4 mx-4 border-b border-b-partnersBorders border-opacity-20"
           >
-            <div>{setting.name}</div>
+            <p>{setting.name}</p>
             <div className="flex items-center cursor-pointer">
               <div className="toggle-scale">
                 <label className="switch">
                   <input
                     type="checkbox"
+                    name={setting.value}
                     checked={
-                      userData.data?.notifications
-                        ? userData.data.notifications[
+                      userData.notifications
+                        ? userData.notifications[
                             setting.value as keyof NotificationPreferences
                           ]
                         : false
@@ -57,7 +57,8 @@ export default function Notifications() {
                     onChange={(e) =>
                       handleChange(
                         e,
-                        setting.value as keyof NotificationPreferences,
+                        userData.amplify_id as string,
+                        setting.value,
                       )
                     }
                   />
@@ -67,14 +68,15 @@ export default function Notifications() {
             </div>
           </div>
         ))}
-        <div className={`flex justify-between items-center py-6 mx-4`}>
+        <div className="flex justify-between items-center py-6 mx-4 border-t border-t-partnersBorders border-opacity-20">
           <div className="font-bold">Unsubscribe from all notifications</div>
-          <button
-            className="h-8 py-3 px-6 text-sm leading-6 flex items-center justify-center bg-chartRed rounded text-white"
-            onClick={handleUnsubscribe}
+          <form
+            action={() =>
+              deleteNotification(userData.amplify_id as string, 'All')
+            }
           >
-            Unsubscribe
-          </button>
+            <UnsubscribeButton />
+          </form>
         </div>
       </div>
     </div>

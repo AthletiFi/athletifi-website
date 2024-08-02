@@ -12,6 +12,8 @@ import PassiveEngagement from '@/components/home/PassiveEngagement';
 import BeyondNumbers from '@/components/home/BeyondNumbers';
 import HeroHomepage from '@/components/home/HeroHomepage';
 import { getNewsList } from '@/utils/ApiHelper';
+import { getUserData } from '@/app/utils/fetchHelper';
+import { UserData } from '@/types/User.type';
 
 const BackToTop = dynamic(() => import('@/components/common/BackToTop'), {
   ssr: false,
@@ -30,12 +32,14 @@ export default async function Home() {
   if (allNewsListError) return <div>Failed to fetch news list.</div>;
   if (!allNewsList) return <div>Loading news list...</div>;
 
+  const userData = await getUserData();
+
   return (
     <>
       <Preloader />
       <div className="overflow-hidden">
         <div className="home-page__hero-bg min-h-screen bg-no-repeat bg-cover flex flex-col justify-center bg-center">
-          <Header />
+          <Header userData={userData as UserData} />
           <div className="flex lg:items-center lg:flex-row flex-col flex-grow relative">
             <HeroHomepage />
             <Image

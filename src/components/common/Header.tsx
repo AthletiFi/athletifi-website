@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useEffect, useRef, useState, startTransition } from 'react';
 import Link from 'next/link';
 import {
@@ -17,12 +18,12 @@ import { signOut } from 'aws-amplify/auth';
 import { useRouter } from 'next/navigation';
 import { Hub } from 'aws-amplify/utils';
 
-import { useUserData } from '@/states/userStore';
 import UserNotificationsModal from '@/components/user-portal/UserNotificationsModal';
+import { UserData } from '@/types/User.type';
 
 const SCROLL_THRESHOLD: number = 200;
 
-const Header: React.FC = () => {
+export default function Header({ userData }: { userData: UserData }) {
   const [open, setOpen] = useState<boolean>(false);
   const [path, setPath] = useState<string>('');
   const [showDropdown, setShowDropdown] = useState(false);
@@ -31,18 +32,17 @@ const Header: React.FC = () => {
   const dropdown = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
-  const { userData, resetUserDataState, setIsLoggedIn } = useUserData();
 
   useEffect(() => {
     const hubListenerCancel = Hub.listen('auth', (data) => {
       switch (data.payload.event) {
         case 'signedIn':
           // Redirect user to initialize notification preferences upon first login
-          setIsLoggedIn(true);
+          // setIsLoggedIn(true);
           startTransition(() => router.refresh());
           break;
         case 'signedOut':
-          setIsLoggedIn(false);
+          // setIsLoggedIn(false);
           startTransition(() => router.push('/logout'));
           startTransition(() => router.refresh());
           break;
@@ -50,7 +50,7 @@ const Header: React.FC = () => {
     });
 
     return () => hubListenerCancel();
-  }, [router, setIsLoggedIn]);
+  }, [router]);
 
   useEffect(() => {
     // only add the event listener when the dropdown is opened
@@ -67,10 +67,10 @@ const Header: React.FC = () => {
   }, [showDropdown]);
 
   const handleSignOutSignIn = async () => {
-    if (userData.data === null) {
+    if (userData === null) {
       router.push('/login');
     } else {
-      resetUserDataState();
+      // resetUserDataState();
       await signOut();
     }
   };
@@ -219,7 +219,7 @@ const Header: React.FC = () => {
                   </Link>
                 </li>
                 <div className="border-t border-t-partnersBorders opacity-75 w-1/3 md:hidden"></div>
-                {userData.data === null ? (
+                {userData === null ? (
                   <div className="flex flex-col items-center gap-2 md:hidden mt-6 md:mt-0">
                     <Link href="/login">
                       <button className="text-primary w-[100px] h-8 text-sm border border-offwhite rounded-full font-extralight hover:bg-skyblue hover:border-skyblue transform hover:scale-95 ease-in-out">
@@ -264,7 +264,7 @@ const Header: React.FC = () => {
                     </div>
                   </div>
                 )}
-                {userData.data === null ? (
+                {userData === null ? (
                   <div className="items-center gap-2 md:ml-4 mt-6 md:mt-0 hidden md:flex">
                     <Link href="/login" onClick={() => setOpen(false)}>
                       <button
@@ -289,7 +289,7 @@ const Header: React.FC = () => {
                       className="flex items-center cursor-pointer"
                       onClick={() => setShowDropdown(!showDropdown)}
                     >
-                      <p className="text-base px-2 ">{userData.data?.name}</p>
+                      <p className="text-base px-2 ">{userData.name}</p>
                       <FontAwesomeIcon icon={faChevronDown} />
                     </div>
                     {showDropdown && (
@@ -385,13 +385,12 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
-      {userData.data &&
-        userData.data.init_notifications === false &&
-        !closedModal && (
-          <UserNotificationsModal setClosedModal={setClosedModal} />
-        )}
+      {userData && userData.init_notifications === false && !closedModal && (
+        <UserNotificationsModal
+          amplify_id={userData.amplify_id as string}
+          setClosedModal={setClosedModal}
+        />
+      )}
     </header>
   );
-};
-
-export default Header;
+}

@@ -6,7 +6,7 @@ import {
   faChevronLeft,
   faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
-import { IMatchDataExtended } from '@/types/Dashboard.type';
+import { IHighlight, IMatchDataExtended } from '@/types/Dashboard.type';
 import HorizontalTimeline from './HorizontalTimeline';
 import SummaryHighlightCard from './SummaryHighlightCard';
 import MuxPlayer, { MuxPlayerRefAttributes } from '@mux/mux-player-react';
@@ -42,9 +42,19 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
     location,
     weather,
     playback_id,
+    duration,
     highlights,
     match_summary,
   } = matchData;
+
+  let orderedHighlights: IHighlight[] = [];
+  if (highlights) {
+    orderedHighlights = [...highlights].sort(
+      (a, b) =>
+        convertToSeconds(a.start_timestamp) -
+        convertToSeconds(b.start_timestamp),
+    );
+  }
 
   const [currentItem, setCurrentItem] = useState<number>(-1);
   const [isHighlightPlaying, setIsHighlightPlaying] = useState(false);
@@ -58,14 +68,14 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
   }
 
   const handlePlayClick = (index: number) => {
-    if (!highlights) {
+    if (!orderedHighlights) {
       console.warn('Highlights are null or undefined.');
       return;
     }
 
     if (muxPlayerRef.current) {
       const videoElement = muxPlayerRef.current as unknown as HTMLVideoElement;
-      const cuePoints = highlights
+      const cuePoints = orderedHighlights
         .map((highlight) => convertToMilliseconds(highlight.start_timestamp))
         .filter((time) => !isNaN(time) && isFinite(time))
         .sort((a, b) => a - b);
@@ -74,7 +84,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
         const track = videoElement.addTextTrack('captions', '', 'en');
 
         cuePoints.forEach((cueTime) => {
-          const duration = convertToSeconds(highlights[index].duration);
+          const duration = convertToSeconds(orderedHighlights[index].duration);
           const cue = new VTTCue(
             cueTime / 1000,
             (cueTime + duration) / 1000,
@@ -94,7 +104,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
         setCurrentItem(index);
       }
 
-      const duration = convertToMilliseconds(highlights[index].duration);
+      const duration = convertToMilliseconds(orderedHighlights[index].duration);
       if (intervalRef.current !== null) {
         clearInterval(intervalRef.current);
       }
@@ -165,7 +175,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
   };
 
   const handleNextClick = () => {
-    if (highlights && currentItem < highlights.length - 1) {
+    if (orderedHighlights && currentItem < orderedHighlights.length - 1) {
       const newIndex = currentItem + 1;
       setCurrentItem(newIndex);
       handlePlayClick(newIndex);
@@ -364,42 +374,49 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
                 <div className="flex justify-between items-center bg-cardsBackground rounded-[5px] py-2 px-4 shadow-md">
                   <h3 className="text-base">Jump to highlights</h3>
 
-                  {highlights && highlights.length > 1 && (
-                    <div className="flex gap-8 mr-2">
-                      <button
-                        onClick={() => {
-                          handlePrevClick();
-                        }}
-                        disabled={currentItem === 0}
-                        className="text-skyblue"
-                      >
-                        <FontAwesomeIcon icon={faChevronLeft} />
-                      </button>
-                      <button
-                        onClick={() => {
-                          handleNextClick();
-                        }}
-                        disabled={currentItem === highlights.length - 1}
-                        className="text-skyblue"
-                      >
-                        <FontAwesomeIcon icon={faChevronRight} />
-                      </button>
-                    </div>
-                  )}
+                  {orderedHighlights &&
+                    orderedHighlights.length > 0 &&
+                    orderedHighlights[0].duration && (
+                      <div className="flex gap-8 mr-2">
+                        <button
+                          onClick={() => {
+                            handlePrevClick();
+                          }}
+                          disabled={currentItem === 0}
+                          className="text-skyblue"
+                        >
+                          <FontAwesomeIcon icon={faChevronLeft} />
+                        </button>
+                        <button
+                          onClick={() => {
+                            handleNextClick();
+                          }}
+                          disabled={
+                            currentItem === orderedHighlights.length - 1
+                          }
+                          className="text-skyblue"
+                        >
+                          <FontAwesomeIcon icon={faChevronRight} />
+                        </button>
+                      </div>
+                    )}
                 </div>
-                {highlights && highlights.length > 1 ? (
+                {orderedHighlights &&
+                orderedHighlights.length > 0 &&
+                orderedHighlights[0].duration ? (
                   <>
                     <HorizontalTimeline
                       currentItem={currentItem}
                       handlePlayClick={handlePlayClick}
                       setCurrentItem={setCurrentItem}
                       convertToSeconds={convertToSeconds}
-                      timestamps={highlights.map(
+                      videoDuration={duration}
+                      timestamps={orderedHighlights.map(
                         ({ start_timestamp }) => start_timestamp,
                       )}
                     />
                     <div>
-                      {highlights?.map(
+                      {orderedHighlights?.map(
                         (
                           highlight: {
                             clip_description: string;

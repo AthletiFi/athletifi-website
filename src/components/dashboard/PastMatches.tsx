@@ -15,7 +15,7 @@ const isThisWeek = (date: number | Date) => {
   const endOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 6));
   return date >= startOfWeek && date <= endOfWeek;
 };
-
+//TODO: move filtering to dashboardStore if needed.
 const PastMatches: React.FC = () => {
   const { cardId } = useParams();
   const cardIdValue = Array.isArray(cardId) ? cardId.join('/') : cardId;

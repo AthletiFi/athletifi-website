@@ -1,18 +1,22 @@
-import { FC, useState, useEffect } from 'react';
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faGear, faXmark } from '@fortawesome/free-solid-svg-icons';
 import PortalNav from './PortalNav';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useUserData } from '@/states/userStore';
+import { sourceSans3 } from '@/app/utils/helpers';
+import { UserData } from '@/types/User.type';
 
-interface HeaderProps {
+export default function ProfileHeader({
+  pageTitle,
+  userData,
+}: {
   pageTitle: string;
-}
-
-const Header: FC<HeaderProps> = ({ pageTitle }) => {
+  userData: UserData;
+}) {
   const [isOpenSideNav, setIsOpenSideNav] = useState(false);
-  const { userData } = useUserData();
   useEffect(() => {
     if (isOpenSideNav) {
       document.body.classList.add('overflow-y-hidden');
@@ -41,7 +45,12 @@ const Header: FC<HeaderProps> = ({ pageTitle }) => {
     },
   };
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className={sourceSans3.className}
+    >
       <AnimatePresence>
         {isOpenSideNav && (
           <motion.div
@@ -57,7 +66,7 @@ const Header: FC<HeaderProps> = ({ pageTitle }) => {
       <div className="max-w-[1030px] mx-auto mb-[72px]">
         <div className="flex justify-between text-primary md:hidden pb-3">
           <p className="text-base font-extralight px-2 md:px-4">
-            {userData.data?.name}
+            {userData.name}
           </p>
           <div className="flex items-center w-12 justify-between cursor-pointer mx-3">
             <Link href="/login">
@@ -82,8 +91,6 @@ const Header: FC<HeaderProps> = ({ pageTitle }) => {
           {pageTitle}
         </motion.h1>
       </div>
-    </>
+    </motion.div>
   );
-};
-
-export default Header;
+}
