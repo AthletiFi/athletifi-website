@@ -2,7 +2,7 @@
 
 import { revalidateTag } from 'next/cache';
 
-const inviteUrl = `${process.env.NEXT_BACKEND_API_URL}/referralInvite`;
+const inviteUrl = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/referralInvite`;
 
 type InviteAction = {
   action: 'invite' | 'decline' | 'revoke';

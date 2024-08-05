@@ -7,6 +7,7 @@ import { SEO_CONFIG } from '@/utils/seoConfig';
 import { Metadata } from 'next';
 import { getUserData } from '@/app/utils/fetchHelper';
 import { UserData } from '@/types/User.type';
+import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
 
 export const metadata: Metadata = {
   title: SEO_CONFIG.notFound.title,
@@ -20,8 +21,8 @@ export default async function NotFound() {
   const hero: Hero = {
     heading: '',
   };
-
-  const userData = await getUserData();
+  const auth = await isAuthenticated();
+  const userData = auth.isSignedIn ? await getUserData(auth) : null;
 
   return (
     <>

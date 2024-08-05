@@ -6,8 +6,8 @@ export async function GET(
   { params }: { params: { slug: string } },
 ) {
   const { slug } = params;
-  const newsListApiPath = `/news-lists/?populate=image&populate=content&filters[slug][$eq]=${slug}&populate=author`;
-  const data = await axiosRequest(RequestMethod.GET, newsListApiPath, null);
+  const blogsListApiPath = `/news-lists/?populate=image&populate=content&filters[slug][$eq]=${slug}&populate=author`;
+  const data = await axiosRequest(RequestMethod.GET, blogsListApiPath, null);
 
   return NextResponse.json(data);
 }

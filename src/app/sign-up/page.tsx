@@ -7,6 +7,7 @@ import { Metadata } from 'next';
 import { getUserData } from '@/app/utils/fetchHelper';
 import { UserData } from '@/types/User.type';
 import { Hero } from '@/types/CommonHero.type';
+import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
 
 export const metadata: Metadata = {
   title: SEO_CONFIG.signUp.title,
@@ -24,7 +25,8 @@ export default async function SignUp() {
     title: 'Your Title Here',
   };
 
-  const userData = await getUserData();
+  const auth = await isAuthenticated();
+  const userData = auth.isSignedIn ? await getUserData(auth) : null;
 
   return (
     <>

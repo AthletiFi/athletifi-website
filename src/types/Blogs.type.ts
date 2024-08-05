@@ -1,4 +1,4 @@
-export type NewsImage = {
+export type BlogsImage = {
   url: string;
 };
 
@@ -21,12 +21,12 @@ export type Category = {
   title: string;
 };
 
-export type NewsContent = {
+export type BlogsContent = {
   subheading: string;
   body: string;
 };
 
-export interface NewsArticle {
+export interface BlogsArticle {
   id: number;
   title: string;
   description: string;
@@ -35,9 +35,9 @@ export interface NewsArticle {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
-  image: NewsImage;
+  image: BlogsImage;
   author: Author;
-  content: NewsContent[];
+  content: BlogsContent[];
   categories: Category[];
 }
 
@@ -50,30 +50,30 @@ export interface PaginatedWorkflow {
       total: number;
     };
   };
-  data: NewsArticle[];
+  data: BlogsArticle[];
 }
 
 export interface Articles {
-  newsListData?: NewsArticle[];
+  blogsListData?: BlogsArticle[];
 }
 
 export interface AllArticles {
-  allNewsList: NewsArticle[] | null;
+  allBlogsList: BlogsArticle[] | null;
 }
 
-export interface NewsProps extends Articles {
-  allNewsList: PaginatedWorkflow;
+export interface BlogsProps extends Articles {
+  allBlogsList: PaginatedWorkflow;
 }
 
-export interface NewsDetails {
-  newsArticle: PaginatedWorkflow;
+export interface BlogsDetails {
+  blogsArticle: PaginatedWorkflow;
 }
 
-export interface NewsSlugProps extends NewsDetails {
-  allNewsData: PaginatedWorkflow;
+export interface BlogsSlugProps extends BlogsDetails {
+  allBlogsData: PaginatedWorkflow;
 }
 
-export interface NewsPageContext {
+export interface BlogsPageContext {
   params: {
     slug: string;
   };

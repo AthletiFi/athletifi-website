@@ -199,12 +199,12 @@ export default function Header({ userData }: { userData: UserData }) {
                 <li>
                   <Link
                     onClick={() => setOpen(false)}
-                    href="/news?page=1"
+                    href="/blogs?page=1"
                     className={`text-md md:text-base text-white font-normal font-Segoe opacity-70 hover:opacity-100 duration-300 relative after:content-[''] after:absolute after:w-0 hover:after:w-full after:h-2pixel after:-bottom-1 after:right-0 after:bg-shadow_blue after:rounded-md after:transition-all after:duration-300 after:ease-out hover:after:left-0 hover:after:right-auto ${
-                      path == '/news' ? '!opacity-100' : ''
+                      path == '/blogs' ? '!opacity-100' : ''
                     }`}
                   >
-                    News
+                    Blogs
                   </Link>
                 </li>
                 <li>

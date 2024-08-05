@@ -81,7 +81,7 @@ const SignUpForm = () => {
       {/* GRID-LINE IMG */}
       <Image
         className="lg:w-462 lg:h-452 w-40 h-40 lg:top-10 lg:-left-10 absolute -z-20 opacity-40"
-        src="/assets/img/svg/news-grid-line.svg"
+        src="/assets/img/svg/blogs-grid-line.svg"
         width={IMAGE_WIDTH_GRID}
         height={IMAGE_HEIGHT_GRID}
         alt=""

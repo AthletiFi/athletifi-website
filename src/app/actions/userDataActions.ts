@@ -4,9 +4,9 @@ import { emptyNotifications } from '@/types/User.type';
 import { revalidateTag } from 'next/cache';
 import { isAuthenticated } from '@/utils/auth/amplify-utils';
 
-const userDataUrl = `${process.env.NEXT_BACKEND_API_URL}/userData`;
-const addUserUrl = `${process.env.NEXT_BACKEND_API_URL}/addUser`;
-const deleteUserDataUrl = `${process.env.NEXT_BACKEND_API_URL}/purgeUserData`;
+const userDataUrl = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/userData`;
+const addUserUrl = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/addUser`;
+const deleteUserDataUrl = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/purgeUserData`;
 
 async function enableNotificationHelper(
   amplifyId: string,

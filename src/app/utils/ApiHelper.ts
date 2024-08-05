@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { PostData, NewsListResult } from '@/types/Api.type';
+import { PostData, BlogsListResult } from '@/types/Api.type';
 
 export enum RequestMethod {
   GET = 'GET',
@@ -11,23 +11,23 @@ export enum RequestMethod {
 
 const REQUEST_TIMEOUT_MS: number = 5000;
 
-export async function getNewsList(): Promise<NewsListResult> {
-  const newsListApiPath =
+export async function getBlogsList(): Promise<BlogsListResult> {
+  const blogsListApiPath =
     '/news-lists?populate=image&populate=author&populate=categories&sort=createdAt:desc';
   try {
-    const data = await axiosRequest(RequestMethod.GET, newsListApiPath, null);
+    const data = await axiosRequest(RequestMethod.GET, blogsListApiPath, null);
 
     return {
-      allNewsList: data,
-      allNewsListError: null,
+      allBlogsList: data,
+      allBlogsListError: null,
     };
   } catch (error) {
-    console.error('Fetching news list failed:', error);
+    console.error('Fetching blogs list failed:', error);
 
     // Return structure in case of an error, adjust as necessary
     return {
-      allNewsList: null,
-      allNewsListError:
+      allBlogsList: null,
+      allBlogsListError:
         error instanceof Error ? error.message : 'An unknown error occurred',
     };
   }

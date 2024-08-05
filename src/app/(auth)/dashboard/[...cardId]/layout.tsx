@@ -13,17 +13,15 @@ export default async function DashboardLayout({
   children: React.ReactNode;
   params: { cardId: string[]; invite_id: string | undefined };
 }) {
-  const { isSignedIn } = await isAuthenticated();
-  let userData = await getUserData();
-
-  if (!isSignedIn || !userData)
+  const auth = await isAuthenticated();
+  if (!auth.isSignedIn)
     redirect(`/login?redirect=/dashboard/${params.cardId.join('/')}`);
 
   let inviteData = undefined;
   if (params?.invite_id) {
     inviteData = await addUserPostSignIn(params.invite_id);
-    userData = await getUserData();
   }
+  const userData = await getUserData(auth);
 
   return (
     <>

@@ -4,16 +4,17 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Header from '@/components/common/Header';
 import Footer from '@/components/common/Footer';
-import LatestNews from '@/components/home/LatestNews'; //Add this back if you want to have the news section
+import LatestBlogs from '@/components/home/LatestBlogs'; //Add this back if you want to have the blogs section
 // import OurStrategicAdvisor from "@/components/home/OurStrategicAdvisor"; //Add this back if you want to have the Darren section
 import FollowTomorrow from '@/components/home/FollowTomorrow';
 import TrustedPartners from '@/components/home/TrustedPartners';
 import PassiveEngagement from '@/components/home/PassiveEngagement';
 import BeyondNumbers from '@/components/home/BeyondNumbers';
 import HeroHomepage from '@/components/home/HeroHomepage';
-import { getNewsList } from '@/utils/ApiHelper';
+import { getBlogsList } from '@/utils/ApiHelper';
 import { getUserData } from '@/app/utils/fetchHelper';
 import { UserData } from '@/types/User.type';
+import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
 
 const BackToTop = dynamic(() => import('@/components/common/BackToTop'), {
   ssr: false,
@@ -27,12 +28,13 @@ const IMAGE_HEIGHT_HERO_GRID = 700;
 
 // Main function component for the home page
 export default async function Home() {
-  const { allNewsList, allNewsListError } = await getNewsList();
+  const { allBlogsList, allBlogsListError } = await getBlogsList();
 
-  if (allNewsListError) return <div>Failed to fetch news list.</div>;
-  if (!allNewsList) return <div>Loading news list...</div>;
+  if (allBlogsListError) return <div>Failed to fetch blogs list.</div>;
+  if (!allBlogsList) return <div>Loading blogs list...</div>;
 
-  const userData = await getUserData();
+  const auth = await isAuthenticated();
+  const userData = auth.isSignedIn ? await getUserData(auth) : null;
 
   return (
     <>
@@ -59,7 +61,7 @@ export default async function Home() {
           <BeyondNumbers />
           {/* <OurStrategicAdvisor /> */}
           <TrustedPartners />
-          {LatestNews && <LatestNews allNewsList={allNewsList} />}
+          {LatestBlogs && <LatestBlogs allBlogsList={allBlogsList} />}
         </main>
         <Footer />
         <BackToTop />

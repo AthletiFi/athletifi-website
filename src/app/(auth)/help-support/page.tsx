@@ -24,16 +24,14 @@ export default async function HelpPage({
 }: {
   searchParams?: { [key: string]: string | undefined };
 }) {
-  const { isSignedIn } = await isAuthenticated();
-  let userData = await getUserData();
-
-  if (!isSignedIn || !userData) redirect('/login?redirect=/help-support');
+  const auth = await isAuthenticated();
+  if (!auth.isSignedIn) redirect('/login?redirect=/help-support');
 
   let inviteData = undefined;
   if (searchParams?.invite_id) {
     inviteData = await addUserPostSignIn(searchParams.invite_id);
-    userData = await getUserData();
   }
+  const userData = await getUserData(auth);
 
   return (
     <>

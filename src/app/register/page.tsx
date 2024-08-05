@@ -3,13 +3,15 @@ import AuthClient from '@/components/auth/AuthClient';
 import Header from '@/components/common/Header';
 import { UserData } from '@/types/User.type';
 import { Suspense } from 'react';
+import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
 
 export default async function RegisterPage({
   searchParams,
 }: {
   searchParams?: { [key: string]: string | undefined };
 }) {
-  const userData = await getUserData();
+  const auth = await isAuthenticated();
+  const userData = auth.isSignedIn ? await getUserData(auth) : null;
 
   return (
     <>

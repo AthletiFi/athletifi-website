@@ -1,10 +1,10 @@
-// This is the article that appears in the headline section (aka Hero) on top of the News page.
+// This is the article that appears in the headline section (aka Hero) on top of the Blogs page.
 import Link from 'next/link';
 import React from 'react';
 import BlueButton from '@/components/common/BlueButton';
 import Image from 'next/image';
 import moment from 'moment';
-import { Articles, NewsArticle } from '@/types/News.type';
+import { Articles, BlogsArticle } from '@/types/Blogs.type';
 
 const IMAGE_WIDTH_GRID: number = 362;
 const IMAGE_HEIGHT_GRID: number = 241;
@@ -14,9 +14,9 @@ const AOS_DURATION: number = 400;
 const AOS_DELAY: number[] = [100, 200];
 const AOS_OFFSET: number = 100;
 
-const FocusArticle = ({ newsListData }: Articles) => {
-  const focusArticleData: NewsArticle | null = newsListData
-    ? newsListData[0]
+const FocusArticle = ({ blogsListData }: Articles) => {
+  const focusArticleData: BlogsArticle | null = blogsListData
+    ? blogsListData[0]
     : null;
 
   const imagePath: string =
@@ -29,7 +29,7 @@ const FocusArticle = ({ newsListData }: Articles) => {
       <div className="container__border--blue-gradient relative after:absolute flex justify-center flex-col items-center after:contents-[''] after:inset-0 after:p-1 after:rounded-30 rounded-30 mx-3 sm:mx-10 md:mx-16 after:blur-75 blue_linear_gradient mt-45 lg:mt-80pixel xl:mt-123 sm:mb-24pixel lg:mb-56pixel xl:mb-125">
         <Image
           className="lg:w-462 lg:h-541 w-150 -top-160 sm:-left-20  -left-5 absolute opacity-50 -z-20"
-          src="/assets/img/svg/news-grid-line.svg"
+          src="/assets/img/svg/blogs-grid-line.svg"
           width={IMAGE_WIDTH_GRID}
           height={IMAGE_HEIGHT_GRID}
           alt=""
@@ -73,7 +73,7 @@ const FocusArticle = ({ newsListData }: Articles) => {
               
               */}
               <div className="flex xl:justify-start justify-center items-center mt-4 sm:mt-10">
-                <Link href={`news/${focusArticleData?.slug}?page=1`}>
+                <Link href={`blogs/${focusArticleData?.slug}?page=1`}>
                   <BlueButton text="Read&nbsp;more" />
                 </Link>
               </div>

@@ -135,6 +135,14 @@ export type invitationData = {
   };
 };
 
+export type AuthData = {
+  userId: string;
+  name: string;
+  email: string;
+  signInMethod: string;
+  isSignedIn: boolean;
+};
+
 export enum UpdatePwErrors {
   INVALIDPW = 'InvalidPasswordException',
   NOTAUTHORIZED = 'NotAuthorizedException',

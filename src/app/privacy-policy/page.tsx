@@ -7,6 +7,7 @@ import PrivacyPolicy from '@/components/terms/PrivacyPolicy';
 import { Metadata } from 'next';
 import { getUserData } from '@/app/utils/fetchHelper';
 import { UserData } from '@/types/User.type';
+import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
 
 export const metadata: Metadata = {
   title: SEO_CONFIG.privacyPolicy.title,
@@ -21,7 +22,8 @@ export default async function PrivacyPolicyPage() {
     heading: 'Privacy Policy',
   };
 
-  const userData = await getUserData();
+  const auth = await isAuthenticated();
+  const userData = auth.isSignedIn ? await getUserData(auth) : null;
 
   return (
     <>

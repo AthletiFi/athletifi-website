@@ -12,7 +12,7 @@ export default function robots(): MetadataRoute.Robots {
         '/contact-us',
         '/login',
         '/logout',
-        '/news',
+        '/blogs',
         '/privacy-policy',
         '/register',
         '/resolve-auth',

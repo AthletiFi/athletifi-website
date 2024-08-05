@@ -6,9 +6,9 @@ import Link from 'next/link';
 // import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { PaginationArrow } from '@/components/common/Icon';
-import NewsInsightsLoader from './NewsInsightsLoader';
-import { AllArticles, Category, NewsArticle } from '@/types/News.type';
-import { getNewsList } from '@/utils/ApiHelper';
+import BlogsInsightsLoader from './BlogsInsightsLoader';
+import { AllArticles, Category, BlogsArticle } from '@/types/Blogs.type';
+import { getBlogsList } from '@/utils/ApiHelper';
 import { ToastContainer, toast, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -20,7 +20,7 @@ const AOS_OFFSET: number = 200;
 const IMAGE_WIDTH_GRID: number = 716;
 const IMAGE_HEIGHT_GRID: number = 692;
 
-const NewsInsightsCards = ({ allNewsList }: AllArticles) => {
+const BlogsInsightsCards = ({ allBlogsList }: AllArticles) => {
   // const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -32,15 +32,15 @@ const NewsInsightsCards = ({ allNewsList }: AllArticles) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   // ==== SKELETON LOADER END ====
-  const moreArticles: NewsArticle[] = allNewsList ?? [];
-  // Nullish coalescing (??) is used to ensure that moreArticles is always an array, even if props.allNewsList is undefined or null.
+  const moreArticles: BlogsArticle[] = allBlogsList ?? [];
+  // Nullish coalescing (??) is used to ensure that moreArticles is always an array, even if props.allBlogsList is undefined or null.
 
   const itemsPerPage: number = 5; //change this to change the number of articles displayed on one page
 
   // Calculate the start and end indexes of the current page
   const startIndex: number = (currentPage - 1) * itemsPerPage;
   const endIndex: number = startIndex + itemsPerPage;
-  const displayedItems: NewsArticle[] = moreArticles.slice(
+  const displayedItems: BlogsArticle[] = moreArticles.slice(
     startIndex,
     endIndex,
   );
@@ -54,9 +54,9 @@ const NewsInsightsCards = ({ allNewsList }: AllArticles) => {
 
     setLoading(true);
     try {
-      await getNewsList();
+      await getBlogsList();
 
-      const newPath = `/news?page=${newPage}`;
+      const newPath = `/blogs?page=${newPage}`;
       // Use the push method from useRouter to navigate
       // router.push(newPath);
       // we remove the useRouter hook and instead use window.location.href to navigate to the new page. This way, the component remains a Client Component and doesn't rely on server-side hooks.
@@ -80,7 +80,7 @@ const NewsInsightsCards = ({ allNewsList }: AllArticles) => {
             data-aos-offset={AOS_OFFSET}
             className="text-center md:text-start font-HelveticaNeueMedium font-medium text-lg md:text-5xl sm:text-4xl text-primary md:pt-10 md:pb-25 pb-5"
           >
-            <span className="relative">More Recent News</span>
+            <span className="relative">More Recent Blogs</span>
           </h2>
           {moreArticles.length === 0 ? (
             <p className="text-center text-gray-500">
@@ -89,7 +89,7 @@ const NewsInsightsCards = ({ allNewsList }: AllArticles) => {
             </p>
           ) : (
             <div>
-              {displayedItems.map((item: NewsArticle, index: number) => {
+              {displayedItems.map((item: BlogsArticle, index: number) => {
                 const imagePath = 'https://vidalco.in';
                 const url = item.image.url;
                 const combinedUrl = url ? `${imagePath}${url}` : null;
@@ -98,11 +98,11 @@ const NewsInsightsCards = ({ allNewsList }: AllArticles) => {
                   // <>
                   <div key={item.slug}>
                     {loading ? (
-                      <NewsInsightsLoader />
+                      <BlogsInsightsLoader />
                     ) : (
                       <Link
-                        // href={`/news/${item.slug}?page=${currentPage}`}
-                        href={`/news/${item.slug}?page=1`}
+                        // href={`/blogs/${item.slug}?page=${currentPage}`}
+                        href={`/blogs/${item.slug}?page=1`}
                         passHref
                       >
                         <div
@@ -176,9 +176,9 @@ const NewsInsightsCards = ({ allNewsList }: AllArticles) => {
                   <Link
                     scroll={false}
                     href={
-                      pathname === '/news'
-                        ? `/news?page=${currentPage - 1}`
-                        : `/news/${slug}?page=${currentPage - 1}`
+                      pathname === '/blogs'
+                        ? `/blogs?page=${currentPage - 1}`
+                        : `/blogs/${slug}?page=${currentPage - 1}`
                     }
                     onClick={() => handlePageChange(currentPage - 1)}
                     className="-rotate-90 hover:-translate-x-1 duration-200 inline-block"
@@ -201,9 +201,9 @@ const NewsInsightsCards = ({ allNewsList }: AllArticles) => {
                     scroll={false}
                     onClick={() => handlePageChange(currentPage + 1)}
                     href={
-                      pathname === '/news'
-                        ? `/news?page=${currentPage + 1}`
-                        : `/news/${slug}?page=${currentPage + 1}`
+                      pathname === '/blogs'
+                        ? `/blogs?page=${currentPage + 1}`
+                        : `/blogs/${slug}?page=${currentPage + 1}`
                     }
                     className="rotate-90 hover:translate-x-1 duration-200"
                   >
@@ -240,4 +240,4 @@ const NewsInsightsCards = ({ allNewsList }: AllArticles) => {
   );
 };
 
-export default NewsInsightsCards;
+export default BlogsInsightsCards;

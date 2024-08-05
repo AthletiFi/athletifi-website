@@ -5,6 +5,7 @@ import config from '@/custom-aws-exports';
 import { cookies } from 'next/headers';
 import { getCurrentUser, fetchUserAttributes } from 'aws-amplify/auth/server';
 import { generateServerClientUsingCookies } from '@aws-amplify/adapter-nextjs/data';
+import { AuthData } from '@/types/User.type';
 
 export const cookieBasedClient = generateServerClientUsingCookies({
   config,
@@ -16,7 +17,7 @@ export const { runWithAmplifyServerContext } = createServerRunner({
   config,
 });
 
-export const isAuthenticated = async () =>
+export const isAuthenticated = async (): Promise<AuthData> =>
   await runWithAmplifyServerContext({
     nextServerContext: { cookies },
     async operation(contextSpec) {
@@ -29,7 +30,7 @@ export const isAuthenticated = async () =>
           email: userAttributes.email,
           signInMethod: user.signInDetails ? 'email' : 'social',
           isSignedIn: !!user,
-        };
+        } as AuthData;
       } catch (error) {
         return {
           userId: '',
@@ -37,7 +38,7 @@ export const isAuthenticated = async () =>
           email: '',
           signInMethod: '',
           isSignedIn: false,
-        };
+        } as AuthData;
       }
     },
   });

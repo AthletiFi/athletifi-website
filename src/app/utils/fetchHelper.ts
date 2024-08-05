@@ -1,12 +1,12 @@
 import {
+  AuthData,
   NotificationPreferences,
   NotificationTypes,
   UserData,
   emptyNotifications,
 } from '@/types/User.type';
-import { isAuthenticated } from '@/utils/auth/amplify-utils';
 
-const userDataUrl = `${process.env.NEXT_BACKEND_API_URL}/userData`;
+const userDataUrl = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/userData`;
 
 function transformNotificationPreferences(dataArray: NotificationTypes[]) {
   const tmp = { ...emptyNotifications };
@@ -16,11 +16,8 @@ function transformNotificationPreferences(dataArray: NotificationTypes[]) {
   return tmp;
 }
 
-export async function getUserData() {
+export async function getUserData({ userId, name, email }: AuthData) {
   try {
-    const { userId, name, email } = await isAuthenticated();
-    if (!userId) return null;
-
     const fetchUrl = `${userDataUrl}?amplify_id=${userId}`;
     const response = await fetch(fetchUrl, {
       headers: {
