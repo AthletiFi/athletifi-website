@@ -16,7 +16,11 @@ function transformNotificationPreferences(dataArray: NotificationTypes[]) {
   return tmp;
 }
 
-export async function getUserData({ userId, name, email }: AuthData) {
+export async function getUserData({
+  userId,
+  name,
+  email,
+}: AuthData): Promise<UserData | null> {
   try {
     const fetchUrl = `${userDataUrl}?amplify_id=${userId}`;
     const response = await fetch(fetchUrl, {

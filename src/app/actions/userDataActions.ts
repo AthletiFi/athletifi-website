@@ -140,7 +140,7 @@ async function addUserHelper(
   return data;
 }
 
-export default async function addUserPostSignIn(inviteId: string) {
+export async function addUserPostSignIn(inviteId: string) {
   const { userId, name, email } = await isAuthenticated();
 
   try {

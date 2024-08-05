@@ -6,7 +6,7 @@ import ManageReferrals from '@/components/user-portal/ManageReferrals';
 import Header from '@/components/common/Header';
 import ProfileHeader from '@/components/user-portal/ProfileHeader';
 import { invitationData, UserData } from '@/types/User.type';
-import addUserPostSignIn from '@/app/actions/userDataActions';
+import { addUserPostSignIn } from '@/app/actions/userDataActions';
 import { getUserData } from '@/app/utils/fetchHelper';
 import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
 import { redirect } from 'next/navigation';
