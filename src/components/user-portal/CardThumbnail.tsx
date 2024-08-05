@@ -374,7 +374,7 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                         {!emailSubmitted && (
                           <form
                             className="w-full flex flex-col gap-3 items-end"
-                            onSubmit={handleSubmit}
+                            onSubmit={(e) => handleSubmit(e)}
                           >
                             <input
                               type="text"
