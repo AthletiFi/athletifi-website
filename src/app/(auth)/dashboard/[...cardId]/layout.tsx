@@ -19,7 +19,12 @@ export default async function DashboardLayout({
 
   let inviteData = undefined;
   if (params?.invite_id) {
-    inviteData = await addUserPostSignIn(params.invite_id);
+    inviteData = await addUserPostSignIn(
+      params.invite_id,
+      auth.userId,
+      auth.name,
+      auth.userId,
+    );
   }
   const userData = await getUserData(auth);
 

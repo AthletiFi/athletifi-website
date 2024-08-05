@@ -178,7 +178,7 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
     }
   };
 
-  const triggerRevoke = (
+  const triggerRevoke = async (
     inviteId: string | null,
     card_name?: string | null,
   ) => {
@@ -192,7 +192,7 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
       .catch((error) => console.error('Failed to revoke invitation', error));
   };
 
-  const triggerDecline = (
+  const triggerDecline = async (
     inviteId: string | null,
     owner_email?: string | null,
     card_name?: string | null,
@@ -291,9 +291,9 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                           </p>
                         </div>
                         {invite.invite_status !== 'revoked' && (
-                          <div
+                          <button
                             className="flex items-center cursor-pointer justify-end"
-                            onClick={() => {
+                            onClick={() => async () => {
                               triggerRevoke(invite.invite_id, cardData.name);
                             }}
                           >
@@ -302,7 +302,7 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                               className="text-chartRed text-md md:text-2xl"
                               icon={faXmark}
                             />
-                          </div>
+                          </button>
                         )}
                       </div>
                       {revokeSubmittedId === invite.invite_id && (

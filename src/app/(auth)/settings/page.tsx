@@ -22,7 +22,12 @@ export default async function SettingsPage({
 
   let inviteData = undefined;
   if (searchParams?.invite_id) {
-    inviteData = await addUserPostSignIn(searchParams.invite_id);
+    inviteData = await addUserPostSignIn(
+      searchParams.invite_id,
+      auth.userId,
+      auth.name,
+      auth.userId,
+    );
   }
   const userData = await getUserData(auth);
 

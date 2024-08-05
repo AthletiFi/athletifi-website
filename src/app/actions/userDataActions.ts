@@ -2,7 +2,6 @@
 
 import { emptyNotifications } from '@/types/User.type';
 import { revalidateTag } from 'next/cache';
-import { isAuthenticated } from '@/utils/auth/amplify-utils';
 
 const userDataUrl = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/userData`;
 const addUserUrl = `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/addUser`;
@@ -140,9 +139,12 @@ async function addUserHelper(
   return data;
 }
 
-export async function addUserPostSignIn(inviteId: string) {
-  const { userId, name, email } = await isAuthenticated();
-
+export async function addUserPostSignIn(
+  inviteId: string,
+  email: string,
+  name: string,
+  userId: string,
+) {
   try {
     const data = await addUserHelper(email, name, userId, inviteId);
 
