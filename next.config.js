@@ -4,7 +4,18 @@
 const nextConfig = {
   // Configure image domains for Next.js Image component.
   images: {
-    domains: ['vidalco.in', 'athletifi-s3.s3.us-east-2.amazonaws.com'], // Add "localhost" here for local development
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'vidalco.in',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'athletifi-s3.s3.us-east-2.amazonaws.com',
+        port: '',
+      },
+    ],
   },
   // Enable React Strict Mode for better debugging and performance.
   reactStrictMode: true,
