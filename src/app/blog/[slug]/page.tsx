@@ -19,6 +19,7 @@ import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
 // This is the main content of the blog article page, which contains the blog article itself and the sidebar with the other blog articles.
 export default async function BlogArticleSlugPage({ params }: BlogPageContext) {
   const blogListApiPath = `/news-lists/?populate=image&populate=content&filters[slug][$eq]=${params.slug}&populate=author`;
+  console.log(`${blogListApiPath}`);
   const blogArticle = await fetchRequest(
     RequestMethod.GET,
     blogListApiPath,

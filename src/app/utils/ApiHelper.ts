@@ -50,15 +50,26 @@ export async function fetchRequest<T>(
   url: string,
   data: PostData<T> | null | undefined,
 ) {
+  let initOptions;
+
+  if (data) {
+    initOptions = {
+      headers: { 'Content-Type': 'application/json' },
+      method: method,
+      body: JSON.stringify(data),
+    };
+  } else {
+    initOptions = {
+      headers: { 'Content-Type': 'application/json' },
+      method: method,
+    };
+  }
+
   try {
     // Make the API request to the Strapi CMS and await the response.
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_SERVER_URL}${url}`,
-      {
-        headers: { 'Content-Type': 'application/json' },
-        method: method,
-        body: JSON.stringify(data),
-      },
+      initOptions,
     );
     return await response.json();
   } catch (error) {
