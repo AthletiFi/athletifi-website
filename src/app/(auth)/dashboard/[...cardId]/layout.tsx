@@ -27,7 +27,7 @@ export default async function DashboardLayout({
         auth.userId,
       );
     } catch (error) {
-      console.error('Error adding user post sign-in: error');
+      console.error(`Error adding user post sign-in: ${JSON.stringify(error)}`);
     }
   }
   const userData = await getUserData(auth);
