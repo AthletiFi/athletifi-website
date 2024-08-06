@@ -5,35 +5,38 @@ import Notifications from '@/components/user-portal/Notifications';
 import ManageReferrals from '@/components/user-portal/ManageReferrals';
 import Header from '@/components/common/Header';
 import ProfileHeader from '@/components/user-portal/ProfileHeader';
-import { invitationData, UserData } from '@/types/User.type';
-import { addUserPostSignIn } from '@/app/actions/userDataActions';
-import { getUserData } from '@/app/utils/fetchHelper';
+import { emptyUserData, invitationData, UserData } from '@/types/User.type';
+// import { addUserPostSignIn } from '@/app/actions/userDataActions';
+// import { getUserData } from '@/app/utils/fetchHelper';
 import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
 import { redirect } from 'next/navigation';
 import InviteModal from '@/components/common/InviteModal';
 
-export default async function SettingsPage({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | undefined };
-}) {
+export default async function SettingsPage(
+  {
+    // searchParams,
+  }: {
+    searchParams?: { [key: string]: string | undefined };
+  },
+) {
   const auth = await isAuthenticated();
   if (!auth.isSignedIn) redirect('/login?redirect=/settings');
 
-  let inviteData = undefined;
-  if (searchParams?.invite_id) {
-    try {
-      inviteData = await addUserPostSignIn(
-        searchParams.invite_id,
-        auth.userId,
-        auth.name,
-        auth.userId,
-      );
-    } catch (error) {
-      console.error(`Error adding user post sign-in: ${JSON.stringify(error)}`);
-    }
-  }
-  const userData = await getUserData(auth);
+  const inviteData = undefined;
+  // if (searchParams?.invite_id) {
+  //   try {
+  //     inviteData = await addUserPostSignIn(
+  //       searchParams.invite_id,
+  //       auth.userId,
+  //       auth.name,
+  //       auth.userId,
+  //     );
+  //   } catch (error) {
+  //     console.error(`Error adding user post sign-in: ${JSON.stringify(error)}`);
+  //   }
+  // }
+  // const userData = await getUserData(auth);
+  const userData = emptyUserData;
 
   return (
     <>
