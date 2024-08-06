@@ -74,7 +74,7 @@ export async function axiosRequest<T>(
           console.error('Hit an internal server error');
           break;
         default:
-          console.error('Ran into a general error');
+          console.error(`Ran into a general error: ${error}`);
       }
     }
     // Handle any errors that occur during the API request.
