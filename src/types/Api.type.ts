@@ -1,12 +1,12 @@
-import { PaginatedWorkflow } from '@/types/Blogs.type';
-export interface BlogsApiResponse {
+import { PaginatedWorkflow } from '@/types/Blog.type';
+export interface BlogApiResponse {
   res: PaginatedWorkflow;
   error: string | null | undefined;
 }
 
-export interface BlogsListResult {
-  allBlogsList: PaginatedWorkflow | null;
-  allBlogsListError: string | null | undefined;
+export interface BlogListResult {
+  allBlogList: PaginatedWorkflow | null;
+  allBlogListError: string | null | undefined;
 }
 
 export type PostData<T> = {

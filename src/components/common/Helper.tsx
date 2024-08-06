@@ -1,9 +1,9 @@
 // LATEST NEWS COMPONENT MAP
-interface BlogsItem {
+interface BlogItem {
   delay: string;
   matchimage: string;
 }
-export const matchBlogs: BlogsItem[] = [
+export const matchBlog: BlogItem[] = [
   {
     delay: '100',
     matchimage: '/assets/img/webp/space.webp',

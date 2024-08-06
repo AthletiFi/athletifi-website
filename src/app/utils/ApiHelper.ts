@@ -1,4 +1,4 @@
-import { PostData, BlogsListResult } from '@/types/Api.type';
+import { PostData, BlogListResult } from '@/types/Api.type';
 
 export enum RequestMethod {
   GET = 'GET',
@@ -8,16 +8,16 @@ export enum RequestMethod {
   DELETE = 'DELETE',
 }
 
-export async function getBlogsList(): Promise<BlogsListResult> {
-  const blogsListApiPath =
+export async function getBlogList(): Promise<BlogListResult> {
+  const blogListApiPath =
     '/news-lists?populate=image&populate=author&populate=categories&sort=createdAt:desc';
   try {
-    // const data = await axiosRequest(RequestMethod.GET, blogsListApiPath, null);
+    // const data = await axiosRequest(RequestMethod.GET, blogListApiPath, null);
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_SERVER_URL}${blogsListApiPath}`,
+      `${process.env.NEXT_PUBLIC_STRAPI_SERVER_URL}${blogListApiPath}`,
       {
         next: {
-          tags: ['blogs'],
+          tags: ['blog'],
         },
         cache: 'force-cache',
       },
@@ -25,16 +25,16 @@ export async function getBlogsList(): Promise<BlogsListResult> {
     const data = await response.json();
 
     return {
-      allBlogsList: data,
-      allBlogsListError: null,
+      allBlogList: data,
+      allBlogListError: null,
     };
   } catch (error) {
-    console.error('Fetching blogs list failed:', error);
+    console.error('Fetching blog list failed:', error);
 
     // Return structure in case of an error, adjust as necessary
     return {
-      allBlogsList: null,
-      allBlogsListError:
+      allBlogList: null,
+      allBlogListError:
         error instanceof Error ? error.message : 'An unknown error occurred',
     };
   }

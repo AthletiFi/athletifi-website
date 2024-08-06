@@ -4,14 +4,14 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Header from '@/components/common/Header';
 import Footer from '@/components/common/Footer';
-import LatestBlogs from '@/components/home/LatestBlogs'; //Add this back if you want to have the blogs section
+import LatestBlog from '@/components/home/LatestBlog'; //Add this back if you want to have the blog section
 // import OurStrategicAdvisor from "@/components/home/OurStrategicAdvisor"; //Add this back if you want to have the Darren section
 import FollowTomorrow from '@/components/home/FollowTomorrow';
 import TrustedPartners from '@/components/home/TrustedPartners';
 import PassiveEngagement from '@/components/home/PassiveEngagement';
 import BeyondNumbers from '@/components/home/BeyondNumbers';
 import HeroHomepage from '@/components/home/HeroHomepage';
-import { getBlogsList } from '@/utils/ApiHelper';
+import { getBlogList } from '@/utils/ApiHelper';
 import { getUserData } from '@/app/utils/fetchHelper';
 import { UserData } from '@/types/User.type';
 import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
@@ -28,10 +28,10 @@ const IMAGE_HEIGHT_HERO_GRID = 700;
 
 // Main function component for the home page
 export default async function Home() {
-  const { allBlogsList, allBlogsListError } = await getBlogsList();
+  const { allBlogList, allBlogListError } = await getBlogList();
 
-  if (allBlogsListError) return <div>Failed to fetch blogs list.</div>;
-  if (!allBlogsList) return <div>Loading blogs list...</div>;
+  if (allBlogListError) return <div>Failed to fetch blog list.</div>;
+  if (!allBlogList) return <div>Loading blog list...</div>;
 
   const auth = await isAuthenticated();
   const userData = auth.isSignedIn ? await getUserData(auth) : null;
@@ -61,7 +61,7 @@ export default async function Home() {
           <BeyondNumbers />
           {/* <OurStrategicAdvisor /> */}
           <TrustedPartners />
-          {LatestBlogs && <LatestBlogs allBlogsList={allBlogsList} />}
+          {LatestBlog && <LatestBlog allBlogList={allBlogList} />}
         </main>
         <Footer />
         <BackToTop />

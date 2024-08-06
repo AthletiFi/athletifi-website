@@ -61,7 +61,7 @@ const AuthClient = ({
       <ThemeProvider theme={loginTheme}>
         <div className="mb-12">
           <p className="text-primary font-extralight leading-8 mt-12">
-            Signup for
+            Welcome to
           </p>
           <h1
             className={`text-xl text-primary leading-8 ${sourceSans3.className}`}

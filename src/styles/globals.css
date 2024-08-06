@@ -98,8 +98,8 @@ body {
   background-image: url('/assets/img/webp/about-hero-img.webp');
 }
 
-.blogs-page__hero-bg {
-  background-image: url('/assets/img/webp/blogs-hero-img.webp');
+.blog-page__hero-bg {
+  background-image: url('/assets/img/webp/blog-hero-img.webp');
 }
 
 .signup-page__hero-bg,
@@ -131,12 +131,12 @@ html {
 }
 
 /* ==== ==== */
-.blogs-loader__animation {
+.blog-loader__animation {
   overflow: hidden;
   background: #d0d0d0;
 }
 
-.blogs-loader__animation::before {
+.blog-loader__animation::before {
   content: '';
   display: block;
   height: 100%;

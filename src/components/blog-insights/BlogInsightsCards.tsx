@@ -6,9 +6,9 @@ import Link from 'next/link';
 // import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { PaginationArrow } from '@/components/common/Icon';
-import BlogsInsightsLoader from './BlogsInsightsLoader';
-import { AllArticles, Category, BlogsArticle } from '@/types/Blogs.type';
-import { getBlogsList } from '@/utils/ApiHelper';
+import BlogInsightsLoader from './BlogInsightsLoader';
+import { AllArticles, Category, BlogArticle } from '@/types/Blog.type';
+import { getBlogList } from '@/utils/ApiHelper';
 import { ToastContainer, toast, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -20,7 +20,7 @@ const AOS_OFFSET: number = 200;
 const IMAGE_WIDTH_GRID: number = 716;
 const IMAGE_HEIGHT_GRID: number = 692;
 
-const BlogsInsightsCards = ({ allBlogsList }: AllArticles) => {
+const BlogInsightsCards = ({ allBlogList }: AllArticles) => {
   // const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -32,15 +32,15 @@ const BlogsInsightsCards = ({ allBlogsList }: AllArticles) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   // ==== SKELETON LOADER END ====
-  const moreArticles: BlogsArticle[] = allBlogsList ?? [];
-  // Nullish coalescing (??) is used to ensure that moreArticles is always an array, even if props.allBlogsList is undefined or null.
+  const moreArticles: BlogArticle[] = allBlogList ?? [];
+  // Nullish coalescing (??) is used to ensure that moreArticles is always an array, even if props.allBlogList is undefined or null.
 
   const itemsPerPage: number = 5; //change this to change the number of articles displayed on one page
 
   // Calculate the start and end indexes of the current page
   const startIndex: number = (currentPage - 1) * itemsPerPage;
   const endIndex: number = startIndex + itemsPerPage;
-  const displayedItems: BlogsArticle[] = moreArticles.slice(
+  const displayedItems: BlogArticle[] = moreArticles.slice(
     startIndex,
     endIndex,
   );
@@ -54,9 +54,9 @@ const BlogsInsightsCards = ({ allBlogsList }: AllArticles) => {
 
     setLoading(true);
     try {
-      await getBlogsList();
+      await getBlogList();
 
-      const newPath = `/blogs?page=${newPage}`;
+      const newPath = `/blog?page=${newPage}`;
       // Use the push method from useRouter to navigate
       // router.push(newPath);
       // we remove the useRouter hook and instead use window.location.href to navigate to the new page. This way, the component remains a Client Component and doesn't rely on server-side hooks.
@@ -83,7 +83,7 @@ const BlogsInsightsCards = ({ allBlogsList }: AllArticles) => {
             data-aos-offset={AOS_OFFSET}
             className="text-center md:text-start font-HelveticaNeueMedium font-medium text-lg md:text-5xl sm:text-4xl text-primary md:pt-10 md:pb-25 pb-5"
           >
-            <span className="relative">More Recent Blogs</span>
+            <span className="relative">More Recent Blog</span>
           </h2>
           {moreArticles.length === 0 ? (
             <p className="text-center text-gray-500">
@@ -92,7 +92,7 @@ const BlogsInsightsCards = ({ allBlogsList }: AllArticles) => {
             </p>
           ) : (
             <div>
-              {displayedItems.map((item: BlogsArticle, index: number) => {
+              {displayedItems.map((item: BlogArticle, index: number) => {
                 const imagePath = 'https://vidalco.in';
                 const url = item.image.url;
                 const combinedUrl = url ? `${imagePath}${url}` : null;
@@ -101,13 +101,9 @@ const BlogsInsightsCards = ({ allBlogsList }: AllArticles) => {
                   // <>
                   <div key={item.slug}>
                     {loading ? (
-                      <BlogsInsightsLoader />
+                      <BlogInsightsLoader />
                     ) : (
-                      <Link
-                        // href={`/blogs/${item.slug}?page=${currentPage}`}
-                        href={`/blogs/${item.slug}?page=1`}
-                        passHref
-                      >
+                      <Link href={`/blog/${item.slug}?page=1`} passHref>
                         <div
                           key={index}
                           className="flex md:flex-row flex-col lg:p-8 p-6 bg-darkgray lg:gap-x-12 sm:gap-7 gap-3 rounded-20 mb-6 sm:mt-30pixel"
@@ -179,9 +175,9 @@ const BlogsInsightsCards = ({ allBlogsList }: AllArticles) => {
                   <Link
                     scroll={false}
                     href={
-                      pathname === '/blogs'
-                        ? `/blogs?page=${currentPage - 1}`
-                        : `/blogs/${slug}?page=${currentPage - 1}`
+                      pathname === '/blog'
+                        ? `/blog?page=${currentPage - 1}`
+                        : `/blog/${slug}?page=${currentPage - 1}`
                     }
                     onClick={() => handlePageChange(currentPage - 1)}
                     className="-rotate-90 hover:-translate-x-1 duration-200 inline-block"
@@ -204,9 +200,9 @@ const BlogsInsightsCards = ({ allBlogsList }: AllArticles) => {
                     scroll={false}
                     onClick={() => handlePageChange(currentPage + 1)}
                     href={
-                      pathname === '/blogs'
-                        ? `/blogs?page=${currentPage + 1}`
-                        : `/blogs/${slug}?page=${currentPage + 1}`
+                      pathname === '/blog'
+                        ? `/blog?page=${currentPage + 1}`
+                        : `/blog/${slug}?page=${currentPage + 1}`
                     }
                     className="rotate-90 hover:translate-x-1 duration-200"
                   >
@@ -243,4 +239,4 @@ const BlogsInsightsCards = ({ allBlogsList }: AllArticles) => {
   );
 };
 
-export default BlogsInsightsCards;
+export default BlogInsightsCards;

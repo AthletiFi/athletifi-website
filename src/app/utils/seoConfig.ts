@@ -25,11 +25,11 @@ const homeConfig: PageSEO = {
   websiteURL: BASEURL,
 };
 
-const blogsConfig: PageSEO = {
+const blogConfig: PageSEO = {
   description: '(dynamically generated)',
   image: '(dynamically generated)',
-  title: 'AthletiFi Blogs: Latest Updates & Announcements',
-  websiteURL: `${BASEURL}/blogs`,
+  title: 'AthletiFi Blog: Latest Updates & Announcements',
+  websiteURL: `${BASEURL}/blog`,
 };
 
 const signUpConfig: PageSEO = {
@@ -96,7 +96,7 @@ export const SEO_CONFIG = {
   contactUs: contactUsConfig,
   dashboard: dashboardConfig,
   home: homeConfig,
-  blogs: blogsConfig,
+  blog: blogConfig,
   signUp: signUpConfig,
   notFound: notFoundConfig,
   termsOfUse: termsOfUseConfig,

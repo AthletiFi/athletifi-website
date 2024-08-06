@@ -1,4 +1,4 @@
-// This is the content of the article that displays when clicking on a blogs article.
+// This is the content of the article that displays when clicking on a blog article.
 
 import Image from 'next/image';
 import React from 'react';
@@ -9,7 +9,7 @@ import {
   WhiteTwitterIcon,
   WhiteWhatsAppIcon,
 } from '@/components/common/Icon';
-import { BlogsContent, BlogsArticle, BlogsDetails } from '@/types/Blogs.type';
+import { BlogContent, BlogArticle, BlogDetails } from '@/types/Blog.type';
 
 import Link from 'next/link';
 
@@ -21,12 +21,12 @@ const AOS_DURATION: number = 800;
 const AOS_DELAY: number = 200;
 const AOS_OFFSET: number[] = [100, 200];
 
-const TargetArticleContent = ({ blogsArticle }: BlogsDetails) => {
+const TargetArticleContent = ({ blogArticle }: BlogDetails) => {
   return (
     <>
-      {blogsArticle?.data?.map((blogsItem: BlogsArticle, i: number) => {
+      {blogArticle?.data?.map((blogItem: BlogArticle, i: number) => {
         const imagePath = 'https://vidalco.in';
-        const url = blogsItem.image.url;
+        const url = blogItem.image.url;
         const combinedUrl = url ? `${imagePath}${url}` : null;
         return (
           <div key={i}>
@@ -34,7 +34,7 @@ const TargetArticleContent = ({ blogsArticle }: BlogsDetails) => {
               {/* GRID-LINE IMG */}
               <Image
                 className="lg:w-462 lg:h-441 w-40 lg:-top-28 lg:-left-10 absolute -z-20 opacity-50"
-                src="/assets/img/svg/blogs-grid-line.svg"
+                src="/assets/img/svg/blog-grid-line.svg"
                 width={IMAGE_WIDTH_GRID}
                 height={IMAGE_HEIGHT_GRID}
                 alt=""
@@ -69,7 +69,7 @@ const TargetArticleContent = ({ blogsArticle }: BlogsDetails) => {
                       data-aos-offset={AOS_OFFSET[1]}
                       className="font-HelveticaNeueMedium text-primary font-medium text-basemd sm:text-lg leading-8 md:leading-39 sm:text-start text-center"
                     >
-                      {/* {blogsItem.title} */}
+                      {/* {blogItem.title} */}
                       {/* ^^^^^^WE DONT NEED THIS BECAUSE WE PUT THE TITLE IN [slug].js in the heading property for hero */}
                     </h3>
                     <p
@@ -80,8 +80,8 @@ const TargetArticleContent = ({ blogsArticle }: BlogsDetails) => {
                       data-aos-offset={AOS_OFFSET[1]}
                       className="font-Segoe text-offwhite mt-2 font-normal text-base sm:text-start text-center"
                     >
-                      by: {blogsItem.author?.fullName} &bull;{' '}
-                      {moment(blogsItem.createdAt).format('DD MMM YY')}
+                      by: {blogItem.author?.fullName} &bull;{' '}
+                      {moment(blogItem.createdAt).format('DD MMM YY')}
                     </p>
                     <p
                       data-aos="fade-up"
@@ -91,10 +91,10 @@ const TargetArticleContent = ({ blogsArticle }: BlogsDetails) => {
                       data-aos-offset={AOS_OFFSET[1]}
                       className="font-Segoe font-normal text-md lg:mt-4 mt-2 leading-7 text-offwhite sm:text-start text-center"
                     >
-                      {/* {blogsItem.previewSummary} */}
+                      {/* {blogItem.previewSummary} */}
                     </p>
-                    {blogsItem?.content?.map(
-                      (obj: BlogsContent, index: number) => {
+                    {blogItem?.content?.map(
+                      (obj: BlogContent, index: number) => {
                         return (
                           <div key={index}>
                             <h3
@@ -136,28 +136,28 @@ const TargetArticleContent = ({ blogsArticle }: BlogsDetails) => {
                   <Link
                     className="hover:-translate-y-1 duration-200"
                     target="_blank"
-                    href={`https://www.facebook.com/sharer/sharer.php?u=${'https://athleti.fi/'}blogs/${blogsArticle.data[0].slug}`}
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${'https://athleti.fi/'}blog/${blogArticle.data[0].slug}`}
                   >
                     <WhiteFacebookIcon />
                   </Link>
                   <Link
                     className="hover:-translate-y-1 duration-200"
                     target="_blank"
-                    href={`https://twitter.com/intent/tweet?text=${blogsArticle.data[0].slug}&url=${'https://athleti.fi/'}blogs/${blogsArticle.data[0].slug}`}
+                    href={`https://twitter.com/intent/tweet?text=${blogArticle.data[0].slug}&url=${'https://athleti.fi/'}blog/${blogArticle.data[0].slug}`}
                   >
                     <WhiteTwitterIcon />
                   </Link>
                   <Link
                     className="hover:-translate-y-1 duration-200"
                     target="_blank"
-                    href={`https://api.whatsapp.com/send?text=${blogsArticle.data[0].slug}&url=${'https://athleti.fi/'}blogs/${blogsArticle.data[0].slug}`}
+                    href={`https://api.whatsapp.com/send?text=${blogArticle.data[0].slug}&url=${'https://athleti.fi/'}blog/${blogArticle.data[0].slug}`}
                   >
                     <WhiteWhatsAppIcon />
                   </Link>
                   <Link
                     className="hover:-translate-y-1 duration-200"
                     target="_blank"
-                    href={`https://www.linkedin.com/sharing/share-offsite/?url=https://athleti.fi/blogs/${blogsArticle.data[0].slug}`}
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=https://athleti.fi/blog/${blogArticle.data[0].slug}`}
                   >
                     <WhiteLinkedInIcon />
                   </Link>

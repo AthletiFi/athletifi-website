@@ -1,6 +1,6 @@
-// LatestBlogs.tsx
+// LatestBlog.tsx
 
-// This component displays the latest blogs articles on the homepage.
+// This component displays the latest blog articles on the homepage.
 // It fetches data from the Strapi CMS and renders it in a list format.
 'use client';
 
@@ -8,7 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import BlueButton from '@/components/common/BlueButton';
-import { BlogsProps, BlogsArticle, Category } from '@/types/Blogs.type';
+import { BlogProps, BlogArticle, Category } from '@/types/Blog.type';
 
 const AOS_DURATION: number = 400;
 const AOS_DELAY: number = 100;
@@ -18,17 +18,15 @@ const EXTERNAL_IMG_HEIGHT: number = 240;
 const GRID_IMAGE_WIDTH: number = 716;
 const GRID_IMAGE_HEIGHT: number = 692;
 
-const LatestBlogs = ({ allBlogsList }: BlogsProps) => {
-  const DataArray = allBlogsList.data;
+const LatestBlog = ({ allBlogList }: BlogProps) => {
+  const DataArray = allBlogList.data;
   const itemsPerPage = 3;
-  const [currentPage] = useState<number>(
-    allBlogsList.meta.pagination.pageCount,
-  );
+  const [currentPage] = useState<number>(allBlogList.meta.pagination.pageCount);
 
   // Calculate the start and end indexes of the current page
   const startIndex: number = (currentPage - 1) * itemsPerPage;
   const endIndex: number = startIndex + itemsPerPage;
-  const displayedItems: BlogsArticle[] = DataArray.slice(startIndex, endIndex);
+  const displayedItems: BlogArticle[] = DataArray.slice(startIndex, endIndex);
 
   return (
     <>
@@ -43,12 +41,12 @@ const LatestBlogs = ({ allBlogsList }: BlogsProps) => {
             className="text-center font-HelveticaNeueMedium font-medium lg:text-5xl md:text-lg2xl text-basemd text-primary md:py-10 pb-5"
           >
             <span className="relative after:content after:absolute after:bottom--6 md:after:bottom--2 after:left-0 md:after:w-209 after:w-150 after:h-2 after:bg-contain after:bg-no-repeat">
-              Latest Blogs
+              Latest Blog
             </span>
           </h2>
-          {displayedItems.map((val: BlogsArticle, index: number) => {
+          {displayedItems.map((val: BlogArticle, index: number) => {
             return (
-              <Link href={`/blogs/${val.slug}?page=1`} key={val.id}>
+              <Link href={`/blog/${val.slug}?page=1`} key={val.id}>
                 <div
                   className="flex md:flex-row flex-col lg:p-8 p-6 bg-darkgray lg:gap-x-12 sm:gap-7 gap-3 rounded-20 mb-6 sm:mt-5  "
                   data-aos="fade-up"
@@ -130,7 +128,7 @@ const LatestBlogs = ({ allBlogsList }: BlogsProps) => {
           </div> */}
 
           <div className="flex justify-center items-center pt-10 md:pb-14 lg:mb-10 ">
-            <Link href="/blogs?page=1">
+            <Link href="/blog?page=1">
               <BlueButton text="View all" />
             </Link>
           </div>
@@ -160,4 +158,4 @@ const LatestBlogs = ({ allBlogsList }: BlogsProps) => {
   );
 };
 
-export default LatestBlogs;
+export default LatestBlog;

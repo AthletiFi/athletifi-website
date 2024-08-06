@@ -2,9 +2,10 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { ButtonWhiteArrow, UnderLineText } from '@/components/common/Icon';
-import { ContactUs, ContactFormDetails } from '@/types/ContactUs.type';
+import { ContactUs } from '@/types/ContactUs.type';
 import { ToastContainer, toast, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { addContactUs } from '@/app/actions/strapiAction';
 
 const IMAGE_WIDTH_GRID = 400;
 const IMAGE_HEIGHT_GRID = 448;
@@ -12,22 +13,6 @@ const IMAGE_WIDTH_PLAYER = 658;
 const IMAGE_HEIGHT_PLAYER = 598;
 const TEXTAREA_ROWS = 4;
 const TEXTAREA_MAX_CHAR = 1000;
-
-async function handleSubmitContactUs(formDetails: ContactFormDetails) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contact`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ data: formDetails }), // Ensure this matches the expected structure on your backend
-  });
-
-  if (!response.ok) {
-    throw new Error(`Contact submission failed: ${response.statusText}`);
-  }
-
-  return await response.json();
-}
 
 const ContactUsForm = () => {
   // CUSTOM INPUT-CHECK
@@ -39,9 +24,7 @@ const ContactUsForm = () => {
   };
   const [data, setData] = useState<ContactUs>(initialState);
 
-  const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formDetails = { data };
+  const formHandler = async (formData: FormData) => {
     const toastOptions: ToastOptions = {
       draggable: false,
       position: 'bottom-right',
@@ -49,13 +32,14 @@ const ContactUsForm = () => {
 
     setLoading(true);
     try {
-      const response = await handleSubmitContactUs(formDetails);
-      if (response.data) {
+      const success = await addContactUs(formData);
+      if (success) {
         toast.success(
           'We have received your message and will be in touch shortly',
           toastOptions,
         );
-        // setData(initialState);
+      } else {
+        toast.error('Failed to log your submission', toastOptions);
       }
     } catch (err) {
       toast.error(`Hit an unknown error: ${JSON.stringify(err)}`, toastOptions);
@@ -87,7 +71,7 @@ const ContactUsForm = () => {
       {/* GRID-LINE IMG */}
       <Image
         className="lg:w-462 lg:h-452 w-40 h-40 lg:top-10 lg:-left-10 absolute -z-20 opacity-40"
-        src="/assets/img/svg/blogs-grid-line.svg"
+        src="/assets/img/svg/blog-grid-line.svg"
         width={IMAGE_WIDTH_GRID}
         height={IMAGE_HEIGHT_GRID}
         alt=""
@@ -118,10 +102,7 @@ const ContactUsForm = () => {
                 hear from you.
               </p>
               <form
-                action="submit"
-                onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
-                  formHandler(e)
-                }
+                action={(formData) => formHandler(formData)}
                 className="w-full sm:w-3/4"
               >
                 <div className="flex flex-col mt-6">
@@ -140,6 +121,7 @@ const ContactUsForm = () => {
                     placeholder="First and last name"
                     className="font-Sugoe font-normal input:-webkit-autofill focus:border-primary autofill:none text-base text-primary leading-6 py-5 px-4 bg-transparent w-full lg:max-w-400 mt-1.5 mb-3 border border-1 border-offwhite outline-none"
                     id="name"
+                    name="name"
                     onChange={(e) =>
                       setData({
                         ...data,
@@ -162,6 +144,7 @@ const ContactUsForm = () => {
                     placeholder="Email"
                     className="font-Sugoe font-normal input:-webkit-autofill focus:border-primary autofill:none text-base text-primary leading-6 py-5 px-4 bg-transparent w-full lg:max-w-400 mt-1.5 mb-3 border border-1 border-offwhite outline-none"
                     id="email"
+                    name="email"
                     onChange={(e) =>
                       setData({
                         ...data,
@@ -189,6 +172,7 @@ const ContactUsForm = () => {
                     placeholder="Message to send to the Athletifi Team"
                     className="font-Sugoe font-normal input:-webkit-autofill focus:border-primary autofill:none text-base text-primary leading-6 py-5 px-4 bg-transparent w-full lg:max-w-400 mt-1.5 mb-3 border border-1 border-offwhite outline-none"
                     id="message"
+                    name="message"
                     rows={TEXTAREA_ROWS}
                     maxLength={TEXTAREA_MAX_CHAR}
                     onChange={handleMessageInput}

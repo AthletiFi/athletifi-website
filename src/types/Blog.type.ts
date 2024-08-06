@@ -1,4 +1,4 @@
-export type BlogsImage = {
+export type BlogImage = {
   url: string;
 };
 
@@ -21,12 +21,12 @@ export type Category = {
   title: string;
 };
 
-export type BlogsContent = {
+export type BlogContent = {
   subheading: string;
   body: string;
 };
 
-export interface BlogsArticle {
+export interface BlogArticle {
   id: number;
   title: string;
   description: string;
@@ -35,9 +35,9 @@ export interface BlogsArticle {
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
-  image: BlogsImage;
+  image: BlogImage;
   author: Author;
-  content: BlogsContent[];
+  content: BlogContent[];
   categories: Category[];
 }
 
@@ -50,30 +50,30 @@ export interface PaginatedWorkflow {
       total: number;
     };
   };
-  data: BlogsArticle[];
+  data: BlogArticle[];
 }
 
 export interface Articles {
-  blogsListData?: BlogsArticle[];
+  blogListData?: BlogArticle[];
 }
 
 export interface AllArticles {
-  allBlogsList: BlogsArticle[] | null;
+  allBlogList: BlogArticle[] | null;
 }
 
-export interface BlogsProps extends Articles {
-  allBlogsList: PaginatedWorkflow;
+export interface BlogProps extends Articles {
+  allBlogList: PaginatedWorkflow;
 }
 
-export interface BlogsDetails {
-  blogsArticle: PaginatedWorkflow;
+export interface BlogDetails {
+  blogArticle: PaginatedWorkflow;
 }
 
-export interface BlogsSlugProps extends BlogsDetails {
-  allBlogsData: PaginatedWorkflow;
+export interface BlogSlugProps extends BlogDetails {
+  allBlogData: PaginatedWorkflow;
 }
 
-export interface BlogsPageContext {
+export interface BlogPageContext {
   params: {
     slug: string;
   };
