@@ -1,11 +1,11 @@
-import { axiosRequest, RequestMethod } from '@/utils/ApiHelper';
+import { fetchRequest, RequestMethod } from '@/utils/ApiHelper';
 
 export async function POST(request: Request): Promise<Response> {
   try {
     const { data: dataToSendToStrapi } = await request.json();
 
     const apiPath = '/join-newsletters';
-    const responseData = await axiosRequest(
+    const responseData = await fetchRequest(
       RequestMethod.POST,
       apiPath,
       dataToSendToStrapi,

@@ -1,11 +1,11 @@
-import { axiosRequest, RequestMethod } from '@/utils/ApiHelper'; // Ensure this path is correct
+import { fetchRequest, RequestMethod } from '@/utils/ApiHelper'; // Ensure this path is correct
 
 export async function POST(request: Request): Promise<Response> {
   try {
     const { data: dataToSendToStrapi } = await request.json();
 
     const apiPath = '/contact-us-messages';
-    const responseData = await axiosRequest(
+    const responseData = await fetchRequest(
       RequestMethod.POST,
       apiPath,
       dataToSendToStrapi,
