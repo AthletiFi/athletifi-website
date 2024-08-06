@@ -13,15 +13,15 @@ import { UserData } from '@/types/User.type';
 import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
 
 async function getBlogsArticle(slug: string) {
-  // console.log(
-  //   `getBlogsArticle URL: ${process.env.NEXT_PUBLIC_API_URL}/blogs/${slug}`,
-  // );
+  console.log(
+    `getBlogsArticle URL: ${process.env.NEXT_PUBLIC_API_URL}/blogs/${slug}`,
+  );
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/blogs/${slug}`,
   );
-  // console.log('response: %s', JSON.stringify(response));
+  console.log('response: %s', JSON.stringify(response));
   const data = await response.json();
-  // console.log('data: %s', JSON.stringify(data));
+  console.log('data: %s', JSON.stringify(data));
   return data;
 }
 

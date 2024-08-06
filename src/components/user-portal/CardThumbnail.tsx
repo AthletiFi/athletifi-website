@@ -139,8 +139,9 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
       invitationAction(cardID, formData)
         .then((response) => {
           if (
+            response.message &&
             response.message ===
-            'WARNING: Invite to the same guest is already pending. No changes made.'
+              'WARNING: Invite to the same guest is already pending. No changes made.'
           ) {
             setDupeInvite({
               isDupe: true,
