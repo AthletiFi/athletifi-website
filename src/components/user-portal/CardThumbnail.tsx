@@ -2,7 +2,7 @@
 import React, {
   useState,
   ChangeEvent,
-  FormEvent,
+  // FormEvent,
   useRef,
   useEffect,
 } from 'react';
@@ -14,11 +14,11 @@ import { useRouter } from 'next/navigation';
 import { ICards } from '@/types/User.type';
 import { Invites } from '@/types/User.type';
 import { sourceSans3 } from '@/app/utils/helpers';
-import {
-  invitationAction,
-  inviteRevokeAction,
-  inviteDeclineAction,
-} from '@/app/actions/invitationAction';
+// import {
+//   invitationAction,
+//   inviteRevokeAction,
+//   inviteDeclineAction,
+// } from '@/app/actions/invitationAction';
 
 interface ICardThumbnailProps {
   cardData: ICards;
@@ -105,17 +105,15 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
     },
   );
   const [emailSubmitted, setEmailSubmitted] = useState<boolean>(false); //to render success message when submit
-  const [dupeInvite, setDupeInvite] = useState<{
+  const [dupeInvite] = useState<{
     isDupe: boolean;
     email: string;
   }>({
     isDupe: false,
     email: '',
   });
-  const [declinedInviteId, setDeclinedInviteId] = useState<string | null>(null);
-  const [revokeSubmittedId, setRevokeSubmittedId] = useState<string | null>(
-    null,
-  );
+  const [declinedInviteId] = useState<string | null>(null);
+  const [revokeSubmittedId] = useState<string | null>(null);
   const { name, team, club, card_image_url, number, club_logo } = cardData;
   const handleGoToDashboard = (slug: string | null) => {
     //go to dashboard click
@@ -131,82 +129,82 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
     }));
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const cardID = cardData.card_id;
-    if (formData.get('email') && cardID) {
-      invitationAction(cardID, formData)
-        .then((response) => {
-          if (
-            response.message ===
-            'WARNING: Invite to the same guest is already pending. No changes made.'
-          ) {
-            setDupeInvite({
-              isDupe: true,
-              email: invitation.email,
-            });
-            setInvitation({ name: '', email: '' });
+  // const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const formData = new FormData(e.currentTarget);
+  //   const cardID = cardData.card_id;
+  //   if (formData.get('email') && cardID) {
+  //     invitationAction(cardID, formData)
+  //       .then((response) => {
+  //         if (
+  //           response.message ===
+  //           'WARNING: Invite to the same guest is already pending. No changes made.'
+  //         ) {
+  //           setDupeInvite({
+  //             isDupe: true,
+  //             email: invitation.email,
+  //           });
+  //           setInvitation({ name: '', email: '' });
 
-            // Delay the toggle by 5 seconds
-            return new Promise<void>((resolve) => {
-              setTimeout(() => {
-                setDupeInvite({
-                  isDupe: false,
-                  email: '',
-                });
-                resolve();
-              }, 5000);
-            });
-          } else {
-            setEmailSubmitted(true);
-            setInvitation({ name: '', email: '' });
+  //           // Delay the toggle by 5 seconds
+  //           return new Promise<void>((resolve) => {
+  //             setTimeout(() => {
+  //               setDupeInvite({
+  //                 isDupe: false,
+  //                 email: '',
+  //               });
+  //               resolve();
+  //             }, 5000);
+  //           });
+  //         } else {
+  //           setEmailSubmitted(true);
+  //           setInvitation({ name: '', email: '' });
 
-            // Delay the toggle by 2 seconds
-            return new Promise<void>((resolve) => {
-              setTimeout(() => {
-                setIsToggle(false);
-                setEmailSubmitted(false);
-                resolve();
-              }, 3000);
-            });
-          }
-        })
-        .catch((error) => console.error('Failed to send invitation', error));
-    } else {
-      console.warn('invalid email');
-    }
-  };
+  //           // Delay the toggle by 2 seconds
+  //           return new Promise<void>((resolve) => {
+  //             setTimeout(() => {
+  //               setIsToggle(false);
+  //               setEmailSubmitted(false);
+  //               resolve();
+  //             }, 3000);
+  //           });
+  //         }
+  //       })
+  //       .catch((error) => console.error('Failed to send invitation', error));
+  //   } else {
+  //     console.warn('invalid email');
+  //   }
+  // };
 
-  const triggerRevoke = async (
-    inviteId: string | null,
-    card_name?: string | null,
-  ) => {
-    inviteRevokeAction(inviteId, card_name)
-      .then(() => {
-        setRevokeSubmittedId(inviteId);
-        setTimeout(() => {
-          setRevokeSubmittedId(null);
-        }, 3000);
-      })
-      .catch((error) => console.error('Failed to revoke invitation', error));
-  };
+  // const triggerRevoke = async (
+  //   inviteId: string | null,
+  //   card_name?: string | null,
+  // ) => {
+  //   inviteRevokeAction(inviteId, card_name)
+  //     .then(() => {
+  //       setRevokeSubmittedId(inviteId);
+  //       setTimeout(() => {
+  //         setRevokeSubmittedId(null);
+  //       }, 3000);
+  //     })
+  //     .catch((error) => console.error('Failed to revoke invitation', error));
+  // };
 
-  const triggerDecline = async (
-    inviteId: string | null,
-    owner_email?: string | null,
-    card_name?: string | null,
-  ) => {
-    inviteDeclineAction(inviteId, owner_email, card_name)
-      .then(() => {
-        setDeclinedInviteId(inviteId);
-        setTimeout(() => {
-          setRevokeSubmittedId(null);
-        }, 3000);
-        // triggerReRender();
-      })
-      .catch((error) => console.error('Failed to decline invitation', error));
-  };
+  // const triggerDecline = async (
+  //   inviteId: string | null,
+  //   owner_email?: string | null,
+  //   card_name?: string | null,
+  // ) => {
+  //   inviteDeclineAction(inviteId, owner_email, card_name)
+  //     .then(() => {
+  //       setDeclinedInviteId(inviteId);
+  //       setTimeout(() => {
+  //         setRevokeSubmittedId(null);
+  //       }, 3000);
+  //       // triggerReRender();
+  //     })
+  //     .catch((error) => console.error('Failed to decline invitation', error));
+  // };
 
   //////////////////////////////////////////////
   const formRef = useRef<HTMLDivElement>(null); // Track the form element
@@ -293,9 +291,9 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                         {invite.invite_status !== 'revoked' && (
                           <button
                             className="flex items-center cursor-pointer justify-end"
-                            onClick={() => async () => {
-                              triggerRevoke(invite.invite_id, cardData.name);
-                            }}
+                            // onClick={() => async () => {
+                            //   triggerRevoke(invite.invite_id, cardData.name);
+                            // }}
                           >
                             <div className={`mx-[6px] md:mx-4`}>revoke</div>
                             <FontAwesomeIcon
@@ -374,7 +372,7 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                         {!emailSubmitted && (
                           <form
                             className="w-full flex flex-col gap-3 items-end"
-                            onSubmit={(e) => handleSubmit(e)}
+                            // onSubmit={(e) => handleSubmit(e)}
                           >
                             <input
                               type="text"
@@ -524,7 +522,7 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                     {!emailSubmitted && (
                       <form
                         className="w-full flex flex-col md:flex-row gap-3 justify-end"
-                        onSubmit={handleSubmit}
+                        // onSubmit={handleSubmit}
                       >
                         <input
                           type="text"
@@ -617,14 +615,14 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                 </div>
                 <div
                   className="flex items-center justify-end cursor-pointer"
-                  onClick={() => {
-                    triggerDecline(
-                      cardData.invite_id as string,
-                      cardData.inviter_email,
-                      cardData.name,
-                    );
-                    setDeclinedInviteId(cardData.invite_id as string);
-                  }}
+                  // onClick={() => {
+                  //   triggerDecline(
+                  //     cardData.invite_id as string,
+                  //     cardData.inviter_email,
+                  //     cardData.name,
+                  //   );
+                  //   setDeclinedInviteId(cardData.invite_id as string);
+                  // }}
                 >
                   <div className="text-sm py-4 mx-2 md:mx-4 text-end">
                     Opt out

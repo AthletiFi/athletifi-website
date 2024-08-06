@@ -5,9 +5,9 @@ import BackToTop from '@/components/common/BackToTop';
 import Footer from '@/components/common/Footer';
 import Accordion from '@/components/user-portal/FAQ';
 import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
-import { addUserPostSignIn } from '@/app/actions/userDataActions';
-import { getUserData } from '@/app/utils/fetchHelper';
-import { invitationData, UserData } from '@/types/User.type';
+// import { addUserPostSignIn } from '@/app/actions/userDataActions';
+// import { getUserData } from '@/app/utils/fetchHelper';
+import { emptyUserData, invitationData, UserData } from '@/types/User.type';
 import { redirect } from 'next/navigation';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,24 +19,27 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import InviteModal from '@/components/common/InviteModal';
 
-export default async function HelpPage({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | undefined };
-}) {
+export default async function HelpPage(
+  {
+    // searchParams,
+  }: {
+    searchParams?: { [key: string]: string | undefined };
+  },
+) {
   const auth = await isAuthenticated();
   if (!auth.isSignedIn) redirect('/login?redirect=/help-support');
 
-  let inviteData = undefined;
-  if (searchParams?.invite_id) {
-    inviteData = await addUserPostSignIn(
-      searchParams.invite_id,
-      auth.userId,
-      auth.name,
-      auth.userId,
-    );
-  }
-  const userData = await getUserData(auth);
+  const inviteData = undefined;
+  // if (searchParams?.invite_id) {
+  //   inviteData = await addUserPostSignIn(
+  //     searchParams.invite_id,
+  //     auth.userId,
+  //     auth.name,
+  //     auth.userId,
+  //   );
+  // }
+  // const userData = await getUserData(auth);
+  const userData = emptyUserData;
 
   return (
     <>

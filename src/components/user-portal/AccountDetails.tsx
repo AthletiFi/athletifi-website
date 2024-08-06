@@ -23,7 +23,7 @@ import { updatePassword } from 'aws-amplify/auth';
 
 import { ToastContainer, toast, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { deleteUserRequest } from '@/app/actions/userDataActions';
+// import { deleteUserRequest } from '@/app/actions/userDataActions';
 
 interface FormElements extends HTMLFormControlsCollection {
   currentPw: HTMLInputElement;
@@ -154,10 +154,10 @@ export default function AccountDetails({ userData }: { userData: UserData }) {
     }
   }
 
-  async function handleDeleteRequest(amplifyId: string) {
-    const result = await deleteUserRequest(amplifyId);
-    if (result) setDeleteRequestState(ViewDeleteRequestState.CONFIRMED);
-  }
+  // async function handleDeleteRequest(amplifyId: string) {
+  //   const result = await deleteUserRequest(amplifyId);
+  //   if (result) setDeleteRequestState(ViewDeleteRequestState.CONFIRMED);
+  // }
 
   return (
     <div className="flex flex-col mt-16 text-primary" id="account-details">
@@ -289,9 +289,9 @@ export default function AccountDetails({ userData }: { userData: UserData }) {
                 </div>
                 <button
                   className="mx-3 hover:text-skyblue hover:underline"
-                  onClick={() =>
-                    handleDeleteRequest(userData.amplify_id as string)
-                  }
+                  // onClick={() =>
+                  //   handleDeleteRequest(userData.amplify_id as string)
+                  // }
                 >
                   Yes
                 </button>
