@@ -32,14 +32,15 @@ const ContactUsForm = () => {
 
     setLoading(true);
     try {
-      const success = await addContactUs(formData);
-      if (success) {
+      const response = await addContactUs(formData);
+      if (!response || 'error' in response) {
+        toast.error('Failed to log your submission', toastOptions);
+        console.error(`${JSON.stringify(response.error)}`);
+      } else {
         toast.success(
           'We have received your message and will be in touch shortly',
           toastOptions,
         );
-      } else {
-        toast.error('Failed to log your submission', toastOptions);
       }
     } catch (err) {
       toast.error(`Hit an unknown error: ${JSON.stringify(err)}`, toastOptions);

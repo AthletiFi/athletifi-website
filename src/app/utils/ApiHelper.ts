@@ -12,7 +12,6 @@ export async function getBlogList(): Promise<BlogListResult> {
   const blogListApiPath =
     '/news-lists?populate=image&populate=author&populate=categories&sort=createdAt:desc';
   try {
-    // const data = await axiosRequest(RequestMethod.GET, blogListApiPath, null);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_SERVER_URL}${blogListApiPath}`,
       {
@@ -50,26 +49,20 @@ export async function fetchRequest<T>(
   url: string,
   data: PostData<T> | null | undefined,
 ) {
-  let initOptions;
+  const options = {
+    headers: { 'Content-Type': 'application/json' },
+    method: method,
+  };
 
-  if (data) {
-    initOptions = {
-      headers: { 'Content-Type': 'application/json' },
-      method: method,
-      body: JSON.stringify(data),
-    };
-  } else {
-    initOptions = {
-      headers: { 'Content-Type': 'application/json' },
-      method: method,
-    };
-  }
+  const finalOptions = data
+    ? { ...options, body: JSON.stringify(data) }
+    : options;
 
   try {
     // Make the API request to the Strapi CMS and await the response.
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_SERVER_URL}${url}`,
-      initOptions,
+      finalOptions,
     );
     return await response.json();
   } catch (error) {

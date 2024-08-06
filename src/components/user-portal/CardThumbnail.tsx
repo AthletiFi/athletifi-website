@@ -237,8 +237,8 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                 <Image
                   src={card_image_url as string}
                   alt="Card Thumbnail"
-                  layout="fill"
-                  objectFit="contain"
+                  fill={true}
+                  style={{ objectFit: 'contain' }}
                 />
               </div>
               <div className="flex mt-2 flex-col flex-shrink">
@@ -436,15 +436,15 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                   <Image
                     src={card_image_url}
                     alt="Card Thumbnail"
-                    layout="fill"
-                    objectFit="contain"
+                    fill={true}
+                    style={{ objectFit: 'contain' }}
                   />
                 ) : (
                   <Image
                     src={card_image_url as string}
                     alt="Default Card Thumbnail"
-                    layout="fill"
-                    objectFit="contain"
+                    fill={true}
+                    style={{ objectFit: 'contain' }}
                   />
                 )}
               </div>
@@ -458,8 +458,8 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                     <Image
                       src={club_logo as string}
                       alt="club crest"
-                      layout="fill"
-                      objectFit="contain"
+                      fill={true}
+                      style={{ objectFit: 'contain' }}
                     />
                   </div>
                   <div className="gap-1 flex flex-col text-sm">
@@ -586,8 +586,8 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
               <Image
                 src={card_image_url as string}
                 alt="Card Thumbnail"
-                layout="fill"
-                objectFit="contain"
+                fill={true}
+                style={{ objectFit: 'contain' }}
               />
             </div>
             <div className="flex mt-2 flex-col flex-shrink">
@@ -680,15 +680,15 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
                 <Image
                   src={card_image_url}
                   alt="Card Thumbnail"
-                  layout="fill"
-                  objectFit="contain"
+                  fill={true}
+                  style={{ objectFit: 'contain' }}
                 />
               ) : (
                 <Image
                   src={card_image_url as string}
                   alt="Default Card Thumbnail"
-                  layout="fill"
-                  objectFit="contain"
+                  fill={true}
+                  style={{ objectFit: 'contain' }}
                 />
               )}
             </div>

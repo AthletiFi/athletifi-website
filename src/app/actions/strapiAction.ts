@@ -22,10 +22,8 @@ export async function addContactUs(formData: FormData) {
       method: RequestMethod.POST,
       body: JSON.stringify(postBody),
     });
-    const data = await response.json();
-    console.log(data);
 
-    return true;
+    return await response.json();
   } catch (error) {
     console.error(error);
     return false;
@@ -45,10 +43,7 @@ export async function addNewsletterSignUp(formData: FormData) {
       method: RequestMethod.POST,
       body: JSON.stringify(postBody),
     });
-    const data = await response.json();
-    console.log(data);
-
-    return true;
+    return await response.json();
   } catch (error) {
     console.error(error);
     return false;

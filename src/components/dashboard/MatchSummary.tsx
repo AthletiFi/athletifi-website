@@ -205,7 +205,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
         <div className="flex justify-between items-center w-full max-w-[200px] min-w-[200px] my-4 2sm:my-0 2sm:mr-2">
           {home_club_logo !== null && (
             <div className="relative w-[75px] 2sm:w-[60px] md:w-[65px] h-[75px] 2sm:h-[60px] md:h-[65px]">
-              <Image src={home_club_logo} alt="Crest" layout="fill" />
+              <Image src={home_club_logo} alt="Crest" fill={true} />
             </div>
           )}
           <div className="mx-2 min-w-12 flex justify-between md:mx-3">
@@ -213,7 +213,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
           </div>
           {away_club_logo !== null && (
             <div className="relative w-[75px] 2sm:w-[60px] md:w-[65px] h-[75px] 2sm:h-[60px] md:h-[65px]">
-              <Image src={away_club_logo} alt="Crest" layout="fill" />
+              <Image src={away_club_logo} alt="Crest" fill={true} />
             </div>
           )}
         </div>
@@ -241,7 +241,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
             {isThisWeek && weather && (
               <div className="flex items-center justify-center 2sm:justify-end">
                 <div className="relative w-[18px] md:w-[30px] h-[18px] md:h-[30px]">
-                  <Image src={localWeatherIcon} alt="Crest" layout="fill" />
+                  <Image src={localWeatherIcon} alt="Crest" fill={true} />
                 </div>
                 <span>{weather.tempCelc}°C</span>
               </div>
@@ -297,7 +297,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
               <div className="flex justify-center items-center min-w-[280px] w-[280px] md:mr-2">
                 {home_club_logo !== null && (
                   <div className="relative min-w-[75px] h-[75px]">
-                    <Image src={home_club_logo} alt="Crest" layout="fill" />
+                    <Image src={home_club_logo} alt="Crest" fill={true} />
                   </div>
                 )}
                 <div className="mx-2 min-w-12 flex justify-between md:mx-4">
@@ -305,7 +305,7 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
                 </div>
                 {away_club_logo !== null && (
                   <div className="relative min-w-[75px] h-[75px]">
-                    <Image src={away_club_logo} alt="Crest" layout="fill" />
+                    <Image src={away_club_logo} alt="Crest" fill={true} />
                   </div>
                 )}
               </div>

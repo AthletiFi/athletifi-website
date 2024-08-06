@@ -74,7 +74,7 @@ const HeroBanner: React.FC = () => {
               <Image
                 alt="club-logo"
                 src={playerProfile?.club_logo}
-                layout="fill"
+                fill={true}
               />
             </div>
 

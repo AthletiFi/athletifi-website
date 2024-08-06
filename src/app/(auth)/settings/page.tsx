@@ -5,40 +5,51 @@ import Notifications from '@/components/user-portal/Notifications';
 import ManageReferrals from '@/components/user-portal/ManageReferrals';
 import Header from '@/components/common/Header';
 import ProfileHeader from '@/components/user-portal/ProfileHeader';
-import { invitationData, UserData } from '@/types/User.type';
-import { addUserPostSignIn } from '@/app/actions/userDataActions';
+import { UserData } from '@/types/User.type';
+// import { invitationData, UserData } from '@/types/User.type';
+// import { addUserPostSignIn } from '@/app/actions/userDataActions';
 import { getUserData } from '@/app/utils/fetchHelper';
-import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
-import { redirect } from 'next/navigation';
-import InviteModal from '@/components/common/InviteModal';
+// import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
+// import { redirect } from 'next/navigation';
+// import InviteModal from '@/components/common/InviteModal';
 
-export default async function SettingsPage({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | undefined };
-}) {
-  const auth = await isAuthenticated();
-  if (!auth.isSignedIn) redirect('/login?redirect=/settings');
+export default async function SettingsPage(
+  {
+    // searchParams,
+  }: {
+    searchParams?: { [key: string]: string | undefined };
+  },
+) {
+  // const auth = await isAuthenticated();
+  // if (!auth.isSignedIn) redirect('/login?redirect=/settings');
 
-  let inviteData = undefined;
-  if (searchParams?.invite_id) {
-    try {
-      inviteData = await addUserPostSignIn(
-        searchParams.invite_id,
-        auth.userId,
-        auth.name,
-        auth.userId,
-      );
-    } catch (error) {
-      console.error(`Error adding user post sign-in: ${JSON.stringify(error)}`);
-    }
-  }
-  const userData = await getUserData(auth);
+  // let inviteData = undefined;
+  // if (searchParams?.invite_id) {
+  //   try {
+  //     inviteData = await addUserPostSignIn(
+  //       searchParams.invite_id,
+  //       auth.userId,
+  //       auth.name,
+  //       auth.userId,
+  //     );
+  //   } catch (error) {
+  //     console.error(`Error adding user post sign-in: ${JSON.stringify(error)}`);
+  //   }
+  // }
+  const tmpAuth = {
+    userId: '',
+    name: 'Louis Tmp',
+    email: 'louis@athleti.fi',
+    signInMethod: 'manual',
+    isSignedIn: true,
+  };
+  // const userData = await getUserData(auth);
+  const userData = await getUserData(tmpAuth);
 
   return (
     <>
       <Header userData={userData as UserData} />
-      <InviteModal inviteData={inviteData as invitationData | undefined} />
+      {/* <InviteModal inviteData={inviteData as invitationData | undefined} /> */}
       <div className="overflow-hidden bg-gradient-to-r from-cardsDark2 to-cardsBackground ">
         <main className="mx-4 md:mx-10 my-32 md:my-36 lg:my-48 text-sm md:text-base">
           <ProfileHeader

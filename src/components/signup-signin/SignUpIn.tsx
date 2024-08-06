@@ -83,7 +83,7 @@ const SignUpIn: React.FC<SignupProps> = ({ isSignupPage }) => {
             ) : (
               <>
                 <p className="text-primary font-extralight">
-                  Don{"'"}t have an Account?
+                  Don&apos;t have an Account?
                 </p>
                 <a href="/register" className="text-skyblue">
                   Sign up

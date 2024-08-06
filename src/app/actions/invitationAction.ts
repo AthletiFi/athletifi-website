@@ -45,7 +45,6 @@ export async function invitationAction(
       card_image_id: cardId,
     };
 
-    // const response = await axiosClient.post('/referralInvite', body);
     const data = await invitePostHelper(inviteBody);
 
     if ('error' in data) {

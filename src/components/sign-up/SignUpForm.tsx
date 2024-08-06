@@ -33,12 +33,17 @@ const SignUpForm = () => {
     setLoading(true);
     if (checked) {
       try {
-        await addNewsletterSignUp(formData);
-        toast.success('You have successfully signed-up!', toastOptions);
-        setData({
-          ...data,
-          email: '',
-        });
+        const response = await addNewsletterSignUp(formData);
+        if (!response || 'error' in response) {
+          toast.error('Failed to sign-up for newsletter', toastOptions);
+          console.error(`${JSON.stringify(response.error)}`);
+        } else {
+          toast.success('You have successfully signed-up!', toastOptions);
+          setData({
+            ...data,
+            email: '',
+          });
+        }
       } catch (err) {
         toast.error(
           `Hit an unknown error: ${JSON.stringify(err)}`,
