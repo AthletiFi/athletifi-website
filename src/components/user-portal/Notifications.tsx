@@ -6,25 +6,25 @@ import {
   UserData,
 } from '@/types/User.type';
 
-// import {
-//   addNotification,
-//   deleteNotification,
-// } from '@/app/actions/userDataActions';
-// import { ChangeEvent } from 'react';
+import {
+  addNotification,
+  deleteNotification,
+} from '@/app/actions/userDataActions';
+import { ChangeEvent } from 'react';
 import UnsubscribeButton from './UnsubscribeButton';
 
 export default function Notifications({ userData }: { userData: UserData }) {
-  // async function handleChange(
-  //   e: ChangeEvent<HTMLInputElement>,
-  //   amplifyId: string,
-  //   notificationType: string,
-  // ) {
-  //   if (e.target.checked) {
-  //     await addNotification(amplifyId, notificationType);
-  //   } else {
-  //     await deleteNotification(amplifyId, notificationType);
-  //   }
-  // }
+  async function handleChange(
+    e: ChangeEvent<HTMLInputElement>,
+    amplifyId: string,
+    notificationType: string,
+  ) {
+    if (e.target.checked) {
+      await addNotification(amplifyId, notificationType);
+    } else {
+      await deleteNotification(amplifyId, notificationType);
+    }
+  }
 
   return (
     <div className="flex flex-col mt-16 text-primary" id="notifications">
@@ -54,13 +54,13 @@ export default function Notifications({ userData }: { userData: UserData }) {
                           ]
                         : false
                     }
-                    // onChange={(e) =>
-                    //   handleChange(
-                    //     e,
-                    //     userData.amplify_id as string,
-                    //     setting.value,
-                    //   )
-                    // }
+                    onChange={(e) =>
+                      handleChange(
+                        e,
+                        userData.amplify_id as string,
+                        setting.value,
+                      )
+                    }
                   />
                   <span className="slider round"></span>
                 </label>
@@ -71,9 +71,9 @@ export default function Notifications({ userData }: { userData: UserData }) {
         <div className="flex justify-between items-center py-6 mx-4 border-t border-t-partnersBorders border-opacity-20">
           <div className="font-bold">Unsubscribe from all notifications</div>
           <form
-          // action={() =>
-          //   deleteNotification(userData.amplify_id as string, 'All')
-          // }
+            action={() =>
+              deleteNotification(userData.amplify_id as string, 'All')
+            }
           >
             <UnsubscribeButton />
           </form>

@@ -121,18 +121,6 @@ export type UserData = {
   invites: Invites[] | null;
 };
 
-export const emptyUserData = {
-  amplify_id: null,
-  name: null,
-  email: null,
-  init_notifications: null,
-  notifications: null,
-  user_delete_status: null,
-  owned_cards: null,
-  guest_cards: null,
-  invites: null,
-};
-
 export type invitationData = {
   invitation: {
     invite_id: string | null;

@@ -1,9 +1,9 @@
-// import { addUserPostSignIn } from '@/app/actions/userDataActions';
+import { addUserPostSignIn } from '@/app/actions/userDataActions';
 import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
-// import { getUserData } from '@/app/utils/fetchHelper';
+import { getUserData } from '@/app/utils/fetchHelper';
 import Header from '@/components/common/Header';
 import InviteModal from '@/components/common/InviteModal';
-import { emptyUserData, invitationData, UserData } from '@/types/User.type';
+import { invitationData, UserData } from '@/types/User.type';
 import { redirect } from 'next/navigation';
 
 export default async function DashboardLayout({
@@ -17,17 +17,16 @@ export default async function DashboardLayout({
   if (!auth.isSignedIn)
     redirect(`/login?redirect=/dashboard/${params.cardId.join('/')}`);
 
-  const inviteData = undefined;
-  // if (params?.invite_id) {
-  //   inviteData = await addUserPostSignIn(
-  //     params.invite_id,
-  //     auth.userId,
-  //     auth.name,
-  //     auth.userId,
-  //   );
-  // }
-  // const userData = await getUserData(auth);
-  const userData = emptyUserData;
+  let inviteData = undefined;
+  if (params?.invite_id) {
+    inviteData = await addUserPostSignIn(
+      params.invite_id,
+      auth.userId,
+      auth.name,
+      auth.userId,
+    );
+  }
+  const userData = await getUserData(auth);
 
   return (
     <>
