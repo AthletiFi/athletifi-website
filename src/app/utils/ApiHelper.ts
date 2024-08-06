@@ -14,7 +14,7 @@ export async function getBlogsList(): Promise<BlogsListResult> {
   try {
     // const data = await axiosRequest(RequestMethod.GET, blogsListApiPath, null);
     const response = await fetch(
-      `${process.env.STRAPI_SERVER_URL}${blogsListApiPath}`,
+      `${process.env.NEXT_PUBLIC_STRAPI_SERVER_URL}${blogsListApiPath}`,
       {
         next: {
           tags: ['blogs'],
@@ -52,10 +52,13 @@ export async function fetchRequest<T>(
 ) {
   try {
     // Make the API request to the Strapi CMS and await the response.
-    const response = await fetch(`${process.env.STRAPI_SERVER_URL}${url}`, {
-      method: method,
-      body: JSON.stringify(data),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_SERVER_URL}${url}`,
+      {
+        method: method,
+        body: JSON.stringify(data),
+      },
+    );
     return await response.json();
   } catch (error) {
     console.error(`Ran into a fetch error: ${JSON.stringify(error)}`);
