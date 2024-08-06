@@ -19,10 +19,14 @@ export default function Notifications({ userData }: { userData: UserData }) {
     amplifyId: string,
     notificationType: string,
   ) {
-    if (e.target.checked) {
-      await addNotification(amplifyId, notificationType);
-    } else {
-      await deleteNotification(amplifyId, notificationType);
+    try {
+      if (e.target.checked) {
+        await addNotification(amplifyId, notificationType);
+      } else {
+        await deleteNotification(amplifyId, notificationType);
+      }
+    } catch (error) {
+      console.error('Error updating notification:', error);
     }
   }
 

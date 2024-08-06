@@ -58,7 +58,7 @@ const ContactUsForm = () => {
         // setData(initialState);
       }
     } catch (err) {
-      toast.error('Hit an unknown error', toastOptions);
+      toast.error(`Hit an unknown error: ${JSON.stringify(err)}`, toastOptions);
     }
 
     setLoading(false);

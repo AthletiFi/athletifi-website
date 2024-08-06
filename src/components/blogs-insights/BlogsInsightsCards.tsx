@@ -64,7 +64,10 @@ const BlogsInsightsCards = ({ allBlogsList }: AllArticles) => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      toast.error('Get request has failed. Try again later', toastOptions);
+      toast.error(
+        `Get request has failed: ${JSON.stringify(error)}. Try again later`,
+        toastOptions,
+      );
     }
   };
 

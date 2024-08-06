@@ -29,12 +29,16 @@ export default async function HelpPage({
 
   let inviteData = undefined;
   if (searchParams?.invite_id) {
-    inviteData = await addUserPostSignIn(
-      searchParams.invite_id,
-      auth.userId,
-      auth.name,
-      auth.userId,
-    );
+    try {
+      inviteData = await addUserPostSignIn(
+        searchParams.invite_id,
+        auth.userId,
+        auth.name,
+        auth.userId,
+      );
+    } catch (error) {
+      console.error('Error adding user post sign-in: error');
+    }
   }
   const userData = await getUserData(auth);
 

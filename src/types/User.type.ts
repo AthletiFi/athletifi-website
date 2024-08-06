@@ -141,6 +141,7 @@ export type AuthData = {
   email: string;
   signInMethod: string;
   isSignedIn: boolean;
+  error?: string;
 };
 
 export enum UpdatePwErrors {

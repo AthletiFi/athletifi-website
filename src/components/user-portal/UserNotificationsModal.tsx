@@ -24,9 +24,9 @@ const UserNotificationsModal = ({
 }) => {
   async function handleSubmit(amplify_id: string, action_type: ACTION_TYPE) {
     if (action_type === ACTION_TYPE.Delete) {
-      await addNotification(amplify_id, 'All');
-    } else if (action_type === ACTION_TYPE.Add) {
       await deleteNotification(amplify_id, 'All');
+    } else if (action_type === ACTION_TYPE.Add) {
+      await addNotification(amplify_id, 'All');
     }
 
     await new Promise((r) => setTimeout(r, DELAY_TIMEOUT));

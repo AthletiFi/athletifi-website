@@ -38,6 +38,7 @@ export const isAuthenticated = async (): Promise<AuthData> =>
           email: '',
           signInMethod: '',
           isSignedIn: false,
+          error: error || '',
         } as AuthData;
       }
     },
