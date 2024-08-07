@@ -39,10 +39,6 @@ async function fetchDashboardData(
 
   try {
     const response = await fetch(`${baseURL}/dashboard/${cardId}`, {
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: process.env.NEXT_PUBLIC_TEMP_API_AUTH,
-      } as HeadersInit,
       next: {
         tags: ['playerCardData'],
       },

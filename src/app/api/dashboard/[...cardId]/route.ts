@@ -13,6 +13,7 @@ export async function GET(
       `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/${dashboardEndpoint}`,
       {
         headers: {
+          'Content-type': 'application/json',
           Authorization: process.env.NEXT_PUBLIC_TEMP_API_AUTH,
         } as HeadersInit,
         next: {
