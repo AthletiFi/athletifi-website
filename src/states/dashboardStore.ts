@@ -38,12 +38,7 @@ async function fetchDashboardData(
   });
 
   try {
-    const response = await fetch(`${baseURL}/dashboard/${cardId}`, {
-      next: {
-        tags: ['playerCardData'],
-      },
-      cache: 'force-cache',
-    });
+    const response = await fetch(`${baseURL}/dashboard/${cardId}`);
     if (!response.ok) {
       throw new Error('Data load error. Please try again.');
     }

@@ -32,7 +32,7 @@ export default async function DashboardLayout({
   //   }
   // }
   const tmpAuth = {
-    userId: '',
+    userId: 'f1dba510-f0a1-707f-c482-8bb97c260761',
     name: 'Louis Tmp',
     email: 'louis@athleti.fi',
     signInMethod: 'manual',
