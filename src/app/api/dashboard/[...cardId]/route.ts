@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import axiosClient from '@/utils/axiosClient';
 
 export async function GET(
   request: Request,
@@ -8,25 +9,12 @@ export async function GET(
     ? params.cardId.join('/')
     : params.cardId;
   const dashboardEndpoint = `dashboardData?dashboardSlug=${cardId}`;
-  console.log(
-    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/${dashboardEndpoint}`,
-  );
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/${dashboardEndpoint}`,
-      {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: process.env.NEXT_PUBLIC_TEMP_API_AUTH,
-        } as HeadersInit,
-        next: {
-          tags: ['playerCardData'],
-        },
-        cache: 'force-cache',
-      },
-    );
-    const data = await response.json();
-    console.log('data %s', JSON.stringify(data));
+    const response = await axiosClient.get(dashboardEndpoint, {
+      timeout: 10000,
+    });
+
+    const data = response.data;
     return NextResponse.json(data);
   } catch (error) {
     console.error(error);

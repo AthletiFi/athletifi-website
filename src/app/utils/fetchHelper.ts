@@ -56,7 +56,6 @@ export async function getUserData({
       guest_cards: userData.guest_cards,
       invites: userData.invites,
     };
-    console.log('dataObject %s', JSON.stringify(dataObject));
 
     return dataObject;
   } catch (error) {
