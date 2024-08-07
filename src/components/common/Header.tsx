@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState, startTransition } from 'react';
+import { useEffect, useRef, useState, startTransition } from 'react';
 import Link from 'next/link';
 import {
   WhiteFacebookIcon,

@@ -1,5 +1,3 @@
-import React from 'react';
-
 const TermsOfUse: React.FC = () => {
   return (
     <div className="container md:max-w-full xl:max-w-1140 2xl:max-w-1320 mx-auto px-3 relative z-10 text-primary">

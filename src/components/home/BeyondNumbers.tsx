@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import React from 'react';
 
 const AOS_DURATION: number = 600;
 const AOS_DELAY: number[] = [200, 300, 400];

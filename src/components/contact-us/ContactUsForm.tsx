@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ButtonWhiteArrow, UnderLineText } from '@/components/common/Icon';
 import { ContactUs } from '@/types/ContactUs.type';
 import { ToastContainer, toast, ToastOptions } from 'react-toastify';
@@ -14,7 +14,7 @@ const IMAGE_HEIGHT_PLAYER = 598;
 const TEXTAREA_ROWS = 4;
 const TEXTAREA_MAX_CHAR = 1000;
 
-const ContactUsForm = () => {
+export default function ContactUsForm() {
   // CUSTOM INPUT-CHECK
   const [loading, setLoading] = useState<boolean>(false);
   const initialState: ContactUs = {
@@ -213,6 +213,4 @@ const ContactUsForm = () => {
       <ToastContainer theme="dark" />
     </section>
   );
-};
-
-export default ContactUsForm;
+}

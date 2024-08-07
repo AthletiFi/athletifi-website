@@ -1,7 +1,6 @@
 // This is the content of the article that displays when clicking on a blog article.
 
 import Image from 'next/image';
-import React from 'react';
 import moment from 'moment';
 import {
   WhiteFacebookIcon,

@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import React from 'react';
 import { HeroProps } from '@/types/CommonHero.type';
 
 const HERO_SHADOW_IMAGE_WIDTH: number = 1494;

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 interface SignupProps {
   isSignupPage: boolean;
@@ -8,7 +8,7 @@ interface ValidationErrors {
   [key: string]: string | null;
 }
 
-const SignUpIn: React.FC<SignupProps> = ({ isSignupPage }) => {
+export default function SignUpIn({ isSignupPage }: SignupProps) {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -164,6 +164,4 @@ const SignUpIn: React.FC<SignupProps> = ({ isSignupPage }) => {
       </div>
     </div>
   );
-};
-
-export default SignUpIn;
+}

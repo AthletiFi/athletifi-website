@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -7,8 +9,7 @@ import {
   FieldPlayerRatings,
   GoalKeeperRatings,
 } from '@/app/utils/dashboardHelper';
-import { useParams } from 'next/navigation';
-import { useDashboardData } from '@/states/dashboardStore';
+import { IRating, IRatingRaw } from '@/types/Dashboard.type';
 
 const StatsBarChartWithNoSSR = dynamic(
   () => import('@/components/dashboard/BarChart'),
@@ -35,24 +36,24 @@ const tabInfo = [
   },
 ];
 
-const Charts = () => {
-  const { cardId } = useParams();
-  const cardIdValue = Array.isArray(cardId) ? cardId.join('/') : cardId;
-  const { dashboardData } = useDashboardData(cardIdValue);
-
-  const latest_player_ratings = dashboardData.data?.latestPlayerRating;
-  const player_ratings = dashboardData.data?.playerRatings;
-  const is_goalkeeper = dashboardData.data?.isGoalkeeper;
-
+export default function Charts({
+  latestPlayerRating,
+  playerRatings,
+  isGoalkeeper,
+}: {
+  latestPlayerRating: IRating[] | null;
+  playerRatings: IRatingRaw[] | null;
+  isGoalkeeper: boolean | null;
+}) {
   const isMobile = useMediaQuery('(max-width: 1024px)');
   const [isLatestActive, setIsLatestActive] = useState(true);
 
-  const chart_fields = is_goalkeeper ? GoalKeeperRatings : FieldPlayerRatings;
+  const chart_fields = isGoalkeeper ? GoalKeeperRatings : FieldPlayerRatings;
 
   const overall_rating =
-    latest_player_ratings &&
+    latestPlayerRating &&
     Math.round(
-      latest_player_ratings
+      latestPlayerRating
         .map((x) => x.rating)
         .reduce(function (avg, value, _, { length }) {
           return avg + value / length;
@@ -61,7 +62,7 @@ const Charts = () => {
 
   return (
     <>
-      {is_goalkeeper !== null && is_goalkeeper !== undefined ? (
+      {isGoalkeeper !== null && isGoalkeeper !== undefined ? (
         <div className="stats-chart__container bg-cardsBackground">
           <div className="flex text-sm md:text-md text-primary border-b border-partnersBorders">
             <div
@@ -99,7 +100,7 @@ const Charts = () => {
             {isLatestActive ? (
               <StatsBarChartWithNoSSR
                 overall_rating={overall_rating}
-                latest_player_ratings={latest_player_ratings}
+                latest_player_ratings={latestPlayerRating}
                 player_ratings={[]}
                 chart_fields={chart_fields}
               />
@@ -107,7 +108,7 @@ const Charts = () => {
               <StatsLineChartWithNoSSR
                 overall_rating={overall_rating}
                 latest_player_ratings={[]}
-                player_ratings={player_ratings}
+                player_ratings={playerRatings}
                 chart_fields={chart_fields}
               />
             )}
@@ -118,6 +119,4 @@ const Charts = () => {
       )}
     </>
   );
-};
-
-export default Charts;
+}

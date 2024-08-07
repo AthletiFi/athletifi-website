@@ -1,4 +1,3 @@
-import React from 'react';
 import Image from 'next/image';
 
 const card_url = '/assets/img/png/anderson-card-img.png';

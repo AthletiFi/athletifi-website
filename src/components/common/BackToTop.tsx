@@ -1,12 +1,13 @@
 'use client';
+
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const SCROLL_THRESHOLD = 200;
 const ARROW_IMAGE_WIDTH = 48;
 const ARROW_IMAGE_HEIGHT = 48;
 
-const BackToTop: React.FC = () => {
+export default function BackToTop() {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   function scrollToTop(): void {
@@ -51,5 +52,4 @@ const BackToTop: React.FC = () => {
       )}
     </>
   );
-};
-export default BackToTop;
+}

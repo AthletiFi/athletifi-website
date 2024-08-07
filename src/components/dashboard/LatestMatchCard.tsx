@@ -1,9 +1,8 @@
-import React from 'react';
+'use client';
+
 import Image from 'next/image';
-import { IRating } from '@/types/Dashboard.type';
+import { DashboardData, IRating } from '@/types/Dashboard.type';
 import Skeleton from 'react-loading-skeleton';
-import { useParams } from 'next/navigation';
-import { useDashboardData } from '@/states/dashboardStore';
 
 const LOGO_SIZE = 54;
 
@@ -25,13 +24,13 @@ const RatingBox = ({
   );
 };
 
-const LatestMatch: React.FC = () => {
-  const { cardId } = useParams();
-  const cardIdValue = Array.isArray(cardId) ? cardId.join('/') : cardId;
-  const { dashboardData } = useDashboardData(cardIdValue);
-
-  const latestMatch = dashboardData.data?.latestMatch;
-  const latestPlayerRatings = dashboardData.data?.latestPlayerRating;
+export default function LatestMatch({
+  dashboardData,
+}: {
+  dashboardData: DashboardData;
+}) {
+  const latestMatch = dashboardData.latestMatch;
+  const latestPlayerRatings = dashboardData.latestPlayerRating;
 
   const weatherIcon = latestMatch?.weather?.weatherIcon;
   const iconNameWithoutExtension = weatherIcon?.split('.')[0];
@@ -48,7 +47,7 @@ const LatestMatch: React.FC = () => {
 
   return (
     <>
-      {dashboardData.data ? (
+      {dashboardData ? (
         <div className="bg-cardsBackground h-full flex flex-col justify-between p-4 relative w-full rounded-10 text-primary ">
           {latestMatch?.datetime === undefined ||
           latestMatch?.datetime === null ? (
@@ -158,6 +157,4 @@ const LatestMatch: React.FC = () => {
       )}
     </>
   );
-};
-
-export default LatestMatch;
+}

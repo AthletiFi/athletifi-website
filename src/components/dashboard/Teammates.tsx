@@ -1,15 +1,13 @@
-import React from 'react';
 import Image from 'next/image';
 import Skeleton from 'react-loading-skeleton';
 import '@/styles/globals.css';
-import { useParams } from 'next/navigation';
-import { useDashboardData } from '@/states/dashboardStore';
+import { ITeammate } from '@/types/Dashboard.type';
 
-const Teammates: React.FC = () => {
-  const { cardId } = useParams();
-  const cardIdValue = Array.isArray(cardId) ? cardId.join('/') : cardId;
-  const { dashboardData } = useDashboardData(cardIdValue);
-  const teammates = dashboardData?.data?.teammates;
+export default function Teammates({
+  teammates,
+}: {
+  teammates: ITeammate[] | null;
+}) {
   return (
     <>
       {teammates && teammates[0]?.name ? (
@@ -58,6 +56,4 @@ const Teammates: React.FC = () => {
       )}
     </>
   );
-};
-
-export default Teammates;
+}

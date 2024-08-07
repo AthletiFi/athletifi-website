@@ -1,11 +1,9 @@
-//import { useParams } from 'next/navigation';
-import React, { useState, useRef, useEffect } from 'react';
-import Skeleton from 'react-loading-skeleton';
+'use client';
 
-import { useParams } from 'next/navigation';
+import { useState, useRef, useEffect } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import MuxPlayer, { MuxPlayerRefAttributes } from '@mux/mux-player-react';
 
-import { useDashboardData } from '@/states/dashboardStore';
 import { IMatchDataExtended } from '@/types/Dashboard.type';
 import TopActionReelThumbnail from '@/components/dashboard/TopActionReelThumbnail';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,14 +18,14 @@ interface IActionReelProps {
   datetime: string | null;
 }
 
-const ActionReel: React.FC<IActionReelProps> = ({
+export function ActionReel({
   playback_id,
   home_club_logo,
   away_club_logo,
   description,
   start_timestamp,
   datetime,
-}) => {
+}: IActionReelProps) {
   ////////////open/close hightlight video
   const [isExpanded, setIsExpanded] = useState(false);
   const playerRef = useRef<MuxPlayerRefAttributes>(null);
@@ -114,7 +112,7 @@ const ActionReel: React.FC<IActionReelProps> = ({
       )}
     </>
   );
-};
+}
 
 function getHighlights(
   matchesList: IMatchDataExtended[],
@@ -134,21 +132,20 @@ function getHighlights(
   return allHighlights.slice(0, maxHighlights);
 }
 
-const ActionReelList: React.FC = () => {
-  const { cardId } = useParams();
-  const cardIdValue = Array.isArray(cardId) ? cardId.join('/') : cardId;
-  const { dashboardData } = useDashboardData(cardIdValue);
-
-  const matchesList: IMatchDataExtended[] =
-    dashboardData?.data?.matchesList || [];
-
+export function ActionReelList({
+  matchesList,
+}: {
+  matchesList: IMatchDataExtended[] | null;
+}) {
   ///////filter invalid highlights
   ///////render max of 4, in future randomly render for better UX
 
   const MAX_HIGHLIGHTS = 4;
-  const selectedHighlights = getHighlights(matchesList, MAX_HIGHLIGHTS).filter(
-    (highlight) => highlight.playback_id && highlight.clip_description,
-  );
+  const selectedHighlights = matchesList
+    ? getHighlights(matchesList, MAX_HIGHLIGHTS).filter(
+        (highlight) => highlight.playback_id && highlight.clip_description,
+      )
+    : [];
 
   return (
     <>
@@ -188,6 +185,4 @@ const ActionReelList: React.FC = () => {
       )}
     </>
   );
-};
-
-export { ActionReel, ActionReelList };
+}

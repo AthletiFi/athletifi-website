@@ -4,8 +4,6 @@ import Skeleton from 'react-loading-skeleton';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { IMatchDataExtended } from '@/types/Dashboard.type';
-import { useParams } from 'next/navigation';
-import { useDashboardData } from '@/states/dashboardStore';
 
 const parseDate = (dateString: string) => new Date(dateString);
 
@@ -16,20 +14,18 @@ const isThisWeek = (date: number | Date) => {
   return date >= startOfWeek && date <= endOfWeek;
 };
 //TODO: move filtering to dashboardStore if needed.
-const PastMatches: React.FC = () => {
-  const { cardId } = useParams();
-  const cardIdValue = Array.isArray(cardId) ? cardId.join('/') : cardId;
-  const { dashboardData } = useDashboardData(cardIdValue);
-  const past_matches = dashboardData.data?.matchesList as IMatchDataExtended[];
+export default function PastMatches({
+  matchList,
+}: {
+  matchList: IMatchDataExtended[] | null;
+}) {
   const today = new Date();
   const pastMatches =
-    past_matches?.filter(
-      (match) => parseDate(match.datetime as string) < today,
-    ) ?? [];
+    matchList?.filter((match) => parseDate(match.datetime as string) < today) ??
+    [];
   const futureMatches =
-    past_matches?.filter(
-      (match) => parseDate(match.datetime as string) > today,
-    ) ?? [];
+    matchList?.filter((match) => parseDate(match.datetime as string) > today) ??
+    [];
 
   // Check if in view
   const { ref: inViewRef, inView } = useInView({
@@ -51,7 +47,7 @@ const PastMatches: React.FC = () => {
 
   return (
     <>
-      {past_matches && past_matches[0]?.home_club_logo ? (
+      {matchList && matchList[0]?.home_club_logo ? (
         <div className="w-full ">
           {futureMatches.length > 0 ? (
             <motion.div
@@ -123,7 +119,7 @@ const PastMatches: React.FC = () => {
             ))}
           </motion.div>
         </div>
-      ) : past_matches === null ? (
+      ) : matchList === null ? (
         <div className="w-full px-0 md:px-4 lg:px-0 lg:w-2/3 lg:max-w-[640px]">
           <h2 className="text-primary font-semibold text-2xl mb-6">
             Past matches
@@ -140,6 +136,4 @@ const PastMatches: React.FC = () => {
       )}
     </>
   );
-};
-
-export default PastMatches;
+}

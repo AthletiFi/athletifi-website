@@ -1,6 +1,8 @@
+'use client';
+
 import Image from 'next/image';
 import { useMediaQuery } from '@/app/utils/useMediaQuery';
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -9,18 +11,14 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import FlipCard from '@/components/dashboard/FlipCard';
-import { useDashboardData } from '@/states/dashboardStore';
-import { useParams } from 'next/navigation';
 import Link from 'next/link';
-//import { profile } from 'console';
+import { IProfileProps } from '@/types/Dashboard.type';
 
-const HeroBanner: React.FC = () => {
-  const { cardId } = useParams();
-  const cardIdValue = Array.isArray(cardId) ? cardId.join('/') : cardId;
-  const { dashboardData } = useDashboardData(cardIdValue);
-
-  const playerProfile = dashboardData.data?.playerProfile;
-
+export default function HeroBanner({
+  profile,
+}: {
+  profile: IProfileProps | null;
+}) {
   const [isVisible, setIsVisible] = useState(true);
   const previousScrollY = useRef(0); // Ref to store previous scroll position
 
@@ -52,7 +50,7 @@ const HeroBanner: React.FC = () => {
   return (
     <SkeletonTheme baseColor="#113448" highlightColor="#525252">
       <section className="relative items-center md:items-start flex flex-col-reverse md:flex-row justify-center md:justify-start h-dvh md:h-[420px] lg:h-[370px] w-full md:max-w-[860px] lg:max-w-[1130px] px-4 md:px-8">
-        {playerProfile?.club_logo ? (
+        {profile?.club_logo ? (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -71,26 +69,22 @@ const HeroBanner: React.FC = () => {
                 />
                 <span className="text-md font-medium">Back to profile</span>
               </Link>
-              <Image
-                alt="club-logo"
-                src={playerProfile?.club_logo}
-                fill={true}
-              />
+              <Image alt="club-logo" src={profile?.club_logo} fill={true} />
             </div>
 
             <div className="flex flex-col justify-center items-start pl-2  md:w-full max-w-[576px] tracking-wide">
               <h2 className=" font-bold text-lgl text-primary relative tracking-wide">
-                {playerProfile?.name}
+                {profile?.name}
               </h2>
               <p className="text-base leading-6 text-start text-primary opacity-80 lg:max-w-769 relative ">
-                {playerProfile?.club}
+                {profile?.club}
               </p>
               <p className="text-base leading-4 text-start text-primary opacity-80 lg:max-w-769 relative ">
-                {`team ${playerProfile?.team}`}
+                {`team ${profile?.team}`}
               </p>
-              {playerProfile.number !== null && (
+              {profile.number !== null && (
                 <p className="text-base leading-6 text-start text-primary opacity-80 lg:max-w-769 relative ">
-                  {`#${playerProfile?.number}`}
+                  {`#${profile?.number}`}
                 </p>
               )}
               <span className="hidden md:block h-px w-full my-2 bg-partnersBorders" />
@@ -100,9 +94,9 @@ const HeroBanner: React.FC = () => {
           <div className="w-full h-1"></div>
         )}
 
-        {playerProfile?.card_url ? (
+        {profile?.card_url ? (
           <div className="md:mt-20 lg:-mb-[255px]">
-            <FlipCard cardUrl={playerProfile?.card_url} />
+            <FlipCard cardUrl={profile?.card_url} />
           </div>
         ) : (
           <div className="mb-20 mt-100 lg:mt-150">
@@ -143,6 +137,4 @@ const HeroBanner: React.FC = () => {
       </section>
     </SkeletonTheme>
   );
-};
-
-export default HeroBanner;
+}

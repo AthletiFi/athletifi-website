@@ -1,6 +1,5 @@
 // This is the article that appears in the headline section (aka Hero) on top of the Blog page.
 import Link from 'next/link';
-import React from 'react';
 import BlueButton from '@/components/common/BlueButton';
 import Image from 'next/image';
 import moment from 'moment';

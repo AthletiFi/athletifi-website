@@ -1,13 +1,13 @@
-import React from 'react';
-import Skeleton from 'react-loading-skeleton';
-import { useParams } from 'next/navigation';
-import { useDashboardData } from '@/states/dashboardStore';
+'use client';
 
-const Profile: React.FC = () => {
-  const { cardId } = useParams();
-  const cardIdValue = Array.isArray(cardId) ? cardId.join('/') : cardId;
-  const { dashboardData } = useDashboardData(cardIdValue);
-  const profile = dashboardData.data?.playerProfile;
+import Skeleton from 'react-loading-skeleton';
+import { IProfileProps } from '@/types/Dashboard.type';
+
+export default function Profile({
+  profile,
+}: {
+  profile: IProfileProps | null;
+}) {
   return (
     <>
       {profile ? (
@@ -84,6 +84,4 @@ const Profile: React.FC = () => {
       )}
     </>
   );
-};
-
-export default Profile;
+}

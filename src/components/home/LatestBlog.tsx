@@ -6,7 +6,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import BlueButton from '@/components/common/BlueButton';
 import { BlogProps, BlogArticle, Category } from '@/types/Blog.type';
 
@@ -18,7 +18,7 @@ const EXTERNAL_IMG_HEIGHT: number = 240;
 const GRID_IMAGE_WIDTH: number = 716;
 const GRID_IMAGE_HEIGHT: number = 692;
 
-const LatestBlog = ({ allBlogList }: BlogProps) => {
+export default function LatestBlog({ allBlogList }: BlogProps) {
   const DataArray = allBlogList.data;
   const itemsPerPage = 3;
   const [currentPage] = useState<number>(allBlogList.meta.pagination.pageCount);
@@ -156,6 +156,4 @@ const LatestBlog = ({ allBlogList }: BlogProps) => {
       </div>
     </>
   );
-};
-
-export default LatestBlog;
+}

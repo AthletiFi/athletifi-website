@@ -3,7 +3,6 @@
 // This component renders the "Who We Are" section on the "About Us" page.
 // It provides background information about the company and its team.
 
-import React from 'react';
 import { BlueShadow, UnderLineText } from '@/components/common/Icon';
 import Image from 'next/image';
 

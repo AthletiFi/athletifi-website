@@ -1,14 +1,13 @@
-import { useDashboardData } from '@/states/dashboardStore';
-import { useParams } from 'next/navigation';
+'use client';
+
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-const SeasonHighlights: React.FC = () => {
-  const { cardId } = useParams();
-  const cardIdValue = Array.isArray(cardId) ? cardId.join('/') : cardId;
-  const { dashboardData } = useDashboardData(cardIdValue);
-
-  const seasonHighlights = dashboardData.data?.seasonHighlights;
+export default function SeasonHighlights({
+  seasonHighlights,
+}: {
+  seasonHighlights: string[] | null;
+}) {
   return (
     <>
       {seasonHighlights && seasonHighlights[0] !== '' ? (
@@ -49,6 +48,4 @@ const SeasonHighlights: React.FC = () => {
       )}
     </>
   );
-};
-
-export default SeasonHighlights;
+}

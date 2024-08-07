@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ButtonWhiteArrow, UnderLineText } from '@/components/common/Icon';
 import { SignUp } from '@/types/SignUp.type';
 import { ToastContainer, toast, ToastOptions } from 'react-toastify';
@@ -14,7 +14,7 @@ const IMAGE_HEIGHT_GRID = 448;
 const IMAGE_WIDTH_PLAYER = 658;
 const IMAGE_HEIGHT_PLAYER = 598;
 
-const SignUpForm = () => {
+export default function SignUpForm() {
   // CUSTOM INPUT-CHECK
   const [checked, setChecked] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -185,6 +185,4 @@ const SignUpForm = () => {
       <ToastContainer theme="dark" />
     </section>
   );
-};
-
-export default SignUpForm;
+}

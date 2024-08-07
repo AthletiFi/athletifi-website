@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Image, { StaticImageData } from 'next/image';
 
 import { motion } from 'framer-motion';
@@ -6,7 +6,7 @@ interface FlipCardProps {
   cardUrl: string | StaticImageData;
 }
 
-const FlipCard: React.FC<FlipCardProps> = ({ cardUrl }) => {
+export default function FlipCard({ cardUrl }: FlipCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   useEffect(() => {
@@ -49,6 +49,4 @@ const FlipCard: React.FC<FlipCardProps> = ({ cardUrl }) => {
       </div>
     </motion.div>
   );
-};
-
-export default FlipCard;
+}

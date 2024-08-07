@@ -2,12 +2,10 @@ import dynamic from 'next/dynamic';
 import '@/styles/globals.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import React from 'react';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { Open_Sans } from 'next/font/google';
-import { Provider } from 'jotai';
 import Auth from '@/components/auth/Auth';
 import { SEO_CONFIG, BASEURL } from '@/utils/seoConfig';
 import { Metadata } from 'next';
@@ -46,9 +44,7 @@ export default function RootLayout({
         <GoogleAnalytics gaId={gaId as string} />
         <AOSInitializerWithNoSSR />
         <SkeletonTheme baseColor="#032436" highlightColor="#525252">
-          <Auth>
-            <Provider>{children}</Provider>{' '}
-          </Auth>
+          <Auth>{children}</Auth>
         </SkeletonTheme>
       </body>
     </html>

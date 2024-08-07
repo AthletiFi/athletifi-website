@@ -3,7 +3,6 @@
 // This component renders the "Our Mission" section on the "About Us" page.
 // It provides information about the company's mission and objectives.
 
-import React from 'react';
 import Image from 'next/image';
 import { UnderLineText } from '@/components/common/Icon';
 import { CenterBlueShadow } from '@/components/common/Icon';

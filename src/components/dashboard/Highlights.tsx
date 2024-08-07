@@ -1,6 +1,5 @@
 // THIS COMPONENT IS NO LONGER IN USE
 
-import React from 'react';
 import { UnderLineText } from '@/components/common/Icon';
 import MuxPlayer from '@mux/mux-player-react';
 

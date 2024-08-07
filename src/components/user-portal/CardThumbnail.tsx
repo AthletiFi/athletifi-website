@@ -1,11 +1,6 @@
 'use client';
-import React, {
-  useState,
-  ChangeEvent,
-  FormEvent,
-  useRef,
-  useEffect,
-} from 'react';
+
+import { useState, ChangeEvent, FormEvent, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -86,12 +81,12 @@ const getFilteredInvites = (
   return [];
 };
 
-const CardThumbnail: React.FC<ICardThumbnailProps> = ({
+function CardThumbnail({
   cardData,
   allInvites,
   isOwned,
   inSettings,
-}) => {
+}: ICardThumbnailProps) {
   const router = useRouter();
   const filteredInvites = allInvites
     ? getFilteredInvites(allInvites, cardData)
@@ -705,14 +700,21 @@ const CardThumbnail: React.FC<ICardThumbnailProps> = ({
       )}
     </div>
   );
-};
+}
 
-const RenderCardThumbnail: React.FC<{
+interface ICardThumbnail {
   cardData: ICards | null | undefined;
   allInvites: Invites[] | null;
   isOwned: boolean;
   inSettings: boolean;
-}> = ({ cardData, allInvites, isOwned, inSettings }) => {
+}
+
+export default function RenderCardThumbnail({
+  cardData,
+  allInvites,
+  isOwned,
+  inSettings,
+}: ICardThumbnail) {
   if (!cardData) {
     return (
       <div className="card-thumbnail-error">Card data is not available.</div>
@@ -727,6 +729,4 @@ const RenderCardThumbnail: React.FC<{
       inSettings={inSettings}
     />
   );
-};
-
-export default RenderCardThumbnail;
+}

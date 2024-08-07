@@ -1,4 +1,3 @@
-import React from 'react';
 import Image from 'next/image';
 import BlueButton from '@/components/common/BlueButton';
 import Link from 'next/link';

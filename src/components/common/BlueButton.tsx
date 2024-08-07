@@ -1,4 +1,3 @@
-import React from 'react';
 import { ArrowButton } from './Icon';
 import { BlueButtonProps } from '@/types/BlueButton.type';
 

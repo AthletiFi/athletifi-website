@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -25,11 +25,11 @@ interface MatchSummaryProps {
   isThisWeek?: boolean;
 }
 
-const MatchSummary: React.FC<MatchSummaryProps> = ({
+export default function MatchSummary({
   matchData,
   isFuture,
   isThisWeek,
-}) => {
+}: MatchSummaryProps) {
   const [showRecap, setShowRecap] = useState(false);
   const {
     home_club_logo,
@@ -475,6 +475,4 @@ const MatchSummary: React.FC<MatchSummaryProps> = ({
       </AnimatePresence>
     </div>
   );
-};
-
-export default MatchSummary;
+}

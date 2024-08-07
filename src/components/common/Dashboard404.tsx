@@ -1,4 +1,3 @@
-import React from 'react';
 import Link from 'next/link';
 
 const Dashboard404: React.FC = () => {

@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import React from 'react';
+
 import Slider from 'react-slick';
 import { SliderSettings } from '@/types/Slider.type';
 
