@@ -59,6 +59,7 @@ const AuthClient = ({
       } else {
         router.push(`/profile${inviteParam}`);
       }
+      router.refresh();
     }
   }, [route, redirect, router, inviteId]);
 
