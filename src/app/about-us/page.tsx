@@ -38,7 +38,7 @@ export default async function AboutUs({
   const auth = await isAuthenticated();
   if (auth.isSignedIn) {
     await addUserPostSignIn(
-      auth.userId,
+      auth.email,
       auth.name,
       auth.userId,
       searchParams?.invite_id,

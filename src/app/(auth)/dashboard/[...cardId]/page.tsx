@@ -20,7 +20,7 @@ export default async function PlayerDashboardPage({
   if (!auth.isSignedIn) redirect('/login?redirect=/profile');
 
   const inviteData = await addUserPostSignIn(
-    auth.userId,
+    auth.email,
     auth.name,
     auth.userId,
     searchParams?.invite_id,

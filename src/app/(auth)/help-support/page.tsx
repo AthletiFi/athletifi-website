@@ -28,7 +28,7 @@ export default async function HelpPage({
   if (!auth.isSignedIn) redirect('/login?redirect=/help-support');
 
   const inviteData = await addUserPostSignIn(
-    auth.userId,
+    auth.email,
     auth.name,
     auth.userId,
     searchParams?.invite_id,

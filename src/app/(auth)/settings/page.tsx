@@ -21,7 +21,7 @@ export default async function SettingsPage({
   if (!auth.isSignedIn) redirect('/login?redirect=/settings');
 
   const inviteData = await addUserPostSignIn(
-    auth.userId,
+    auth.email,
     auth.name,
     auth.userId,
     searchParams?.invite_id,
