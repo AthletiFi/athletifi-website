@@ -121,20 +121,27 @@ async function addUserHelper(
   email: string | undefined,
   name: string | undefined,
   amplifyId: string | undefined,
-  inviteId: string,
+  inviteId: string | undefined,
 ): Promise<invitationData> {
+  const postBody = inviteId
+    ? {
+        amplify_id: amplifyId,
+        email: email,
+        name: name,
+        invite_id: inviteId,
+      }
+    : {
+        amplify_id: amplifyId,
+        email: email,
+        name: name,
+      };
   const response = await fetch(`${addUserUrl}`, {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',
       Authorization: process.env.NEXT_PUBLIC_TEMP_API_AUTH,
     } as HeadersInit,
-    body: JSON.stringify({
-      amplify_id: amplifyId,
-      email: email,
-      name: name,
-      invite_id: inviteId,
-    }),
+    body: JSON.stringify(postBody),
   });
 
   const data: invitationData = await response.json();
@@ -142,7 +149,7 @@ async function addUserHelper(
 }
 
 export async function addUserPostSignIn(
-  inviteId: string,
+  inviteId: string | undefined,
   email: string,
   name: string,
   userId: string,

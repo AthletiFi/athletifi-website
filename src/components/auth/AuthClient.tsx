@@ -10,8 +10,14 @@ import { ComponentOverrides, FormFieldsOverrides } from './AuthOverrides';
 import { loginTheme } from './AuthTheme';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { SignUpInput, signUp } from 'aws-amplify/auth';
+import {
+  SignUpInput,
+  signUp,
+  fetchUserAttributes,
+  type FetchUserAttributesOutput,
+} from 'aws-amplify/auth';
 import { sourceSans3 } from '@/app/utils/helpers';
+import { addUserPostSignIn } from '@/app/actions/userDataActions';
 
 const AuthClient = ({
   defaultScreen,
@@ -31,6 +37,22 @@ const AuthClient = ({
 
   useEffect(() => {
     if (route === 'authenticated') {
+      fetchUserAttributes()
+        .then((userAttributes: FetchUserAttributesOutput) => {
+          if (userAttributes.email && userAttributes.sub) {
+            addUserPostSignIn(
+              inviteId,
+              userAttributes.email,
+              userAttributes.name || '',
+              userAttributes.sub,
+            ).catch((err) => {
+              console.error('Error in post sign-in:', err);
+            });
+          }
+        })
+        .catch((err) => {
+          console.error('Error fetching user attributes:', err);
+        });
       const inviteParam = inviteId ? `?invite_id=${inviteId}` : '';
       if (redirect) {
         router.push(redirect + inviteParam);
