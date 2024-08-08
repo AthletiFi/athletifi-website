@@ -14,14 +14,18 @@ export default async function Profile({
   searchParams?: { [key: string]: string | undefined };
 }) {
   const auth = await isAuthenticated();
-  if (!auth.isSignedIn) redirect('/login?redirect=/profile');
 
-  const inviteData = await addUserPostSignIn(
-    auth.email,
-    auth.name,
-    auth.userId,
-    searchParams?.invite_id,
-  );
+  let inviteData = undefined;
+  if (!auth.isSignedIn) {
+    redirect('/login?redirect=/profile');
+  } else {
+    inviteData = await addUserPostSignIn(
+      auth.email,
+      auth.name,
+      auth.userId,
+      searchParams?.invite_id,
+    );
+  }
 
   const userData = await getUserData(auth);
 

@@ -292,7 +292,7 @@ function CardThumbnail({
                         {invite.invite_status !== 'revoked' && (
                           <button
                             className="flex items-center cursor-pointer justify-end"
-                            onClick={() => async () => {
+                            onClick={() => {
                               triggerRevoke(invite.invite_id, cardData.name);
                             }}
                           >

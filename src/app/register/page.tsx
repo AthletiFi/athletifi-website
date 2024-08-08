@@ -1,6 +1,5 @@
 import AuthClient from '@/components/auth/AuthClient';
 import Header from '@/components/common/Header';
-import { emptyUserData } from '@/types/User.type';
 import { Suspense } from 'react';
 
 export default async function RegisterPage({
@@ -10,7 +9,7 @@ export default async function RegisterPage({
 }) {
   return (
     <>
-      <Header userData={emptyUserData} />
+      <Header userData={null} />
       <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="">
           <Suspense>

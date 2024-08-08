@@ -23,7 +23,7 @@ import { UserData } from '@/types/User.type';
 
 const SCROLL_THRESHOLD: number = 200;
 
-export default function Header({ userData }: { userData: UserData }) {
+export default function Header({ userData }: { userData: UserData | null }) {
   const [open, setOpen] = useState<boolean>(false);
   const [path, setPath] = useState<string>('');
   const [showDropdown, setShowDropdown] = useState(false);
