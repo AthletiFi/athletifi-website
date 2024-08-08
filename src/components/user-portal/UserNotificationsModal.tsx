@@ -8,6 +8,7 @@ import {
   addNotification,
   deleteNotification,
 } from '@/app/actions/userDataActions';
+import { UserData } from '@/types/User.type';
 
 const DELAY_TIMEOUT = 3;
 enum ACTION_TYPE {
@@ -16,12 +17,15 @@ enum ACTION_TYPE {
 }
 
 const UserNotificationsModal = ({
+  userData,
   amplify_id,
   setClosedModal,
 }: {
+  userData: UserData;
   amplify_id: string;
   setClosedModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  console.log('userData %s', JSON.stringify(userData));
   async function handleSubmit(amplify_id: string, action_type: ACTION_TYPE) {
     if (action_type === ACTION_TYPE.Delete) {
       await deleteNotification(amplify_id, 'All');
