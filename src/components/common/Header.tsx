@@ -39,7 +39,7 @@ export default function Header({ userData }: { userData: UserData | null }) {
         case 'signedIn':
           // Redirect user to initialize notification preferences upon first login
           // setIsLoggedIn(true);
-          startTransition(() => router.refresh());
+          // startTransition(() => router.refresh());
           break;
         case 'signedOut':
           // setIsLoggedIn(false);
