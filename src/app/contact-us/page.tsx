@@ -8,6 +8,7 @@ import { Metadata } from 'next';
 import { getUserData } from '@/app/utils/fetchHelper';
 import { UserData } from '@/types/User.type';
 import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
+import { addUserPostSignIn } from '@/app/actions/userDataActions';
 
 export const metadata: Metadata = {
   title: SEO_CONFIG.contactUs.title,
@@ -17,7 +18,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function ContactUs() {
+export default async function ContactUs({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | undefined };
+}) {
   // SEO
   const hero: Hero = {
     heading: 'Connect with the AthletiFi team',
@@ -26,6 +31,14 @@ export default async function ContactUs() {
   };
 
   const auth = await isAuthenticated();
+  if (auth.isSignedIn) {
+    await addUserPostSignIn(
+      auth.userId,
+      auth.name,
+      auth.userId,
+      searchParams?.invite_id,
+    );
+  }
   const userData = auth.isSignedIn ? await getUserData(auth) : null;
 
   return (

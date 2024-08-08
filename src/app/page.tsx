@@ -15,6 +15,7 @@ import { getBlogList } from '@/utils/ApiHelper';
 import { getUserData } from '@/app/utils/fetchHelper';
 import { UserData } from '@/types/User.type';
 import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
+import { addUserPostSignIn } from '@/app/actions/userDataActions';
 
 const BackToTop = dynamic(() => import('@/components/common/BackToTop'), {
   ssr: false,
@@ -27,13 +28,25 @@ const IMAGE_WIDTH_HERO_GRID = 700;
 const IMAGE_HEIGHT_HERO_GRID = 700;
 
 // Main function component for the home page
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | undefined };
+}) {
   const { allBlogList, allBlogListError } = await getBlogList();
 
   if (allBlogListError) return <div>Failed to fetch blog list.</div>;
   if (!allBlogList) return <div>Loading blog list...</div>;
 
   const auth = await isAuthenticated();
+  if (auth.isSignedIn) {
+    await addUserPostSignIn(
+      auth.userId,
+      auth.name,
+      auth.userId,
+      searchParams?.invite_id,
+    );
+  }
   const userData = auth.isSignedIn ? await getUserData(auth) : null;
 
   return (

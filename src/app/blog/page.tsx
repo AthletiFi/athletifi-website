@@ -11,6 +11,7 @@ import { Suspense } from 'react';
 import { getUserData } from '@/app/utils/fetchHelper';
 import { UserData } from '@/types/User.type';
 import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
+import { addUserPostSignIn } from '@/app/actions/userDataActions';
 
 // import { SEO_CONFIG } from '@/utils/seoConfig';
 
@@ -19,7 +20,11 @@ import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
 
 // The main functional component for the Blog and Insights page
 // const BlogPage = () => {
-export default async function BlogPage() {
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | undefined };
+}) {
   const { allBlogList, allBlogListError } = await getBlogList();
   const filteredBlogListData = allBlogList?.data || [];
 
@@ -50,6 +55,14 @@ export default async function BlogPage() {
   };
 
   const auth = await isAuthenticated();
+  if (auth.isSignedIn) {
+    await addUserPostSignIn(
+      auth.userId,
+      auth.name,
+      auth.userId,
+      searchParams?.invite_id,
+    );
+  }
   const userData = auth.isSignedIn ? await getUserData(auth) : null;
 
   return (

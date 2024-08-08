@@ -8,6 +8,7 @@ import { Metadata } from 'next';
 import { getUserData } from '@/app/utils/fetchHelper';
 import { UserData } from '@/types/User.type';
 import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
+import { addUserPostSignIn } from '@/app/actions/userDataActions';
 
 export const metadata: Metadata = {
   title: SEO_CONFIG.termsOfUse.title,
@@ -17,12 +18,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function TermsOfUsePage() {
+export default async function TermsOfUsePage({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | undefined };
+}) {
   const hero: Hero = {
     heading: 'Terms of Use',
   };
 
   const auth = await isAuthenticated();
+  if (auth.isSignedIn) {
+    await addUserPostSignIn(
+      auth.userId,
+      auth.name,
+      auth.userId,
+      searchParams?.invite_id,
+    );
+  }
   const userData = auth.isSignedIn ? await getUserData(auth) : null;
 
   return (

@@ -121,7 +121,7 @@ async function addUserHelper(
   email: string | undefined,
   name: string | undefined,
   amplifyId: string | undefined,
-  inviteId: string | undefined,
+  inviteId?: string | undefined,
 ): Promise<invitationData> {
   const postBody = inviteId
     ? {
@@ -149,15 +149,14 @@ async function addUserHelper(
 }
 
 export async function addUserPostSignIn(
-  inviteId: string | undefined,
   email: string,
   name: string,
   userId: string,
+  inviteId?: string,
 ): Promise<invitationData | undefined> {
   try {
     const data = await addUserHelper(email, name, userId, inviteId);
 
-    revalidateTag('userData');
     return data;
   } catch (error) {
     console.error(error);

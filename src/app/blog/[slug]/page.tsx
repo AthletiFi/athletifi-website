@@ -15,9 +15,13 @@ import { BlogPageContext } from '@/types/Blog.type';
 import { getUserData } from '@/app/utils/fetchHelper';
 import { UserData } from '@/types/User.type';
 import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
+import { addUserPostSignIn } from '@/app/actions/userDataActions';
 
 // This is the main content of the blog article page, which contains the blog article itself and the sidebar with the other blog articles.
-export default async function BlogArticleSlugPage({ params }: BlogPageContext) {
+export default async function BlogArticleSlugPage({
+  params,
+  searchParams,
+}: BlogPageContext) {
   const blogListApiPath = `/news-lists/?populate=image&populate=content&filters[slug][$eq]=${params.slug}&populate=author`;
   const blogArticle = await fetchRequest(
     RequestMethod.GET,
@@ -51,6 +55,14 @@ export default async function BlogArticleSlugPage({ params }: BlogPageContext) {
   };
 
   const auth = await isAuthenticated();
+  if (auth.isSignedIn) {
+    await addUserPostSignIn(
+      auth.userId,
+      auth.name,
+      auth.userId,
+      searchParams?.invite_id,
+    );
+  }
   const userData = auth.isSignedIn ? await getUserData(auth) : null;
 
   return (

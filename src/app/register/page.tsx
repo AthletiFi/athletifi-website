@@ -4,6 +4,7 @@ import Header from '@/components/common/Header';
 import { UserData } from '@/types/User.type';
 import { Suspense } from 'react';
 import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
+import { addUserPostSignIn } from '@/app/actions/userDataActions';
 
 export default async function RegisterPage({
   searchParams,
@@ -11,6 +12,14 @@ export default async function RegisterPage({
   searchParams?: { [key: string]: string | undefined };
 }) {
   const auth = await isAuthenticated();
+  if (auth.isSignedIn) {
+    await addUserPostSignIn(
+      auth.userId,
+      auth.name,
+      auth.userId,
+      searchParams?.invite_id,
+    );
+  }
   const userData = auth.isSignedIn ? await getUserData(auth) : null;
 
   return (

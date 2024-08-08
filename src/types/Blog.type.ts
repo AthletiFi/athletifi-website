@@ -79,5 +79,6 @@ export interface BlogPageContext {
   };
   searchParams?: {
     page: string;
+    [key: string]: string | undefined;
   };
 }

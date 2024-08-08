@@ -8,6 +8,7 @@ import { getUserData } from '@/app/utils/fetchHelper';
 import { UserData } from '@/types/User.type';
 import { Hero } from '@/types/CommonHero.type';
 import { isAuthenticated } from '@/app/utils/auth/amplify-utils';
+import { addUserPostSignIn } from '@/app/actions/userDataActions';
 
 export const metadata: Metadata = {
   title: SEO_CONFIG.signUp.title,
@@ -17,7 +18,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function SignUp() {
+export default async function SignUp({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | undefined };
+}) {
   // SEO
   const hero: Hero = {
     heading: 'Start Your Digital Soccer Card Collection Journey',
@@ -26,6 +31,14 @@ export default async function SignUp() {
   };
 
   const auth = await isAuthenticated();
+  if (auth.isSignedIn) {
+    await addUserPostSignIn(
+      auth.userId,
+      auth.name,
+      auth.userId,
+      searchParams?.invite_id,
+    );
+  }
   const userData = auth.isSignedIn ? await getUserData(auth) : null;
 
   return (

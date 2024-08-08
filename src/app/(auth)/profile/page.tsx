@@ -16,19 +16,12 @@ export default async function Profile({
   const auth = await isAuthenticated();
   if (!auth.isSignedIn) redirect('/login?redirect=/profile');
 
-  let inviteData = undefined;
-  if (searchParams?.invite_id) {
-    try {
-      inviteData = await addUserPostSignIn(
-        searchParams.invite_id,
-        auth.userId,
-        auth.name,
-        auth.userId,
-      );
-    } catch (error) {
-      console.error(`Error adding user post sign-in: ${JSON.stringify(error)}`);
-    }
-  }
+  const inviteData = await addUserPostSignIn(
+    auth.userId,
+    auth.name,
+    auth.userId,
+    searchParams?.invite_id,
+  );
 
   const userData = await getUserData(auth);
 
